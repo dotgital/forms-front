@@ -1,0 +1,28 @@
+<div class="main-content">
+  <div class="mat-elevation-z1">
+    <table mat-table class="full-width-table" matSort (matSortChange)="sortData($event)" aria-label="Elements">
+      <!-- Id Column -->
+      <ng-container matColumnDef="firstName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+        <td mat-cell *matCellDef="let row">{{row.firstName}} {{row.lastName}}</td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="lastName">
+        <th mat-header-cell *matHeaderCellDef>Phone</th>
+        <td mat-cell *matCellDef="let row">8326144421</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator
+        [length]="totalPages"
+        [pageIndex]="0"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="[5, 10, 20]"
+        (page)="paginator($event)">
+    </mat-paginator>
+  </div>
+</div>

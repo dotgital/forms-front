@@ -24,6 +24,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ForgotComponent } from './auth/forgot/forgot.component';
 import { ResetComponent } from './auth/reset/reset.component';
+import { ListComponent } from './clients/list/list.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { GraphQLModule } from './graphql.module';
 
 
 @NgModule({
@@ -32,7 +37,8 @@ import { ResetComponent } from './auth/reset/reset.component';
     NavigationComponent,
     LoginComponent,
     ForgotComponent,
-    ResetComponent
+    ResetComponent,
+    ListComponent
   ],
   imports: [
     BrowserModule,
@@ -52,6 +58,10 @@ import { ResetComponent } from './auth/reset/reset.component';
     MatFormFieldModule,
     MatInputModule,
     MatSnackBarModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    GraphQLModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

@@ -1,3 +1,4 @@
+import { environment } from './../../environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -12,7 +13,7 @@ export class JwtInterceptor implements HttpInterceptor {
         // add authorization header with jwt token if available
         // console.log(request);
         const currentUser = this.authenticationService.currentUserValue;
-        if (currentUser && currentUser.jwt && request.url.startsWith('https://backend.apartmentsource.com')) {
+        if (currentUser && currentUser.jwt && request.url.startsWith(`${environment.backendUrl}`)) {
             request = request.clone({
                 setHeaders: {
                     Authorization: `Bearer ${currentUser.jwt}`

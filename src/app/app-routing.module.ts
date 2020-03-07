@@ -5,6 +5,7 @@ import { NavigationComponent } from './navigation/navigation.component';
 import { LoginComponent } from './auth/login/login.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { ListComponent } from './clients/list/list.component';
 
 
 const routes: Routes = [
@@ -12,7 +13,7 @@ const routes: Routes = [
   { path: 'forgot-password', component: ForgotComponent },
   { path: 'reset-password', component: ResetComponent },
   { path: '', component: NavigationComponent, canActivate: [AuthGuard], children: [
-    { path: '', component: NavigationComponent },
+    { path: 'clients', component: ListComponent },
   ]},
 ];
 

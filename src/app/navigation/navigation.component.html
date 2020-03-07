@@ -10,7 +10,7 @@
       <a mat-list-item href="#">Link 3</a>
     </mat-nav-list>
   </mat-sidenav>
-  <mat-sidenav-content>
+  <mat-sidenav-content class="content-outlet">
     <mat-toolbar color="primary">
       <button
         type="button"
@@ -24,5 +24,6 @@
       <button mat-icon-button (click)="logout()" ><mat-icon>exit_to_app</mat-icon></button>
     </mat-toolbar>
     <!-- Add Content Here -->
+    <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
