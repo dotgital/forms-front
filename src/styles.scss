@@ -30,3 +30,10 @@ $forms-theme: mat-light-theme($forms-primary, $forms-accent, $forms-warn);
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.content-bg{
+  background-color: #1565c0;
+  // background-image: url('./assets/bg.png');
+  // background-size: 102%;
+  // background-position: -10px 0px;
+}

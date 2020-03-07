@@ -1,3 +1,6 @@
+import { ResetComponent } from './auth/reset/reset.component';
+import { ForgotComponent } from './auth/forgot/forgot.component';
+import { AuthGuard } from './services/auth.guard';
 import { NavigationComponent } from './navigation/navigation.component';
 import { LoginComponent } from './auth/login/login.component';
 import { NgModule } from '@angular/core';
@@ -6,7 +9,11 @@ import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
-  { path: '', component: NavigationComponent },
+  { path: 'forgot-password', component: ForgotComponent },
+  { path: 'reset-password', component: ResetComponent },
+  { path: '', component: NavigationComponent, canActivate: [AuthGuard], children: [
+    { path: '', component: NavigationComponent },
+  ]},
 ];
 
 @NgModule({

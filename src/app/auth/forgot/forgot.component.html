@@ -1,0 +1,26 @@
+<div fxLayout="row" fxLayoutAlign="center center" class="content-bg" style="height: 100vh;">
+  <div fxFlex> </div>
+  <mat-card fxFlex.lg="30" fxFlex.md="35" fxFlex.sm="50" fxFlex.xs="80"  class="mat-elevation-z1">
+      <form [formGroup]="forgotForm" (ngSubmit)="forgot()">
+            <mat-card-content class="ion-padding">
+              <mat-card-title class="ion-text-center full-width">Forgot Password</mat-card-title>
+              <mat-card-subtitle class="ion-text-center full-width">Recover your password using your email address</mat-card-subtitle>
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email">
+                <mat-icon matSuffix>email</mat-icon>
+                <!-- <mat-hint>Hint</mat-hint> -->
+                <mat-error *ngIf="forgotForm.controls['email'].errors && forgotForm.controls['email'].errors.required">Required</mat-error>
+                <mat-error *ngIf="forgotForm.controls['email'].errors && !forgotForm.controls['email'].errors.required">Please type a valid email address</mat-error>
+              </mat-form-field>
+            </mat-card-content>
+            <mat-card-actions  class="padding">
+                <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="space-evenly center">
+                    <button mat-flat-button color="primary" [disabled]="!forgotForm.valid" fxFlex>Reset</button>
+                    <a mat-stroked-button routerLink="/login" color="primary" fxFlex>Back to Login</a>
+                </div>
+            </mat-card-actions>
+        </form>
+      </mat-card>
+      <div fxFlex> </div>
+</div>
