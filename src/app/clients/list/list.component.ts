@@ -15,8 +15,8 @@ export class ListComponent implements OnInit {
   public startPage = 0;
   public pageSize = 5;
   public totalPages: number;
-  public sortBy: string = 'createdAt';
-  public sortDirection: string = 'desc';
+  public sortBy = 'createdAt';
+  public sortDirection = 'desc';
 
   // @ViewChild(MatPaginator) paginator: MatPaginator;
   // @ViewChild(MatSort) sort: MatSort;

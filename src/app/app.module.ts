@@ -29,6 +29,10 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { GraphQLModule } from './graphql.module';
+import { EditComponent } from './clients/edit/edit.component';
+import { MatSelectModule } from '@angular/material/select';
+import { MatRadioModule } from '@angular/material/radio';
+import { DisableFormDirective } from './_directives/disable-form.directive';
 
 
 @NgModule({
@@ -38,7 +42,9 @@ import { GraphQLModule } from './graphql.module';
     LoginComponent,
     ForgotComponent,
     ResetComponent,
-    ListComponent
+    ListComponent,
+    EditComponent,
+    DisableFormDirective
   ],
   imports: [
     BrowserModule,
@@ -62,6 +68,8 @@ import { GraphQLModule } from './graphql.module';
     MatPaginatorModule,
     MatSortModule,
     GraphQLModule,
+    MatSelectModule,
+    MatRadioModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

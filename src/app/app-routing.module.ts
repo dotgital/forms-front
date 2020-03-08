@@ -1,3 +1,4 @@
+import { EditComponent } from './clients/edit/edit.component';
 import { ResetComponent } from './auth/reset/reset.component';
 import { ForgotComponent } from './auth/forgot/forgot.component';
 import { AuthGuard } from './services/auth.guard';
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'reset-password', component: ResetComponent },
   { path: '', component: NavigationComponent, canActivate: [AuthGuard], children: [
     { path: 'clients', component: ListComponent },
+    { path: 'clients/:id/edit', component: EditComponent },
   ]},
 ];
 

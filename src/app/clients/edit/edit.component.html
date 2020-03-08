@@ -1,0 +1,66 @@
+<div class="main-content" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="10px">
+  <div fxFlex>
+    <mat-card class="shipping-card mat-elevation-z1" style="margin-top: 0;">
+      <form [formGroup]="addressForm" novalidate (ngSubmit)="onSubmit()">
+        <mat-card-header class="content-header">
+          <mat-card-title>Shipping Information</mat-card-title>
+          <span class="spacer"></span>
+          <a mat-icon-button
+            (click)="editForm()"
+            *ngIf="!editing"
+            style="margin-top: -12px;">
+              <mat-icon>edit</mat-icon>
+          </a>
+          <a mat-icon-button
+            color="warn"
+            (click)="cancelForm()"
+            *ngIf="editing"
+            style="margin-top: -12px;">
+              <mat-icon>close</mat-icon>
+          </a>
+          <button mat-icon-button
+            *ngIf="editing"
+            style="margin-top: -12px;">
+              <mat-icon
+              >save</mat-icon>
+          </button>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label>First Name</mat-label>
+                <input matInput placeholder="First name" formControlName="firstName">
+                <mat-error *ngIf="addressForm.controls['firstName'].hasError('required')">
+                  First name is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label>Last Name</mat-label>
+                <input matInput placeholder="Last name" formControlName="lastName">
+                <mat-error *ngIf="addressForm.controls['lastName'].hasError('required')">
+                  Last name is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-card-content>
+        <!-- <mat-card-actions>
+          <button mat-raised-button color="primary" type="submit">Save</button>
+        </mat-card-actions> -->
+      </form>
+    </mat-card>
+  </div>
+  <div fxFlex="25" fxFlex.md="30">
+    <mat-card class="mat-elevation-z1">
+      <mat-card-header class="content-header">
+        <mat-card-title>History</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+       this is another card
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
