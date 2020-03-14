@@ -11,6 +11,7 @@ import { map, shareReplay } from 'rxjs/operators';
   styleUrls: ['./navigation.component.scss']
 })
 export class NavigationComponent {
+  fullMenu: boolean;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(

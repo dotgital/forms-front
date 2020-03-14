@@ -6,8 +6,32 @@
   width: 200px;
 }
 
-.sidenav .mat-toolbar {
-  background: inherit;
+// .sidenav .mat-toolbar {
+//   background: inherit;
+// }
+.mat-toolbar-single-row,
+.mat-toolbar.mat-primary{
+  background-color: #363535;
+  height: 55px;
+  font-size: 16px;
+  font-weight: 400;
+  color: #ececec;
+  .mat-icon{
+    height: 20px;
+    width: 20px;
+    line-height: 20px;
+    font-size: 20px;
+  }
+}
+
+mat-nav-list a{
+  font-size: 14px;
+  color: #58666d;
+  .mat-icon {
+    font-size: 20px;
+    height: 20px;
+    width: 20px;
+  }
 }
 
 .mat-toolbar.mat-primary {

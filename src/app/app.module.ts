@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ErrorInterceptor } from './_helpers/error.interceptor';
 import { JwtInterceptor } from './_helpers/jwt.interceptor';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -24,15 +25,24 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ForgotComponent } from './auth/forgot/forgot.component';
 import { ResetComponent } from './auth/reset/reset.component';
-import { ListComponent } from './clients/list/list.component';
+import { ListComponent } from './clients/components/list/list.component';
 import { MatTableModule } from '@angular/material/table';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { GraphQLModule } from './graphql.module';
-import { EditComponent } from './clients/edit/edit.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { DisableFormDirective } from './_directives/disable-form.directive';
+import { FillComponent } from './forms/fill/fill.component';
+import { ViewComponent } from './clients/components/view/view.component';
+import { ListViewComponent } from './clients/list-view/list-view.component';
+import { DetailsViewComponent } from './clients/details-view/details-view.component';
+import { FieldsComponent } from './settings/fields/fields.component';
+import { SettingsComponent } from './settings/settings.component';
+import { SettingsLayoutComponent } from './settings/settings-layout/settings-layout.component';
 
 
 @NgModule({
@@ -43,8 +53,14 @@ import { DisableFormDirective } from './_directives/disable-form.directive';
     ForgotComponent,
     ResetComponent,
     ListComponent,
-    EditComponent,
-    DisableFormDirective
+    DisableFormDirective,
+    FillComponent,
+    ViewComponent,
+    ListViewComponent,
+    DetailsViewComponent,
+    FieldsComponent,
+    SettingsComponent,
+    SettingsLayoutComponent
   ],
   imports: [
     BrowserModule,
@@ -55,18 +71,22 @@ import { DisableFormDirective } from './_directives/disable-form.directive';
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
+    PdfViewerModule,
     MatToolbarModule,
     MatButtonModule,
     MatSidenavModule,
     MatIconModule,
     MatListModule,
+    MatProgressBarModule,
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
     MatSnackBarModule,
     MatTableModule,
+    MatTabsModule,
     MatPaginatorModule,
     MatSortModule,
+    DragDropModule,
     GraphQLModule,
     MatSelectModule,
     MatRadioModule,

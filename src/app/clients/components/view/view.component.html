@@ -1,0 +1,62 @@
+<form id="input-form" [formGroup]="viewForm" novalidate style="margin-top: 15px;" style.fontSize.px="26px">
+  <div fxLayout="row" fxLayoutAlign="end center" class="action-row">
+    <a mat-icon-button (click)="enableForm()" *ngIf="!editing" style="margin-top: -12px;"><mat-icon>edit</mat-icon></a>
+    <a mat-icon-button color="warn" (click)="cancelForm()" *ngIf="editing" style="margin-top: -12px;"><mat-icon>close</mat-icon></a>
+    <button mat-icon-button *ngIf="editing" style="margin-top: -12px;"><mat-icon>save</mat-icon></button>
+  </div>
+
+  <div fxLayout="row" fxLayout.lt-md="col" fxLayoutGap="20px">
+    <mat-form-field class="full-width" appearance="fill" fxFlex="50" fxFlex.lt-md="100">
+      <mat-label>First Name</mat-label>
+      <input matInput formControlName="firstName">
+      <mat-error *ngIf="viewForm.controls['firstName'].hasError('required')">
+        First name is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="full-width" appearance="fill" fxFlex="50" fxFlex.lt-md="100">
+      <mat-label>Last Name</mat-label>
+      <input matInput formControlName="lastName">
+      <mat-error *ngIf="viewForm.controls['lastName'].hasError('required')">
+        Last name is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div fxLayout="row" fxLayout.lt-md="col" fxLayoutGap="20px">
+
+    <mat-form-field class="full-width" appearance="fill" fxFlex="50" fxFlex.lt-md="100">
+      <mat-label>Phone Mobile</mat-label>
+      <input matInput formControlName="phoneMobile">
+      <mat-error *ngIf="viewForm.controls['lastName'].hasError('required')">
+        Phone Number is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="full-width" appearance="fill" fxFlex="50" fxFlex.lt-md="100">
+      <mat-label>Phone Other</mat-label>
+      <input matInput placeholder="Last name" formControlName="phoneOther">
+    </mat-form-field>
+  </div>
+  <!-- <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutAlign="start stretch" fxLayoutGap="20px">
+      <div *ngFor="let input of formItems; let odd=odd" [ngSwitch]="input.type" fxFlex="0 0 calc(50% - 20px)" fxFlex.lt-md="100">
+
+      <mat-form-field class="full-width" appearance="outline" *ngSwitchCase="'relation'">
+        <mat-label>{{input.label}}</mat-label>
+        <mat-select placeholder="Placeholder" [formControlName]="input.name">
+          <mat-option *ngFor="let item of input.options" [value]="item.value">
+            {{item.value}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="full-width" appearance="outline" *ngSwitchDefault>
+        <mat-label>{{input.label}}</mat-label>
+        <input matInput placeholder="Last name" [formControlName]="input.name">
+        <mat-error *ngIf="viewForm.controls[input.name].hasError('required')">
+          Last name is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    </div> -->
+</form>

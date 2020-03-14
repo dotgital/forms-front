@@ -12,7 +12,7 @@
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$forms-primary: mat-palette($mat-blue, 800);
+$forms-primary: mat-palette($mat-blue, 600);
 $forms-accent: mat-palette($mat-pink, A200, A100, A400);
 
 // The warn palette is optional (defaults to red).
@@ -21,21 +21,59 @@ $forms-warn: mat-palette($mat-red);
 // Create the theme object (a Sass map containing all of the palettes).
 $forms-theme: mat-light-theme($forms-primary, $forms-accent, $forms-warn);
 
+
+// Define a custom typography config that overrides the font-family as well as the
+// `headlines` and `body-1` levels.
+$custom-typography: mat-typography-config(
+  $font-family: 'Roboto, monospace',
+  $headline: mat-typography-level(32px, 48px, 700),
+  $body-1: mat-typography-level(16px, 24px, 500),
+);
+
+
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 @include angular-material-theme($forms-theme);
+
+// Override typography for all Angular Material, including mat-base-typography and all components.
+@include angular-material-typography($custom-typography);
 
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+.loading-top.mat-progress-bar{
+  position: absolute;
+}
+
+.mat-elevation-z1 {
+  box-shadow: 0px 0px 1px #676767;
+}
+.mat-card{
+  border-radius: 0px !important;
+}
+.mat-flat-button.mat-primary, .mat-raised-button.mat-primary, .mat-fab.mat-primary, .mat-mini-fab.mat-primary {
+  border-radius: 0px !important;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline-start,
+.mat-form-field-appearance-outline .mat-form-field-outline-end{
+  border-radius: 0px !important;
+}
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  color: rgb(214, 217, 217);
+}
 .content-bg{
   background-color: #1565c0;
-  // background-image: url('./assets/bg.png');
-  // background-size: 102%;
-  // background-position: -10px 0px;
+}
+
+.component-header{
+  background: #f5f8f9;
+  border-bottom: 1px solid #dde5e7;
+  font-weight: 200;
+  color: #626f76;
 }
 
 .main-content{
@@ -43,5 +81,17 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 .content-outlet{
-  background: #f1f1f1;
+  background: #f0f3f4;
+}
+
+.full-width{
+  width: 100%;
+}
+
+.mat-input-element,
+.mat-input-element:disabled, .mat-form-field-type-mat-native-select.mat-form-field-disabled .mat-form-field-infix::after{
+  color: #000;
+}
+.mat-form-field-appearance-fill.mat-form-field-disabled .mat-form-field-label{
+  color: #00000096;
 }

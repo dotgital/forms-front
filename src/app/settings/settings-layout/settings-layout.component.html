@@ -1,0 +1,68 @@
+<mat-progress-bar mode="indeterminate" color="primary" class="loading-top" *ngIf="loading" ></mat-progress-bar>
+<mat-toolbar class="component-header">
+  <span>Layout Settings</span>
+</mat-toolbar>
+<div class="main-content" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="10px">
+  <div fxFlex>
+    <mat-card class="mat-elevation-z1" style="margin-top: 0;" >
+        <div fxLayout="row" fxLayoutAlign="end center">
+          <a mat-button (click)="cancelLayout()" *ngIf="layoutChanged" >Cancel</a>
+          <button mat-flat-button (click)="saveLayout()" [disabled]="!layoutChanged" color="primary">Save</button>
+        </div>
+      <div cdkDropListGroup fxLayout="row" fxLayout.lt-md="col" fxLayoutAlign="space-between start" fxLayoutGap="20px">
+        <div fxFlex="50" fxFlex.lt-md="100">
+          <span style="font-weight: 300;">Left</span>
+
+          <div
+            cdkDropList
+            [cdkDropListData]="left"
+            class="example-list"
+            (cdkDropListDropped)="drop($event)">
+            <div class="example-box" *ngFor="let item of left" cdkDrag>
+              <mat-icon>drag_indicator</mat-icon>
+              {{item.label}}
+              <button mat-icon-button disabled="{{!item.configurable}}" (click)="editField(item)"><mat-icon>edit</mat-icon></button>
+            </div>
+          </div>
+        </div>
+
+        <div fxFlex="50" fxFlex.lt-md="100">
+          <span style="font-weight: 300;">Right</span>
+
+          <div
+            cdkDropList
+            [cdkDropListData]="right"
+            class="example-list"
+            (cdkDropListDropped)="drop($event)">
+            <div class="example-box" *ngFor="let item of right" cdkDrag>
+              <mat-icon>drag_indicator</mat-icon>
+              {{item.label}}
+              <button mat-icon-button disabled="{{!item.configurable}}" (click)="editField(item)"><mat-icon>edit</mat-icon></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+  <div fxFlex="25" fxFlex.md="30">
+    <form id="input-form" [formGroup]="editFieldForm" novalidate>
+      <mat-card  class="mat-elevation-z1">
+          <div fxLayout="row" fxLayoutAlign="end center">
+          <h2 fxFlex  style="font-weight: 300;">Field Settings</h2>
+        </div>
+        <mat-card-content style="font-size: 14px">
+          <mat-form-field class="full-width" appearance="outline" >
+            <mat-label>Label</mat-label>
+            <input matInput formControlName="label">
+          </mat-form-field>
+        </mat-card-content>
+        <mat-card-actions xLayout="row" fxLayoutAlign="end center">
+          <a mat-button (click)="cancelField()" *ngIf="fieldChanged">Cancel</a>
+          <button mat-flat-button color="primary" [disabled]="!fieldChanged" (click)="saveField()" >
+            Save
+          </button>
+        </mat-card-actions>
+      </mat-card>
+      </form>
+  </div>
+</div>

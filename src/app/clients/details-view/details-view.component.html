@@ -1,0 +1,37 @@
+<div class="main-content" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="10px">
+  <div fxFlex>
+    <mat-card class="mat-elevation-z1" style="margin-top: 0;" *ngIf="recordData" >
+        <mat-card-header>
+          <mat-card-title>{{recordTitle}}</mat-card-title>
+          <span class="spacer"></span>
+        </mat-card-header>
+        <mat-tab-group color="primary" backgroundColor="primary">
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <mat-icon class="example-tab-icon">contacts</mat-icon>
+               Profile
+            </ng-template>
+            <app-view [record]="recordData"></app-view>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <mat-icon class="example-tab-icon">picture_as_pdf</mat-icon>
+               Forms
+            </ng-template>
+            Forms
+          </mat-tab>
+        </mat-tab-group>
+    </mat-card>
+  </div>
+
+  <div fxFlex="25" fxFlex.md="30">
+    <mat-card class="mat-elevation-z1">
+      <mat-card-header class="content-header">
+        <mat-card-title>History</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+       this is another card
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

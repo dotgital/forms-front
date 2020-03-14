@@ -51,7 +51,7 @@ export class AuthService {
   }
 
   reset(code: string, pw: string, pwcnf: string) {
-    return this.http.post < any > ( `${environment.backendUrl}auth/reset-password`, {
+    return this.http.post<any>( `${environment.backendUrl}auth/reset-password`, {
         code,
         password: pw,
         passwordConfirmation: pwcnf

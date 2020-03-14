@@ -1,0 +1,15 @@
+<mat-toolbar class="component-header">
+  <span>Settings</span>
+</mat-toolbar>
+<div fxLayout="row wrap" fxLayoutGap=10px class="component-content">
+
+  <button mat-flat-button class="setting-box"
+    routerLink="/settings/layout"
+    fxFlex="0 1 calc(25% - 10px)"
+    fxFlex.lt-lg="0 1 calc(33.3% - 10px)"
+    fxFlex.lt-md="0 1 calc(50% - 10px)"
+    fxFlex.lt-sm="0 1 calc(100% - 10px)">
+      <mat-icon>text_fields</mat-icon><br/>
+      Fields
+</button>
+</div>

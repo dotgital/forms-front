@@ -1,4 +1,5 @@
-import { CrudService } from './../../services/crud.service';
+import { Router } from '@angular/router';
+import { CrudService } from '../../../services/crud.service';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -28,6 +29,7 @@ export class ListComponent implements OnInit {
 
   constructor(
     private crud: CrudService,
+    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -68,5 +70,9 @@ export class ListComponent implements OnInit {
     this.sortBy = e.active;
     this.sortDirection = e.direction;
     this.getData();
+  }
+
+  goTo(row) {
+    this.router.navigate([`/clients/${row.id}`]);
   }
 }
