@@ -20,7 +20,19 @@
       </button>
       <!-- <span>Immigration Forms</span> -->
       <span class="spacer"></span>
-      <button mat-icon-button (click)="logout()" ><mat-icon>exit_to_app</mat-icon></button>
+
+      <button mat-icon-button><img src="../../assets/avatar.png" class="navbar-avatar" [matMenuTriggerFor]="menu"/>
+        <mat-menu #menu="matMenu"  class="mat-elevation-z2" style="margin-top: 10px;">
+          <button mat-menu-item routerLink="/settings" class="profile-menu">
+            <mat-icon>settings</mat-icon>
+            <span>Settings</span>
+          </button>
+          <button mat-menu-item  (click)="logout()"  class="profile-menu">
+            <mat-icon>exit_to_app</mat-icon>
+            <span>Logout</span>
+          </button>
+        </mat-menu>
+      </button>
     </mat-toolbar>
     <!-- Add Content Here -->
     <router-outlet></router-outlet>

@@ -43,3 +43,13 @@ mat-nav-list a{
 .spacer {
   flex: 1 1 auto;
 }
+
+.profile-menu {
+  font-weight: 300;
+  .mat-icon {
+    font-size: 20px;
+    height: 20px;
+    width: 20px;
+  }
+}
+

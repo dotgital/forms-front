@@ -31,6 +31,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatMenuModule } from '@angular/material/menu';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { GraphQLModule } from './graphql.module';
 import { MatSelectModule } from '@angular/material/select';
@@ -40,7 +41,6 @@ import { FillComponent } from './forms/fill/fill.component';
 import { ViewComponent } from './clients/components/view/view.component';
 import { ListViewComponent } from './clients/list-view/list-view.component';
 import { DetailsViewComponent } from './clients/details-view/details-view.component';
-import { FieldsComponent } from './settings/fields/fields.component';
 import { SettingsComponent } from './settings/settings.component';
 import { SettingsLayoutComponent } from './settings/settings-layout/settings-layout.component';
 
@@ -58,7 +58,6 @@ import { SettingsLayoutComponent } from './settings/settings-layout/settings-lay
     ViewComponent,
     ListViewComponent,
     DetailsViewComponent,
-    FieldsComponent,
     SettingsComponent,
     SettingsLayoutComponent
   ],
@@ -81,6 +80,7 @@ import { SettingsLayoutComponent } from './settings/settings-layout/settings-lay
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
+    MatMenuModule,
     MatSnackBarModule,
     MatTableModule,
     MatTabsModule,
