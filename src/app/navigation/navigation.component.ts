@@ -12,6 +12,7 @@ import { map, shareReplay } from 'rxjs/operators';
 })
 export class NavigationComponent {
   fullMenu: boolean;
+  search: boolean;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -23,7 +24,9 @@ export class NavigationComponent {
     private breakpointObserver: BreakpointObserver,
     private authService: AuthService,
     private router: Router,
-  ) {}
+  ) {
+    this.search = false;
+  }
 
   logout() {
     this.authService.logout();

@@ -15,11 +15,21 @@
         type="button"
         aria-label="Toggle sidenav"
         mat-icon-button
-        (click)="drawer.toggle()">
+        (click)="drawer.toggle()"
+        *ngIf="!search" >
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
+      <button mat-icon-button
+        *ngIf="search"
+        (click)="search = !search" >
+        <mat-icon>arrow_back</mat-icon>
+      </button>
       <!-- <span>Immigration Forms</span> -->
-      <span class="spacer"></span>
+      <span class="spacer" *ngIf="!search"></span>
+        <mat-form-field appearance="outline" *ngIf="search" class="spacer search">
+          <input placeholder="Search" type="text" matInput>
+        </mat-form-field>
+        <button mat-icon-button (click)="search = !search" ><mat-icon>search</mat-icon></button>
 
       <button mat-icon-button><img src="../../assets/avatar.png" class="navbar-avatar" [matMenuTriggerFor]="menu"/>
         <mat-menu #menu="matMenu"  class="mat-elevation-z2" style="margin-top: 10px;">
