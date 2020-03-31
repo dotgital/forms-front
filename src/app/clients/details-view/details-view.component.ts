@@ -9,12 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DetailsViewComponent implements OnInit {
 
+  loading = true;
   recordTitle: string;
   record = {
     id: '',
     type: 'clients'
   };
   recordData: {};
+  items = ['Immigration', 'Family'];
 
   constructor(
     private route: ActivatedRoute,
@@ -32,7 +34,8 @@ export class DetailsViewComponent implements OnInit {
     this.crud.getRecordData(this.record.type, this.record.id).subscribe(res => {
       this.recordTitle = `${res.firstName} ${res.lastName}`;
       this.recordData = res;
-      console.log(this.recordData);
+      // console.log(this.recordData);
+      this.loading = false;
     });
   }
 }

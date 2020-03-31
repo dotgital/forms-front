@@ -21,13 +21,13 @@ export class SettingsService {
   }
 
   getFieldSettings() {
-    return this.http.get<FieldSettings>(`${environment.backendUrl}settings/5e6a74414729a607d0f4f81f`).pipe(map(res => {
+    return this.http.get<FieldSettings>(`${environment.backendUrl}settings/5e822e6ffdf2c30517c789f1`).pipe(map(res => {
       return res;
     }));
   }
 
   setFieldSettings(fields) {
-    return this.http.put<FieldSettings>(`${environment.backendUrl}settings/5e6a74414729a607d0f4f81f`, {fields})
+    return this.http.put<FieldSettings>(`${environment.backendUrl}settings/5e822e6ffdf2c30517c789f1`, {fields})
     .pipe(map(settings => {
       return settings;
     }));

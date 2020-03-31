@@ -30,6 +30,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatMenuModule } from '@angular/material/menu';
 import { DragDropModule } from '@angular/cdk/drag-drop';
@@ -85,6 +86,7 @@ import { SettingsLayoutComponent } from './settings/settings-layout/settings-lay
     MatTableModule,
     MatTabsModule,
     MatPaginatorModule,
+    MatSlideToggleModule,
     MatSortModule,
     DragDropModule,
     GraphQLModule,

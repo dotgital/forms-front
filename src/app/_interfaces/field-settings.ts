@@ -4,5 +4,8 @@ export interface FieldSettings {
     label: string,
     column: string,
     position: number,
+    // custom: boolean,
+    // customNumber: number,
+    visible: boolean,
   }];
 }

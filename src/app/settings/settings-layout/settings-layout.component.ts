@@ -15,6 +15,7 @@ export class SettingsLayoutComponent implements OnInit {
   right = [];
   fields: any[];
   fieldsNew: any[];
+  showHidden: boolean;
 
   layoutChanged: boolean;
   fieldChanged: boolean;
@@ -25,6 +26,7 @@ export class SettingsLayoutComponent implements OnInit {
     column: new FormControl(null, Validators.required),
     position: new FormControl(null, Validators.required),
     configurable:  new FormControl(null, Validators.required),
+    visible: new FormControl(null)
   });
 
   constructor(
@@ -34,6 +36,7 @@ export class SettingsLayoutComponent implements OnInit {
   ngOnInit(): void {
     this.layoutChanged = false;
     this.fieldChanged = false;
+    this.showHidden = false;
     this.getFieldSettings();
   }
 
@@ -43,6 +46,7 @@ export class SettingsLayoutComponent implements OnInit {
       this.fields = res.fields;
       this.fieldsNew = this.fields;
       this.displayLayout();
+      console.log(res);
     });
   }
 
@@ -50,6 +54,11 @@ export class SettingsLayoutComponent implements OnInit {
     this.left = this.fieldsNew.filter(obj => obj.column === 'left');
     this.right = this.fieldsNew.filter(obj => obj.column === 'right');
     this.loading = false;
+  }
+
+  toggleHidden() {
+    this.showHidden = !this.showHidden;
+    console.log(this.showHidden);
   }
 
   drop(event: CdkDragDrop < string[] > ) {
@@ -104,11 +113,27 @@ export class SettingsLayoutComponent implements OnInit {
   saveField() {
     this.loading = true;
     const fieldName = this.editFieldForm.value.name;
-    this.fieldsNew = this.fieldsNew.map(obj => obj.name === fieldName ? this.editFieldForm.value : obj );
+    this.fieldsNew = this.fieldsNew.map((obj) => {
+      if ( obj.name === fieldName ) {
+        const field = {
+          name: obj.name,
+          label: this.editFieldForm.value.label,
+          column: obj.column,
+          position: obj.position,
+          configurable: obj.configurable,
+          custom: obj.custom,
+          customNumber: obj.customNumber,
+          visible: this.editFieldForm.value.visible,
+        };
+        return  field;
+      } else {
+        return obj;
+      }
+    });
+    // console.log(this.fieldsNew);
     this.settingService.setFieldSettings(this.fieldsNew).subscribe(res => {
       this.fieldChanged = false;
       this.displayLayout();
     });
   }
 }
-

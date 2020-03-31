@@ -19,27 +19,52 @@ export class ViewComponent implements OnInit {
   public assignedTo;
   private formAttributes: {};
   private formMetadata: {};
+  public viewForm: FormGroup;
+  public inputList = [];
 
-  public viewForm = new FormGroup({
-    firstName: new FormControl(null, Validators.required),
-    lastName: new FormControl(null, Validators.required),
-    status: new FormControl(null, Validators.required),
-    phoneMobile: new FormControl(null, Validators.required),
-    phoneOther: new FormControl(null),
-  });
+  // public viewForm = new FormGroup({
+  //   firstName: new FormControl(null, Validators.required),
+  //   lastName: new FormControl(null, Validators.required),
+  //   status: new FormControl(null, Validators.required),
+  //   phoneMobile: new FormControl(null, Validators.required),
+  //   phoneOther: new FormControl(null),
+  // });
 
   constructor(
     private crud: CrudService,
     private fb: FormBuilder,
-    private setting: SettingsService,
+    private settingService: SettingsService,
   ) {
-    // this.viewForm = this.fb.group({});
+    this.viewForm = this.fb.group({});
   }
 
   ngOnInit(): void {
-    // this.getMetadata();
-    this.getData()
-    this.viewForm.disable();
+    this.getFieldSettings();
+  }
+
+  getFieldSettings() {
+    this.settingService.getFieldSettings().subscribe(res => {
+      console.log(res);
+      res.fields.forEach(el => {
+        console.log(el);
+        if (el.visible) {
+          this.viewForm.addControl(el.name, this.addFormControl(el));
+        }
+      });
+      this.getData();
+      this.viewForm.disable();
+    });
+  }
+
+  addFormControl(controlName) {
+    const formControl = new FormControl(null);
+    const input = {
+      name: controlName.name,
+      label: controlName.label,
+      column: controlName.column
+    };
+    this.inputList.push(input);
+    return formControl;
   }
 
   enableForm() {
@@ -54,27 +79,28 @@ export class ViewComponent implements OnInit {
     this.getData();
   }
 
-  getMetadata() {
-    const uid = 'application::clients.clients';
+  // getMetadata() {
+  //   const uid = 'application::clients.clients';
 
-    this.crud.getMetadata(uid).subscribe(res => {
-      this.formAttributes = res.data.contentType.schema.attributes;
-      this.formMetadata = res.data.contentType.metadatas;
+  //   this.crud.getMetadata(uid).subscribe(res => {
+  //     this.formAttributes = res.data.contentType.schema.attributes;
+  //     this.formMetadata = res.data.contentType.metadatas;
 
-      console.log(res);
-      Object.keys(this.formAttributes).forEach(key => {
-        if (key !== 'id') {
-          this.viewForm.addControl(
-            key,
-            new FormControl(null, null)
-          );
-          this.createsField(key);
-        }
-      });
-      console.log(this.formItems);
-      this.getData();
-    });
-  }
+  //     console.log(res);
+  //     Object.keys(this.formAttributes).forEach(key => {
+  //       if (key !== 'id') {
+  //         this.viewForm.addControl(
+  //           key,
+  //           new FormControl(null, null)
+  //         );
+  //         this.createsField(key);
+  //       }
+
+  //     });
+  //     console.log(this.formItems);
+  //     this.getData();
+  //   });
+  // }
 
   createsField(key: string) {
     const attribute = this.formAttributes[key];

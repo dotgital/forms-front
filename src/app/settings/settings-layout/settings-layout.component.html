@@ -6,6 +6,15 @@
   <div fxFlex>
     <mat-card class="mat-elevation-z1" style="margin-top: 0;" >
         <div fxLayout="row" fxLayoutAlign="end center">
+          <div fxFlex>
+            <mat-slide-toggle
+                color="primary"
+                [checked]="showHidden"
+                (change)="toggleHidden()">
+                Display Hidden Fields
+            </mat-slide-toggle>
+          </div>
+          <!-- <button mat-button *ngIf="!layoutChanged" style="margin-right: 10px;">Add</button> -->
           <a mat-button (click)="cancelLayout()" *ngIf="layoutChanged" >Cancel</a>
           <button mat-flat-button (click)="saveLayout()" [disabled]="!layoutChanged" color="primary">Save</button>
         </div>
@@ -18,11 +27,17 @@
             [cdkDropListData]="left"
             class="example-list"
             (cdkDropListDropped)="drop($event)">
-            <div class="example-box" *ngFor="let item of left" cdkDrag>
-              <mat-icon>drag_indicator</mat-icon>
-              {{item.label}}
-              <button mat-icon-button disabled="{{!item.configurable}}" (click)="editField(item)"><mat-icon>edit</mat-icon></button>
-            </div>
+            <ng-container *ngFor="let item of left">
+              <div class="example-box" cdkDrag *ngIf="item.visible || showHidden" >
+                <div style="height: 20px;">
+                  <mat-icon>drag_indicator</mat-icon>
+                  <mat-icon *ngIf="!item.visible" color="primary" style="position: absolute;" >visibility_off</mat-icon>
+                </div>
+                {{item.label}}
+                <button mat-icon-button (click)="editField(item)"><mat-icon>edit</mat-icon></button>
+              </div>
+            </ng-container>
+
           </div>
         </div>
 
@@ -34,35 +49,47 @@
             [cdkDropListData]="right"
             class="example-list"
             (cdkDropListDropped)="drop($event)">
-            <div class="example-box" *ngFor="let item of right" cdkDrag>
-              <mat-icon>drag_indicator</mat-icon>
+            <ng-container *ngFor="let item of right">
+            <div class="example-box" cdkDrag *ngIf="item.visible || showHidden">
+              <div style="height: 20px;">
+                <mat-icon>drag_indicator</mat-icon>
+                <mat-icon *ngIf="!item.visible" color="primary" style="position: absolute;" >visibility_off</mat-icon>
+              </div>
               {{item.label}}
               <button mat-icon-button disabled="{{!item.configurable}}" (click)="editField(item)"><mat-icon>edit</mat-icon></button>
             </div>
+            </ng-container>
           </div>
         </div>
       </div>
     </mat-card>
   </div>
   <div fxFlex="25" fxFlex.md="30">
-    <form id="input-form" [formGroup]="editFieldForm" novalidate>
       <mat-card  class="mat-elevation-z1">
-          <div fxLayout="row" fxLayoutAlign="end center">
-          <h2 fxFlex  style="font-weight: 300;">Field Settings</h2>
+        <div fxLayout="row" fxLayoutAlign="end center" class="card-header">
+          <h2 fxFlex  style="font-weight: 300; margin: 0px;">Field Settings</h2>
         </div>
-        <mat-card-content style="font-size: 14px">
-          <mat-form-field class="full-width" appearance="outline" >
-            <mat-label>Label</mat-label>
-            <input matInput formControlName="label">
-          </mat-form-field>
+          <mat-card-content style="font-size: 14px">
+            <form id="input-form" [formGroup]="editFieldForm" novalidate>
+              <div fxLayout="row" style="margin: 15px 0px;">
+                <span fxFlex>Visible</span>
+                <mat-slide-toggle
+                    color="primary"
+                    formControlName="visible">
+                </mat-slide-toggle>
+              </div>
+              <mat-form-field class="full-width" floatLabel="always" appearance="outline" >
+                <mat-label>Label</mat-label>
+                <input matInput formControlName="label">
+              </mat-form-field>
+              <div fxLayout="row" fxLayoutAlign="end center">
+                <a mat-button (click)="cancelField()" *ngIf="fieldChanged">Cancel</a>
+                <button mat-flat-button color="primary" [disabled]="!fieldChanged" (click)="saveField()" >
+                  Save
+                </button>
+              </div>
+            </form>
         </mat-card-content>
-        <mat-card-actions xLayout="row" fxLayoutAlign="end center">
-          <a mat-button (click)="cancelField()" *ngIf="fieldChanged">Cancel</a>
-          <button mat-flat-button color="primary" [disabled]="!fieldChanged" (click)="saveField()" >
-            Save
-          </button>
-        </mat-card-actions>
       </mat-card>
-      </form>
   </div>
 </div>

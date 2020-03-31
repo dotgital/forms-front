@@ -1,11 +1,24 @@
+<mat-progress-bar mode="indeterminate" color="primary" class="loading-top" *ngIf="loading" ></mat-progress-bar>
+<mat-toolbar class="component-header">
+  <span>Client Profile</span>
+</mat-toolbar>
 <div class="main-content" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="10px">
   <div fxFlex>
     <mat-card class="mat-elevation-z1" style="margin-top: 0;" *ngIf="recordData" >
-        <mat-card-header>
-          <mat-card-title>{{recordTitle}}</mat-card-title>
-          <span class="spacer"></span>
-        </mat-card-header>
-        <mat-tab-group color="primary" backgroundColor="primary">
+      <div fxLayout="row" class="card-header">
+        <h2 fxFlex style="font-weight: 300; margin: 0px;">{{recordTitle}}</h2>
+        <!-- <mat-select  fxFlex placeholder="Service" name="items">
+          <mat-option *ngFor="let item of items" [value]="item">
+            {{item}}
+          </mat-option>
+        </mat-select>
+        <div fxFlex>
+          <button mat-button><mat-icon>add_circle</mat-icon>
+            New Service
+          </button>
+        </div> -->
+      </div>
+        <mat-tab-group color="primary" animationDuration="0ms">
           <mat-tab>
             <ng-template mat-tab-label>
               <mat-icon class="example-tab-icon">contacts</mat-icon>
@@ -26,9 +39,9 @@
 
   <div fxFlex="25" fxFlex.md="30">
     <mat-card class="mat-elevation-z1">
-      <mat-card-header class="content-header">
-        <mat-card-title>History</mat-card-title>
-      </mat-card-header>
+      <div fxLayout="row" class="card-header">
+        <h2 fxFlex style="font-weight: 300; margin: 0px;">History</h2>
+      </div>
       <mat-card-content>
        this is another card
       </mat-card-content>
