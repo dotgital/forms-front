@@ -23,6 +23,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ForgotComponent } from './auth/forgot/forgot.component';
 import { ResetComponent } from './auth/reset/reset.component';
 import { ListComponent } from './clients/components/list/list.component';
@@ -83,6 +84,7 @@ import { SettingsLayoutComponent } from './settings/settings-layout/settings-lay
     MatInputModule,
     MatMenuModule,
     MatSnackBarModule,
+    MatAutocompleteModule,
     MatTableModule,
     MatTabsModule,
     MatPaginatorModule,

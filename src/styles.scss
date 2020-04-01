@@ -48,6 +48,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   position: absolute;
 }
 
+.main-tool-bar{
+  z-index: 10 !important;
+}
+
 .search{
   .mat-form-field-wrapper {
     padding-bottom: 0px;

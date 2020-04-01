@@ -5,12 +5,15 @@
       [opened]="(isHandset$ | async) ? false : true">
     <mat-toolbar color="primary">Menu</mat-toolbar>
     <mat-nav-list style="padding-top: 0px">
-      <a mat-list-item routerLink="/clients">
-        <mat-icon style="margin-right: 10px;">people</mat-icon>Clients</a>
+      <a mat-list-item
+        routerLink="/clients"
+        (click)="toggleMenu()" >
+        <mat-icon style="margin-right: 10px;">people</mat-icon>Clients
+      </a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content class="content-outlet">
-    <mat-toolbar color="primary">
+    <mat-toolbar color="primary" class="main-tool-bar">
       <button
         type="button"
         aria-label="Toggle sidenav"
@@ -27,7 +30,19 @@
       <!-- <span>Immigration Forms</span> -->
       <span class="spacer" *ngIf="!search"></span>
         <mat-form-field appearance="outline" *ngIf="search" class="spacer search">
-          <input placeholder="Search" type="text" matInput>
+          <input placeholder="Search"
+            type="text"
+            matInput
+            [formControl]="myControl"
+            [matAutocomplete]="auto"
+            (ngModelChange)="this.searchUpdate.next($event)">
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of options"
+              value="{{option.firstName}} {{option.lastName}}"
+              routerLink="/clients/{{option.id}}">
+              {{option.firstName}} {{option.lastName}}
+            </mat-option>
+          </mat-autocomplete>
         </mat-form-field>
         <button mat-icon-button (click)="search = !search" ><mat-icon>search</mat-icon></button>
 
