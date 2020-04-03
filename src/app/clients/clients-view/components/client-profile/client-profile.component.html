@@ -11,39 +11,6 @@
     </button>
   </div>
 
-  <!-- <div fxLayout="row" fxLayout.lt-md="col" fxLayoutGap="20px">
-    <mat-form-field class="full-width" appearance="fill" fxFlex="50" fxFlex.lt-md="100">
-      <mat-label>First Name</mat-label>
-      <input matInput formControlName="firstName">
-      <mat-error *ngIf="viewForm.controls['firstName'].hasError('required')">
-        First name is <strong>required</strong>
-      </mat-error>
-    </mat-form-field>
-
-    <mat-form-field class="full-width" appearance="fill" fxFlex="50" fxFlex.lt-md="100">
-      <mat-label>Last Name</mat-label>
-      <input matInput formControlName="lastName">
-      <mat-error *ngIf="viewForm.controls['lastName'].hasError('required')">
-        Last name is <strong>required</strong>
-      </mat-error>
-    </mat-form-field>
-  </div>
-
-  <div fxLayout="row" fxLayout.lt-md="col" fxLayoutGap="20px">
-
-    <mat-form-field class="full-width" appearance="fill" fxFlex="50" fxFlex.lt-md="100">
-      <mat-label>Phone Mobile</mat-label>
-      <input matInput formControlName="phoneMobile">
-      <mat-error *ngIf="viewForm.controls['lastName'].hasError('required')">
-        Phone Number is <strong>required</strong>
-      </mat-error>
-    </mat-form-field>
-
-    <mat-form-field class="full-width" appearance="fill" fxFlex="50" fxFlex.lt-md="100">
-      <mat-label>Phone Other</mat-label>
-      <input matInput placeholder="Last name" formControlName="phoneOther">
-    </mat-form-field>
-  </div> -->
   <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
     <div fxLayout="column" fxLayoutAlign="start start" fxFlex="50" fxFlex.lt-md="100">
       <ng-container *ngFor="let input of inputList" [ngSwitch]="input.type" >

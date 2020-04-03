@@ -33,7 +33,6 @@ export class ClientsViewComponent implements OnInit {
     this.crud.getRecordData(this.record.type, this.record.id).subscribe(res => {
       this.recordTitle = `${res.firstName} ${res.lastName}`;
       this.recordData = res;
-      // console.log(this.recordData);
       this.loading = false;
     });
   }

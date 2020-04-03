@@ -11,8 +11,6 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class ClientProfileComponent implements OnInit {
   @Input() record: any;
-
-  // public viewForm: FormGroup;
   public formItems: FormItem[] = [];
   public editing = false;
   public assignedTo;
@@ -20,14 +18,6 @@ export class ClientProfileComponent implements OnInit {
   private formMetadata: {};
   public viewForm: FormGroup;
   public inputList = [];
-
-  // public viewForm = new FormGroup({
-  //   firstName: new FormControl(null, Validators.required),
-  //   lastName: new FormControl(null, Validators.required),
-  //   status: new FormControl(null, Validators.required),
-  //   phoneMobile: new FormControl(null, Validators.required),
-  //   phoneOther: new FormControl(null),
-  // });
 
   constructor(
     private crud: CrudService,
@@ -78,29 +68,6 @@ export class ClientProfileComponent implements OnInit {
     this.getData();
   }
 
-  // getMetadata() {
-  //   const uid = 'application::clients.clients';
-
-  //   this.crud.getMetadata(uid).subscribe(res => {
-  //     this.formAttributes = res.data.contentType.schema.attributes;
-  //     this.formMetadata = res.data.contentType.metadatas;
-
-  //     console.log(res);
-  //     Object.keys(this.formAttributes).forEach(key => {
-  //       if (key !== 'id') {
-  //         this.viewForm.addControl(
-  //           key,
-  //           new FormControl(null, null)
-  //         );
-  //         this.createsField(key);
-  //       }
-
-  //     });
-  //     console.log(this.formItems);
-  //     this.getData();
-  //   });
-  // }
-
   createsField(key: string) {
     const attribute = this.formAttributes[key];
     const formItem = {
@@ -114,33 +81,9 @@ export class ClientProfileComponent implements OnInit {
   }
 
   getData() {
-    // const fields = this.formItems.map(item => {
-    //   return item.type !== 'relation' ? item.name : `${item.name}{id}`;
-    // });
-
-    // this.crud.getData(null, this.record.id).subscribe(res => {
-    //   console.log(res);
     console.log(this.record);
     this.record.createdAt = new Date(this.record.createdAt).toLocaleString();
     this.record.updatedAt = new Date(this.record.updatedAt).toLocaleString();
     this.viewForm.patchValue(this.record);
-    // });
-
-    // const query = `query {
-    //   client(id: "${this.record.id}"){
-    //     id
-    //     ${fields}
-    //   }
-    //   users{
-    //     id
-    //     username
-    //   }
-    // }`;
-
-    // this.crud.getRecordData(query).subscribe(res => {
-    //   console.log(res)
-    //   this.assignedTo = res.data.users;
-    //   this.viewForm.patchValue(res.data.client);
-    // });
   }
 }
