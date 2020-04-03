@@ -1,7 +1,6 @@
+import { ClientsListComponent } from './clients/clients-list/clients-list.component';
 import { SettingsLayoutComponent } from './settings/settings-layout/settings-layout.component';
 import { SettingsComponent } from './settings/settings.component';
-import { DetailsViewComponent } from './clients/details-view/details-view.component';
-import { ListViewComponent } from './clients/list-view/list-view.component';
 import { FillComponent } from './forms/fill/fill.component';
 import { ResetComponent } from './auth/reset/reset.component';
 import { ForgotComponent } from './auth/forgot/forgot.component';
@@ -10,6 +9,7 @@ import { NavigationComponent } from './navigation/navigation.component';
 import { LoginComponent } from './auth/login/login.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { ClientsViewComponent } from './clients/clients-view/clients-view.component';
 
 
 const routes: Routes = [
@@ -17,8 +17,8 @@ const routes: Routes = [
   { path: 'forgot-password', component: ForgotComponent },
   { path: 'reset-password', component: ResetComponent },
   { path: '', component: NavigationComponent, canActivate: [AuthGuard], children: [
-    { path: 'clients', component: ListViewComponent },
-    { path: 'clients/:id', component: DetailsViewComponent },
+    { path: 'clients', component: ClientsListComponent },
+    { path: 'clients/:id', component: ClientsViewComponent },
     { path: 'forms', component: FillComponent },
     { path: 'settings', component: SettingsComponent },
     { path: 'settings/layout', component: SettingsLayoutComponent }

@@ -1,17 +1,18 @@
 import { Router } from '@angular/router';
-import { CrudService } from '../../../services/crud.service';
+import { CrudService } from '../../services/crud.service';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
-import { ListDataSource, ListItem } from './list-datasource';
+// import { ListDataSource, ListItem } from './list-datasource';
+
 
 @Component({
-  selector: 'app-list',
-  templateUrl: './list.component.html',
-  styleUrls: ['./list.component.scss']
+  selector: 'app-clients-list',
+  templateUrl: './clients-list.component.html',
+  styleUrls: ['./clients-list.component.scss']
 })
-export class ListComponent implements OnInit {
+export class ClientsListComponent implements OnInit {
 
   public startPage = 0;
   public pageSize = 5;
@@ -21,7 +22,7 @@ export class ListComponent implements OnInit {
 
   // @ViewChild(MatPaginator) paginator: MatPaginator;
   // @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatTable) table: MatTable<ListItem>;
+  @ViewChild(MatTable) table: MatTable<any>;
   dataSource: MatTableDataSource<any>;
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */

@@ -3,9 +3,9 @@
   <mat-card fxFlex.lg="30" fxFlex.md="35" fxFlex.sm="50" fxFlex.xs="80"  class="mat-elevation-z1">
       <form [formGroup]="forgotForm" (ngSubmit)="forgot()">
             <mat-card-content class="ion-padding">
-              <mat-card-title class="ion-text-center full-width">Forgot Password</mat-card-title>
-              <mat-card-subtitle class="ion-text-center full-width">Recover your password using your email address</mat-card-subtitle>
-              <mat-form-field appearance="outline" class="full-width">
+              <mat-card-title class="ion-text-center full-width" style="text-align: center; margin: 10px 0px 20px;">Forgot Password</mat-card-title>
+              <mat-card-subtitle class="ion-text-center full-width" style="text-align: center;">Recover your password using your email address</mat-card-subtitle>
+              <mat-form-field appearance="outline" floatLabel="always" class="full-width">
                 <mat-label>Email</mat-label>
                 <input matInput formControlName="email">
                 <mat-icon matSuffix>email</mat-icon>

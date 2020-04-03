@@ -2,10 +2,10 @@
   <div fxFlex> </div>
   <mat-card fxFlex.lg="30" fxFlex.md="35" fxFlex.sm="50" fxFlex.xs="80"  class="mat-elevation-z1">
     <form [formGroup]="loginForm" (ngSubmit)="login()">
-      <mat-card-content class="ion-padding">
-        <mat-card-title class="ion-text-center full-width">Login</mat-card-title>
-        <mat-card-subtitle class="ion-text-center full-width">Using your email address</mat-card-subtitle>
-        <mat-form-field appearance="outline" class="full-width">
+      <mat-card-content>
+        <mat-card-title class="text-center full-width" style="text-align: center; margin: 10px 0px 20px;">Login</mat-card-title>
+        <mat-card-subtitle class="text-center full-width" style="text-align: center;">Using your email address</mat-card-subtitle>
+        <mat-form-field appearance="outline" floatLabel="always" class="full-width">
           <mat-label>Email</mat-label>
           <input matInput formControlName="email">
           <mat-icon matSuffix>email</mat-icon>
@@ -13,7 +13,7 @@
           <mat-error *ngIf="loginForm.controls['email'].errors && !loginForm.controls['email'].errors.required">Please type a valid email address</mat-error>
           <!-- <mat-hint>Hint</mat-hint> -->
         </mat-form-field>
-        <mat-form-field appearance="outline" color="primary" class="full-width">
+        <mat-form-field appearance="outline" floatLabel="always" color="primary" class="full-width">
           <mat-label>Password</mat-label>
           <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
           <a mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"

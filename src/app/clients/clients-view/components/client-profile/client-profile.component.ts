@@ -1,16 +1,15 @@
-import { SettingsService } from '../../../services/settings.service';
-import { FormItem } from '../../../_interfaces/form-item';
+import { SettingsService } from '../../../../services/settings.service';
+import { FormItem } from '../../../../_interfaces/form-item';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { CrudService } from '../../../services/crud.service';
+import { CrudService } from '../../../../services/crud.service';
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-view',
-  templateUrl: './view.component.html',
-  styleUrls: ['./view.component.scss']
+  selector: 'app-client-profile',
+  templateUrl: './client-profile.component.html',
+  styleUrls: ['./client-profile.component.scss']
 })
-export class ViewComponent implements OnInit {
-
+export class ClientProfileComponent implements OnInit {
   @Input() record: any;
 
   // public viewForm: FormGroup;

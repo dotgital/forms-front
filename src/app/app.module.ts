@@ -26,7 +26,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ForgotComponent } from './auth/forgot/forgot.component';
 import { ResetComponent } from './auth/reset/reset.component';
-import { ListComponent } from './clients/components/list/list.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -40,11 +39,13 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { DisableFormDirective } from './_directives/disable-form.directive';
 import { FillComponent } from './forms/fill/fill.component';
-import { ViewComponent } from './clients/components/view/view.component';
-import { ListViewComponent } from './clients/list-view/list-view.component';
-import { DetailsViewComponent } from './clients/details-view/details-view.component';
 import { SettingsComponent } from './settings/settings.component';
 import { SettingsLayoutComponent } from './settings/settings-layout/settings-layout.component';
+
+
+import { ClientsListComponent } from './clients/clients-list/clients-list.component';
+import { ClientsViewComponent } from './clients/clients-view/clients-view.component';
+import { ClientProfileComponent } from './clients/clients-view/components/client-profile/client-profile.component';
 
 
 @NgModule({
@@ -54,14 +55,13 @@ import { SettingsLayoutComponent } from './settings/settings-layout/settings-lay
     LoginComponent,
     ForgotComponent,
     ResetComponent,
-    ListComponent,
     DisableFormDirective,
     FillComponent,
-    ViewComponent,
-    ListViewComponent,
-    DetailsViewComponent,
+    ClientsViewComponent,
     SettingsComponent,
-    SettingsLayoutComponent
+    SettingsLayoutComponent,
+    ClientProfileComponent,
+    ClientsListComponent
   ],
   imports: [
     BrowserModule,

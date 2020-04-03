@@ -3,12 +3,11 @@ import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-details-view',
-  templateUrl: './details-view.component.html',
-  styleUrls: ['./details-view.component.scss']
+  selector: 'app-clients-view',
+  templateUrl: './clients-view.component.html',
+  styleUrls: ['./clients-view.component.scss']
 })
-export class DetailsViewComponent implements OnInit {
-
+export class ClientsViewComponent implements OnInit {
   loading = true;
   recordTitle: string;
   record = {

@@ -3,8 +3,8 @@
   <mat-card  fxFlex.lg="30" fxFlex.md="35" fxFlex.sm="50" fxFlex.xs="80"  class="mat-elevation-z1">
         <form [formGroup]="resetForm" (ngSubmit)="reset()">
             <mat-card-content class="ion-padding">
-              <mat-card-title class="ion-text-center full-width">Reset</mat-card-title>
-              <mat-card-subtitle class="ion-text-center full-width">Type your new password</mat-card-subtitle>
+              <mat-card-title class="ion-text-center full-width" style="text-align: center; margin: 10px 0px 20px;">Reset</mat-card-title>
+              <mat-card-subtitle class="ion-text-center full-width" style="text-align: center;">Type your new password</mat-card-subtitle>
               <mat-form-field appearance="outline" color="primary" class="full-width">
                   <mat-label>Password</mat-label>
                   <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
