@@ -1,4 +1,4 @@
-<form id="input-form" [formGroup]="viewForm" novalidate style.fontSize.px="26px">
+<form id="input-form" [formGroup]="profileForm" novalidate (ngSubmit)="updateData()" style.fontSize.px="26px">
   <div fxLayout="row" fxLayoutAlign="end center" class="action-row" style="margin: 10px 0px;">
     <a mat-flat-button (click)="enableForm()" *ngIf="!editing" color="primary">Edit</a>
     <a mat-button (click)="cancelForm()" *ngIf="editing">Cancel</a>
@@ -27,8 +27,8 @@
           <mat-form-field class="full-width" floatLabel="always" appearance="outline"  *ngSwitchDefault>
             <mat-label>{{input.label}}</mat-label>
             <input matInput [formControlName]="input.name">
-            <mat-error *ngIf="viewForm.controls[input.name].hasError('required')">
-              Last name is <strong>required</strong>
+            <mat-error *ngIf="profileForm.controls[input.name].hasError('required')">
+              {{input.label}} is <strong>required</strong>
             </mat-error>
           </mat-form-field>
         </div>
@@ -50,8 +50,8 @@
           <mat-form-field class="full-width" floatLabel="always"  appearance="outline"  *ngSwitchDefault>
             <mat-label>{{input.label}}</mat-label>
             <input matInput [formControlName]="input.name">
-            <mat-error *ngIf="viewForm.controls[input.name].hasError('required')">
-              Last name is <strong>required</strong>
+            <mat-error *ngIf="profileForm.controls[input.name].hasError('required')">
+              {{input.label}} is <strong>required</strong>
             </mat-error>
           </mat-form-field>
         </div>

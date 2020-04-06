@@ -7,5 +7,7 @@ export interface FieldSettings {
     // custom: boolean,
     // customNumber: number,
     visible: boolean,
+    fieldType: string,
+    options: []
   }];
 }

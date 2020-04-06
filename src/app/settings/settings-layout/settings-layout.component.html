@@ -56,7 +56,7 @@
                 <mat-icon *ngIf="!item.visible" color="primary" style="position: absolute;" >visibility_off</mat-icon>
               </div>
               {{item.label}}
-              <button mat-icon-button disabled="{{!item.configurable}}" (click)="editField(item)"><mat-icon>edit</mat-icon></button>
+              <button mat-icon-button (click)="editField(item)"><mat-icon>edit</mat-icon></button>
             </div>
             </ng-container>
           </div>
@@ -71,17 +71,70 @@
         </div>
           <mat-card-content style="font-size: 14px">
             <form id="input-form" [formGroup]="editFieldForm" novalidate>
-              <div fxLayout="row" style="margin: 15px 0px;">
+
+              <!-- Field Type -->
+              <mat-form-field class="full-width" floatLabel="always" appearance="outline">
+                <mat-label>Field Type</mat-label>
+                <mat-select formControlName="fieldType" [(value)]="fieldType">
+                  <mat-option value="text">Text</mat-option>
+                  <mat-option value="dropdown">Dropdown</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <!-- Field Label -->
+              <mat-form-field class="full-width" floatLabel="always" appearance="outline" >
+                <mat-label>Label</mat-label>
+                <input matInput formControlName="label">
+              </mat-form-field>
+
+              <!-- Field Default -->
+              <mat-form-field class="full-width" floatLabel="always" appearance="outline" *ngIf="fieldType == 'text'">
+                <mat-label>Default Value</mat-label>
+                <input matInput formControlName="default">
+              </mat-form-field>
+
+                <app-searchable-select
+                [data]="options"
+                [valueSelected]="defaultValue"
+                (changeSelected)="setDefaultValue($event)"
+                *ngIf="fieldType == 'dropdown'"></app-searchable-select>
+
+              <!-- Field visibility -->
+              <div fxLayout="row" style="padding-bottom: 1.34375em;">
                 <span fxFlex>Visible</span>
                 <mat-slide-toggle
                     color="primary"
                     formControlName="visible">
                 </mat-slide-toggle>
               </div>
-              <mat-form-field class="full-width" floatLabel="always" appearance="outline" >
-                <mat-label>Label</mat-label>
-                <input matInput formControlName="label">
+
+              <!-- Field required -->
+              <div fxLayout="row" style="padding-bottom: 1.34375em;">
+                <span fxFlex>Required</span>
+                <mat-slide-toggle
+                    color="primary"
+                    formControlName="required">
+                </mat-slide-toggle>
+              </div>
+
+              <!-- Dropdown Options -->
+              <mat-form-field class="full-width status" floatLabel="always" appearance="outline" *ngIf="fieldType == 'dropdown'" >
+                <mat-label>Options</mat-label>
+                <input placeholder="Add New Option"
+                [matChipInputFor]="chipList"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                (matChipInputTokenEnd)="addOption($event)">
+                <mat-chip-list #chipList class="mat-chip-list-stacked">
+                  <div class="options-list">
+                    <mat-chip *ngFor="let option of options" [selectable]="selectable"
+                             [removable]="removable" (removed)="removeOption(option)">
+                      {{option}}
+                      <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                    </mat-chip>
+                  </div>
+                </mat-chip-list>
               </mat-form-field>
+
               <div fxLayout="row" fxLayoutAlign="end center">
                 <a mat-button (click)="cancelField()" *ngIf="fieldChanged">Cancel</a>
                 <button mat-flat-button color="primary" [disabled]="!fieldChanged" (click)="saveField()" >

@@ -11,79 +11,61 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class ClientProfileComponent implements OnInit {
   @Input() record: any;
-  public formItems: FormItem[] = [];
+  public input: FormItem;
+  public inputList: FormItem[] = [];
   public editing = false;
   public assignedTo;
-  private formAttributes: {};
-  private formMetadata: {};
-  public viewForm: FormGroup;
-  public inputList = [];
+  public profileForm: FormGroup;
 
   constructor(
     private crud: CrudService,
     private fb: FormBuilder,
     private settingService: SettingsService,
   ) {
-    this.viewForm = this.fb.group({});
+    this.profileForm = this.fb.group({});
   }
 
   ngOnInit(): void {
-    this.getFieldSettings();
+    this.buildForm();
   }
 
-  getFieldSettings() {
+  buildForm() {
     this.settingService.getFieldSettings().subscribe(res => {
-      console.log(res);
-      res.fields.forEach(el => {
-        console.log(el);
-        if (el.visible) {
-          this.viewForm.addControl(el.name, this.addFormControl(el));
+      res.forEach(control => {
+        if (control.visible) {
+          const formControl = control.required ? new FormControl(null, Validators.required) : new FormControl(null);
+          this.profileForm.addControl(control.name, formControl);
+          this.inputList.push(control);
         }
       });
       this.getData();
-      this.viewForm.disable();
+      this.profileForm.disable();
     });
   }
 
-  addFormControl(controlName) {
-    const formControl = new FormControl(null);
-    const input = {
-      name: controlName.name,
-      label: controlName.label,
-      column: controlName.column
-    };
-    this.inputList.push(input);
-    return formControl;
+  getData() {
+    this.record.createdAt = new Date(this.record.createdAt).toLocaleString();
+    this.record.updatedAt = new Date(this.record.updatedAt).toLocaleString();
+    this.profileForm.patchValue(this.record);
+  }
+
+  updateData() {
+    if (!this.profileForm.invalid) {
+      this.crud.updateData('clients', this.record.id, this.profileForm.value).subscribe(res => {
+        this.editing = false;
+      });
+    }
   }
 
   enableForm() {
     this.editing = true;
-    this.viewForm.enable();
+    this.profileForm.enable();
   }
 
   cancelForm() {
     this.editing = false;
-    this.viewForm.disable();
-    this.viewForm.reset();
+    this.profileForm.disable();
+    this.profileForm.reset();
     this.getData();
-  }
-
-  createsField(key: string) {
-    const attribute = this.formAttributes[key];
-    const formItem = {
-      name: key,
-      type: attribute.type,
-      label: this.formMetadata[key].edit.label,
-      related: attribute.type === 'relation' ? attribute.model : null,
-      options: null
-    };
-    this.formItems.push(formItem);
-  }
-
-  getData() {
-    console.log(this.record);
-    this.record.createdAt = new Date(this.record.createdAt).toLocaleString();
-    this.record.updatedAt = new Date(this.record.updatedAt).toLocaleString();
-    this.viewForm.patchValue(this.record);
   }
 }

@@ -30,6 +30,13 @@ export class CrudService {
     });
   }
 
+  updateData(module: string, id: string, data) {
+    return this.http.put(`${environment.backendUrl}${module}/${id}`, data)
+    .pipe(map(settings => {
+      return settings;
+    }));
+  }
+
   // getRecordData(query){
   //   return this.apollo.query<any>({
   //     query: gql`${query}`,

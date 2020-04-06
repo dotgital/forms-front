@@ -29,10 +29,12 @@ import { ResetComponent } from './auth/reset/reset.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatChipsModule } from '@angular/material/chips';
 import { MatSortModule } from '@angular/material/sort';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatMenuModule } from '@angular/material/menu';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { GraphQLModule } from './graphql.module';
 import { MatSelectModule } from '@angular/material/select';
@@ -46,6 +48,7 @@ import { SettingsLayoutComponent } from './settings/settings-layout/settings-lay
 import { ClientsListComponent } from './clients/clients-list/clients-list.component';
 import { ClientsViewComponent } from './clients/clients-view/clients-view.component';
 import { ClientProfileComponent } from './clients/clients-view/components/client-profile/client-profile.component';
+import { SearchableSelectComponent } from './_components/searchable-select/searchable-select.component';
 
 
 @NgModule({
@@ -61,7 +64,8 @@ import { ClientProfileComponent } from './clients/clients-view/components/client
     SettingsComponent,
     SettingsLayoutComponent,
     ClientProfileComponent,
-    ClientsListComponent
+    ClientsListComponent,
+    SearchableSelectComponent
   ],
   imports: [
     BrowserModule,
@@ -79,6 +83,7 @@ import { ClientProfileComponent } from './clients/clients-view/components/client
     MatIconModule,
     MatListModule,
     MatProgressBarModule,
+    MatChipsModule,
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
@@ -90,6 +95,7 @@ import { ClientProfileComponent } from './clients/clients-view/components/client
     MatPaginatorModule,
     MatSlideToggleModule,
     MatSortModule,
+    NgxMatSelectSearchModule,
     DragDropModule,
     GraphQLModule,
     MatSelectModule,

@@ -30,6 +30,7 @@
     "graphql": "^14.5.0",
     "graphql-tag": "^2.10.0",
     "ng2-pdf-viewer": "^6.1.2",
+    "ngx-mat-select-search": "^2.1.2",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
