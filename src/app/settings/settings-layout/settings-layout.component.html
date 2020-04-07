@@ -18,8 +18,8 @@
           <a mat-button (click)="cancelLayout()" *ngIf="layoutChanged" >Cancel</a>
           <button mat-flat-button (click)="saveLayout()" [disabled]="!layoutChanged" color="primary">Save</button>
         </div>
-        <div cdkDropListGroup fxLayout="row" fxLayout.lt-md="col" fxLayoutAlign="space-between start" fxLayoutGap="20px">
-          <div fxFlex="50" fxFlex.lt-md="100">
+        <div cdkDropListGroup fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="space-between start" fxLayoutGap="20px">
+          <div fxFlex="50" fxFlex.lt-md="100" style="width: 100%">
             <span style="font-weight: 300;">Left</span>
 
             <div
@@ -41,7 +41,7 @@
             </div>
           </div>
 
-          <div fxFlex="50" fxFlex.lt-md="100">
+          <div fxFlex="50" fxFlex.lt-md="100" style="width: 100%">
             <span style="font-weight: 300;">Right</span>
 
             <div

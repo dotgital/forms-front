@@ -13,7 +13,7 @@ export class SettingsLayoutComponent implements OnInit {
   loading = true;
   left = [];
   right = [];
-  fields: FormItem[] = [];
+  // fields: FormItem[] = [];
   fieldsNew: FormItem[];
   showHidden: boolean;
   defaultValue: string;
@@ -61,8 +61,8 @@ export class SettingsLayoutComponent implements OnInit {
   getFieldSettings() {
     this.settingService.getFieldSettings().subscribe(res => {
       console.log(res);
-      this.fields = res;
-      this.fieldsNew = this.fields;
+      // this.fields = res;
+      this.fieldsNew = res;
       this.displayLayout();
     });
   }
@@ -78,15 +78,14 @@ export class SettingsLayoutComponent implements OnInit {
     console.log(this.showHidden);
   }
 
-  drop(event: CdkDragDrop < FormItem[] > ) {
-    console.log(this.fields)
+  drop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
       transferArrayItem(event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex);
+                        event.container.data,
+                        event.previousIndex,
+                        event.currentIndex);
     }
     this.fieldsNew = [];
     this.left.forEach((el, key) => {
@@ -100,14 +99,40 @@ export class SettingsLayoutComponent implements OnInit {
       this.fieldsNew.push(el);
     });
     this.layoutChanged = true;
-    console.log(this.fields)
+    // console.log(this.fields)
   }
+
+  // drop(event: CdkDragDrop < FormItem[] > ) {
+  //   console.log(this.fields)
+  //   if (event.previousContainer === event.container) {
+  //     moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+  //   } else {
+  //     transferArrayItem(event.previousContainer.data,
+  //       event.container.data,
+  //       event.previousIndex,
+  //       event.currentIndex);
+  //   }
+  //   this.fieldsNew = [];
+  //   this.left.forEach((el, key) => {
+  //     el.column = 'left';
+  //     el.position = key;
+  //     this.fieldsNew.push(el);
+  //   });
+  //   this.right.forEach((el, key) => {
+  //     el.column = 'right';
+  //     el.position = key;
+  //     this.fieldsNew.push(el);
+  //   });
+  //   this.layoutChanged = true;
+  //   console.log(this.fields)
+  // }
 
   cancelLayout() {
     this.loading = true;
-    this.fieldsNew = this.fields;
-    this.displayLayout();
-    this.layoutChanged = false;
+    this.getFieldSettings();
+    // this.fieldsNew = this.fields;
+    // this.displayLayout();
+    // this.layoutChanged = false;
   }
 
   saveLayout() {
