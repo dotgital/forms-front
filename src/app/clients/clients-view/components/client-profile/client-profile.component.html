@@ -15,6 +15,7 @@
     <div fxLayout="column" fxLayoutAlign="start start" fxFlex="50" fxFlex.lt-md="100">
       <ng-container *ngFor="let input of inputList" [ngSwitch]="input.type" >
         <div *ngIf="input.column == 'left'" class="full-width">
+
           <mat-form-field class="full-width" appearance="fill"  *ngSwitchCase="'relation'">
             <mat-label>{{input.label}}</mat-label>
             <mat-select placeholder="Placeholder" [formControlName]="input.name">
@@ -31,21 +32,29 @@
               {{input.label}} is <strong>required</strong>
             </mat-error>
           </mat-form-field>
+
         </div>
       </ng-container>
     </div>
 
     <div fxLayout="column" fxLayoutAlign="start start" fxFlex="50" fxFlex.lt-md="100">
-      <ng-container *ngFor="let input of inputList" [ngSwitch]="input.type" >
+      <ng-container *ngFor="let input of inputList" [ngSwitch]="input.fieldType" >
         <div *ngIf="input.column == 'right'" class="full-width">
-          <mat-form-field class="full-width" appearance="fill"  *ngSwitchCase="'relation'">
+
+          <app-searchable-select
+          *ngSwitchCase="'dropdown'"
+          [data]="input.options"
+          [formControlName]="input.name"
+          [valueSelected]="input.default"></app-searchable-select>
+
+          <!-- <mat-form-field class="full-width" appearance="fill"  *ngSwitchCase="'dropdown'">
             <mat-label>{{input.label}}</mat-label>
             <mat-select placeholder="Placeholder" [formControlName]="input.name">
               <mat-option *ngFor="let item of input.options" [value]="item.value">
                 {{item.value}}
               </mat-option>
             </mat-select>
-          </mat-form-field>
+          </mat-form-field> -->
 
           <mat-form-field class="full-width" floatLabel="always"  appearance="outline"  *ngSwitchDefault>
             <mat-label>{{input.label}}</mat-label>
@@ -54,6 +63,7 @@
               {{input.label}} is <strong>required</strong>
             </mat-error>
           </mat-form-field>
+
         </div>
       </ng-container>
     </div>

@@ -1,0 +1,16 @@
+<mat-form-field class="full-width status" floatLabel="always" appearance="outline" >
+  <mat-label>Options</mat-label>
+  <input placeholder="Add New Option"
+  [matChipInputFor]="chipList"
+  [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+  (matChipInputTokenEnd)="addOption($event)">
+  <mat-chip-list #chipList class="mat-chip-list-stacked">
+    <div class="options-list">
+      <mat-chip *ngFor="let option of options" [selectable]="selectable"
+               [removable]="removable" (removed)="removeOption(option)">
+        {{option}}
+        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+      </mat-chip>
+    </div>
+  </mat-chip-list>
+</mat-form-field>

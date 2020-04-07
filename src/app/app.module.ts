@@ -49,6 +49,7 @@ import { ClientsListComponent } from './clients/clients-list/clients-list.compon
 import { ClientsViewComponent } from './clients/clients-view/clients-view.component';
 import { ClientProfileComponent } from './clients/clients-view/components/client-profile/client-profile.component';
 import { SearchableSelectComponent } from './_components/searchable-select/searchable-select.component';
+import { DropdownOptionsComponent } from './_components/dropdown-options/dropdown-options.component';
 
 
 @NgModule({
@@ -65,7 +66,8 @@ import { SearchableSelectComponent } from './_components/searchable-select/searc
     SettingsLayoutComponent,
     ClientProfileComponent,
     ClientsListComponent,
-    SearchableSelectComponent
+    SearchableSelectComponent,
+    DropdownOptionsComponent
   ],
   imports: [
     BrowserModule,

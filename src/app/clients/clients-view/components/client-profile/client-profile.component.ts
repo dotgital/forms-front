@@ -16,6 +16,7 @@ export class ClientProfileComponent implements OnInit {
   public editing = false;
   public assignedTo;
   public profileForm: FormGroup;
+  public selectDisabled: boolean;
 
   constructor(
     private crud: CrudService,
@@ -39,6 +40,7 @@ export class ClientProfileComponent implements OnInit {
         }
       });
       this.getData();
+      this.selectDisabled = true;
       this.profileForm.disable();
     });
   }
@@ -52,18 +54,25 @@ export class ClientProfileComponent implements OnInit {
   updateData() {
     if (!this.profileForm.invalid) {
       this.crud.updateData('clients', this.record.id, this.profileForm.value).subscribe(res => {
+        console.log(res);
         this.editing = false;
       });
     }
   }
 
+  setDefaultValue(name: string, e) {
+    // this.profileForm.patchValue({status: e});
+  }
+
   enableForm() {
     this.editing = true;
+    this.selectDisabled = false;
     this.profileForm.enable();
   }
 
   cancelForm() {
     this.editing = false;
+    this.selectDisabled = true;
     this.profileForm.disable();
     this.profileForm.reset();
     this.getData();
