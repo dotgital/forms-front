@@ -1,14 +1,18 @@
-<form id="input-form" [formGroup]="profileForm" novalidate (ngSubmit)="updateData()" style.fontSize.px="26px">
+<form id="input-form" [formGroup]="profileForm" novalidate (ngSubmit)="submitData()" style.fontSize.px="26px">
   <div fxLayout="row" fxLayoutAlign="end center" class="action-row" style="margin: 10px 0px;">
-    <a mat-flat-button (click)="enableForm()" *ngIf="!editing" color="primary">Edit</a>
-    <a mat-button (click)="cancelForm()" *ngIf="editing">Cancel</a>
-    <!-- <button mat-icon-button *ngIf="editing" style="margin-top: -12px;"><mat-icon>save</mat-icon></button> -->
+    <ng-container *ngIf="!creating" >
+      <a mat-flat-button (click)="enableForm()" *ngIf="!editing" color="primary">Edit</a>
+      <a mat-button (click)="cancelForm()" *ngIf="editing">Cancel</a>
+      <button mat-flat-button color="primary" *ngIf="editing">
+        Save
+      </button>
+    </ng-container>
+    <ng-container *ngIf="creating">
+      <button mat-flat-button color="primary">
+        Create
+      </button>
+    </ng-container>
 
-    <!-- <a mat-flat-button (click)="enableForm()" *ngIf="!editing" style="margin-top: -12px;"><mat-icon></mat-icon>edit</mat-icon></a> -->
-    <!-- <a mat-button (click)="cancelField()" *ngIf="fieldChanged">Cancel</a> -->
-    <button mat-flat-button color="primary" *ngIf="editing">
-      Save
-    </button>
   </div>
 
   <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">

@@ -15,6 +15,7 @@ export class ClientProfileComponent implements OnInit, OnChanges {
   public input: FormItem;
   public inputList: FormItem[] = [];
   public editing = false;
+  public creating: boolean;
   public assignedTo;
   public profileForm: FormGroup;
   public selectDisabled: boolean;
@@ -29,16 +30,19 @@ export class ClientProfileComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('changes')
+    if(this.recordData){
+      this.creating = false;
+    }
+
     if (this.form) {
       this.form.then(() => {
-        console.log('changes')
         this.setData();
       });
     }
   }
 
   ngOnInit(): void {
+    this.creating = true;
     this.buildForm();
   }
 
@@ -65,12 +69,18 @@ export class ClientProfileComponent implements OnInit, OnChanges {
     this.profileForm.disable();
   }
 
-  updateData() {
+  submitData() {
     if (!this.profileForm.invalid) {
-      this.crud.updateData('clients', this.recordData.id, this.profileForm.value).subscribe(res => {
-        console.log(res);
-        this.editing = false;
-      });
+      if (!this.creating) {
+        this.crud.updateData('clients', this.recordData.id, this.profileForm.value).subscribe(res => {
+          console.log(res);
+          this.editing = false;
+        });
+      } else {
+        this.crud.createData('clients', this.profileForm.value).subscribe(res => {
+          console.log(res);
+        });
+      }
     }
   }
 

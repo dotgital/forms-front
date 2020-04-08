@@ -30,12 +30,20 @@ export class CrudService {
     });
   }
 
+  createData(module: string, data) {
+    return this.http.post(`${environment.backendUrl}${module}/`, data)
+    .pipe(map(settings => {
+      return settings;
+    }));
+  }
+
   updateData(module: string, id: string, data) {
     return this.http.put(`${environment.backendUrl}${module}/${id}`, data)
     .pipe(map(settings => {
       return settings;
     }));
   }
+
 
   // getRecordData(query){
   //   return this.apollo.query<any>({
