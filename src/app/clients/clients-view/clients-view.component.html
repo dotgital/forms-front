@@ -1,13 +1,13 @@
 <mat-progress-bar mode="indeterminate" color="primary" class="loading-top" *ngIf="loading"></mat-progress-bar>
-<mat-sidenav-container>
+<mat-sidenav-container style="height: calc( 100vh - 55px );">
 
   <mat-sidenav-content class="content-outlet">
-  <mat-toolbar class="component-header content-toolbar"
-  [ngClass]="(isHandset$ | async) ? 'handset' : 'no-handset'" >
+  <mat-toolbar class="component-header content-toolbar">
     <span fxFlex>Client Profile</span>
-    <a mat-button class="history-toogle" (click)="sidebar.toggle()" > Hide History<mat-icon>double_arrow</mat-icon></a>
+    <a mat-button class="history-toogle" (click)="toogleSideBar()" *ngIf="!sideBarOpened" >Show History <mat-icon>double_arrow</mat-icon></a>
+    <a mat-button class="history-toogle" (click)="toogleSideBar()" *ngIf="sideBarOpened" >Hide History <mat-icon>double_arrow</mat-icon></a>
   </mat-toolbar>
-  <div style="margin-top: 65px; padding: 10px;">
+  <div style="padding: 10px;">
     <mat-card class="mat-elevation-z1">
       <div fxLayout="row" class="card-header">
         <h2 fxFlex style="font-weight: 300; margin: 0px;">{{recordTitle}}</h2>
@@ -41,7 +41,7 @@
     <mat-toolbar color="primary" class="main-tool-bar">Menu</mat-toolbar>
     <mat-toolbar class="component-header">
       <span fxFlex>History</span>
-      <a mat-button class="history-toogle" (click)="sidebar.toggle()" > Hide History<mat-icon>double_arrow</mat-icon></a>
+      <a mat-button class="history-toogle" (click)="toogleSideBar()" *ngIf="(isHandset$ | async) ? true : false"> Hide History<mat-icon>double_arrow</mat-icon></a>
     </mat-toolbar>
       <!-- <small>Last Modified: 01/01/2020 by Marcel Cruz</small>
       <small> Modified: 01/01/2020 by Marcel Cruz</small> -->

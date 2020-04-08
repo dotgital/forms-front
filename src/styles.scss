@@ -46,6 +46,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .loading-top.mat-progress-bar{
   position: absolute;
+  z-index: 100;
 }
 
 .main-tool-bar{
