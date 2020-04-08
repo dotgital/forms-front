@@ -1,6 +1,9 @@
+import { map, shareReplay } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { CrudService } from './../../services/crud.service';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-clients-view',
@@ -17,7 +20,14 @@ export class ClientsViewComponent implements OnInit {
   recordData: {};
   items = ['Immigration', 'Family'];
 
+  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
+  .pipe(
+    map(result => result.matches),
+    shareReplay()
+  );
+
   constructor(
+    private breakpointObserver: BreakpointObserver,
     private route: ActivatedRoute,
     private crud: CrudService,
   ) { }

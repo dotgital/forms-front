@@ -1,34 +1,56 @@
-<mat-progress-bar mode="indeterminate" color="primary" class="loading-top" *ngIf="loading" ></mat-progress-bar>
-<mat-toolbar class="component-header">
-  <span>Client Profile</span>
-</mat-toolbar>
-<div class="main-content" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="10px">
-  <div fxFlex>
-    <mat-card class="mat-elevation-z1" style="margin-top: 0;">
+<mat-progress-bar mode="indeterminate" color="primary" class="loading-top" *ngIf="loading"></mat-progress-bar>
+<mat-sidenav-container>
+
+  <mat-sidenav-content class="content-outlet">
+  <mat-toolbar class="component-header content-toolbar"
+  [ngClass]="(isHandset$ | async) ? 'handset' : 'no-handset'" >
+    <span fxFlex>Client Profile</span>
+    <a mat-button class="history-toogle" (click)="sidebar.toggle()" > Hide History<mat-icon>double_arrow</mat-icon></a>
+  </mat-toolbar>
+  <div style="margin-top: 65px; padding: 10px;">
+    <mat-card class="mat-elevation-z1">
       <div fxLayout="row" class="card-header">
         <h2 fxFlex style="font-weight: 300; margin: 0px;">{{recordTitle}}</h2>
       </div>
-        <mat-tab-group color="primary" animationDuration="0ms">
-          <mat-tab>
-            <ng-template mat-tab-label>
-              <mat-icon class="example-tab-icon">contacts</mat-icon>
-               Profile
-            </ng-template>
-            <app-client-profile [recordData]="recordData"></app-client-profile>
-          </mat-tab>
-          <mat-tab>
-            <ng-template mat-tab-label>
-              <mat-icon class="example-tab-icon">picture_as_pdf</mat-icon>
-               Forms
-            </ng-template>
+      <mat-tab-group color="primary" animationDuration="0ms">
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="example-tab-icon">contacts</mat-icon>
+            Profile
+          </ng-template>
+          <app-client-profile [recordData]="recordData"></app-client-profile>
+        </mat-tab>
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="example-tab-icon">picture_as_pdf</mat-icon>
             Forms
-          </mat-tab>
-        </mat-tab-group>
+          </ng-template>
+          Forms
+        </mat-tab>
+      </mat-tab-group>
     </mat-card>
   </div>
+  </mat-sidenav-content>
 
-  <div fxFlex="25" fxFlex.md="30">
-    <mat-card class="mat-elevation-z1">
+  <mat-sidenav #sidebar position="end" fullscreen
+  fixedInViewport
+  autosize
+  [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+  [mode]="(isHandset$ | async) ? 'over' : 'side'"
+  [opened]="(isHandset$ | async) ? false : true">
+    <mat-toolbar color="primary" class="main-tool-bar">Menu</mat-toolbar>
+    <mat-toolbar class="component-header">
+      <span fxFlex>History</span>
+      <a mat-button class="history-toogle" (click)="sidebar.toggle()" > Hide History<mat-icon>double_arrow</mat-icon></a>
+    </mat-toolbar>
+      <!-- <small>Last Modified: 01/01/2020 by Marcel Cruz</small>
+      <small> Modified: 01/01/2020 by Marcel Cruz</small> -->
+  </mat-sidenav>
+
+</mat-sidenav-container>
+
+<!-- <div fxFlex="25" fxFlex.md="30" fxLayout="column">
+    <mat-card class="mat-elevation-z1" fxFlex>
       <div fxLayout="row" class="card-header">
         <h2 fxFlex style="font-weight: 300; margin: 0px;">History</h2>
       </div>
@@ -40,4 +62,4 @@
       <small> Modified: 01/01/2020 by Marcel Cruz</small>
     </mat-card>
   </div>
-</div>
+</div> -->
