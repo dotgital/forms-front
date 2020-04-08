@@ -117,7 +117,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .mat-form-field-subscript-wrapper {
   margin-top: 0.4em;
 }
-
+.mat-select-disabled .mat-select-value {
+  color: rgb(0, 0, 0);
+}
 // .mat-form-field-appearance-outline .mat-form-field-outline {
 //   color: rgb(214, 217, 217);
 // }
@@ -153,4 +155,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 .mat-form-field-appearance-fill.mat-form-field-disabled .mat-form-field-label{
   color: #00000096;
+}
+
+tr.mat-header-row {
+  height: 44px !important;
+}
+
+tr.mat-row, tr.mat-footer-row {
+  height: 44px !important;
 }

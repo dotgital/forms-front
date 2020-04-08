@@ -4,7 +4,7 @@
 </mat-toolbar>
 <div class="main-content" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="10px">
   <div fxFlex>
-    <mat-card class="mat-elevation-z1" style="margin-top: 0;" *ngIf="recordData" >
+    <mat-card class="mat-elevation-z1" style="margin-top: 0;">
       <div fxLayout="row" class="card-header">
         <h2 fxFlex style="font-weight: 300; margin: 0px;">{{recordTitle}}</h2>
       </div>
@@ -14,7 +14,7 @@
               <mat-icon class="example-tab-icon">contacts</mat-icon>
                Profile
             </ng-template>
-            <app-client-profile [record]="recordData"></app-client-profile>
+            <app-client-profile [recordData]="recordData"></app-client-profile>
           </mat-tab>
           <mat-tab>
             <ng-template mat-tab-label>
@@ -35,6 +35,9 @@
       <mat-card-content>
        this is another card
       </mat-card-content>
+
+      <small>Last Modified: 01/01/2020 by Marcel Cruz</small>
+      <small> Modified: 01/01/2020 by Marcel Cruz</small>
     </mat-card>
   </div>
 </div>

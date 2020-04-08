@@ -23,8 +23,10 @@ export class SearchableSelectComponent implements OnInit, OnDestroy, OnChanges {
   defaultSelected: FormControl = new FormControl();
   defaultFilter: FormControl = new FormControl();
   isDisabled: boolean;
+  formLabel: string;
   @Input() data: string[];
   @Input() valueSelected: string;
+  @Input() label: string;
   // @Input() disabled: boolean;
   @Output() changeSelected: EventEmitter<string> = new EventEmitter<string>();
   @ViewChild('singleSelect', { static: true }) singleSelect: MatSelect;
@@ -33,6 +35,7 @@ export class SearchableSelectComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnChanges(data: SimpleChanges): void {
     this.options = this.data ? this.data : [];
+    this.formLabel = this.label ? this.label : '';
     this.filterOptions();
   }
 

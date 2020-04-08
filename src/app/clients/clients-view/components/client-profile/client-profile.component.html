@@ -44,6 +44,7 @@
           <app-searchable-select
           *ngSwitchCase="'dropdown'"
           [data]="input.options"
+          [label]="input.label"
           [formControlName]="input.name"
           [valueSelected]="input.default"></app-searchable-select>
 

@@ -4,6 +4,9 @@
 </mat-toolbar>
 <div class="main-content">
   <div class="mat-elevation-z1">
+    <div fxLayout="row" fxLayoutAlign="end center" style="background-color: #fff; padding: 5px 10px; border-bottom: 1px solid #e0e0e0;">
+      <button mat-flat-button color="primary">Create</button>
+    </div>
     <table mat-table class="full-width-table" matSort (matSortChange)="sortData($event)" aria-label="Elements">
       <!-- Id Column -->
       <ng-container matColumnDef="firstName">

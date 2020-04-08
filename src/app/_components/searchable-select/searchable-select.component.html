@@ -1,5 +1,5 @@
 <mat-form-field class="full-width" floatLabel="always" appearance="outline">
-  <mat-label>Default Value</mat-label>
+  <mat-label>{{formLabel}}</mat-label>
   <mat-select [(ngModel)]="defaultSelected" [value]="defaultSelected" #singleSelect (selectionChange)="optionSelected($event)"
   [disabled]="isDisabled">
     <mat-option>

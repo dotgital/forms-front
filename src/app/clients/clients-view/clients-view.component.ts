@@ -25,7 +25,13 @@ export class ClientsViewComponent implements OnInit {
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       this.record.id = params.get('id');
-      this.getRecordData();
+      if (this.record.id !== 'add') {
+        this.getRecordData();
+      } else {
+        this.recordData = '';
+        this.recordTitle = 'New Client';
+        this.loading = false;
+      }
     });
   }
 
