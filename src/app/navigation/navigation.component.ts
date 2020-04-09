@@ -2,7 +2,7 @@ import { SearchService } from './../services/search.service';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from './../services/auth.service';
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit, ElementRef } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay, debounceTime, distinctUntilChanged } from 'rxjs/operators';
@@ -16,11 +16,12 @@ import { Subject } from 'rxjs';
 })
 export class NavigationComponent implements OnInit {
   @ViewChild('drawer') drawer: MatSidenav;
+  @ViewChild('search', {static: false}) searchInput: ElementRef;
   fullMenu: boolean;
   search: boolean;
   isHandset: boolean;
   searchValue: string;
-  myControl = new FormControl();
+  searchControl = new FormControl();
   options = [];
   searchUpdate = new Subject<string>();
 
@@ -36,7 +37,7 @@ export class NavigationComponent implements OnInit {
     private searchService: SearchService,
     private router: Router,
   ) {
-    this.search = false;
+    // this.search = false;
     this.isHandset$.subscribe(res => {
       this.isHandset = res;
     });
@@ -47,16 +48,30 @@ export class NavigationComponent implements OnInit {
       debounceTime(400),
       distinctUntilChanged())
       .subscribe(value => {
-        console.log(value);
         this.searchValue = value;
         this.getAutocompleteSearch();
     });
+    console.log(this.searchInput);
+  }
+
+  toggleSearch() {
+    this.search = !this.search;
+    if(this.search){
+      setTimeout(() => {
+        this.searchInput.nativeElement.focus();
+      }, 1);
+    } else {
+      this.searchControl.reset();
+    }
+  }
+
+  goTo(e){
+    this.router.navigate([`/clients/${e.id}`]);
   }
 
   getAutocompleteSearch() {
-    if (this.searchValue != '') {
+    if (this.searchValue !== '') {
       this.searchService.autocompleSearch(this.searchValue).subscribe(res => {
-        console.log(res);
         this.options = res;
       });
     } else {

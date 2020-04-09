@@ -14,6 +14,7 @@
   </mat-sidenav>
   <mat-sidenav-content class="content-outlet">
     <mat-toolbar color="primary" class="main-tool-bar">
+      <!-- menu toggle -->
       <button
         type="button"
         aria-label="Toggle sidenav"
@@ -22,30 +23,38 @@
         *ngIf="!search" >
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
+      <!-- close search -->
       <button mat-icon-button
         *ngIf="search"
-        (click)="search = !search" >
+        (click)="toggleSearch()" >
         <mat-icon>arrow_back</mat-icon>
       </button>
+
       <!-- <span>Immigration Forms</span> -->
       <span class="spacer" *ngIf="!search"></span>
-        <mat-form-field appearance="outline" *ngIf="search" class="spacer search">
-          <input placeholder="Search"
-            type="text"
-            matInput
-            [formControl]="myControl"
-            [matAutocomplete]="auto"
-            (ngModelChange)="this.searchUpdate.next($event)">
-          <mat-autocomplete #auto="matAutocomplete">
-            <mat-option *ngFor="let option of options"
-              value="{{option.firstName}} {{option.lastName}}"
-              routerLink="/clients/{{option.id}}">
+
+      <!-- search autocomplete -->
+      <mat-form-field appearance="outline" *ngIf="search" class="spacer search" color="primary">
+        <input #search
+          placeholder="Search"
+          type="text"
+          matInput
+          [formControl]="searchControl"
+          [matAutocomplete]="auto"
+          (ngModelChange)="this.searchUpdate.next($event)">
+        <mat-autocomplete #auto="matAutocomplete"
+          autoActiveFirstOption>
+          <mat-option *ngFor="let option of options"
+            (onSelectionChange)="goTo(option)"
+            value="{{option.firstName}} {{option.lastName}}">
               {{option.firstName}} {{option.lastName}}
               <!-- Phone: 8326144421 -->
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
-        <button mat-icon-button (click)="search = !search" ><mat-icon>search</mat-icon></button>
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+        <!-- open search -->
+      <button mat-icon-button (click)="toggleSearch()" ><mat-icon>search</mat-icon></button>
 
       <button mat-icon-button><img src="../../assets/avatar.png" class="navbar-avatar" [matMenuTriggerFor]="menu"/>
         <mat-menu #menu="matMenu"  class="mat-elevation-z2" style="margin-top: 10px;">

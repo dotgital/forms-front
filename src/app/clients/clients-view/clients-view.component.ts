@@ -52,10 +52,11 @@ export class ClientsViewComponent implements OnInit {
       } else {
         this.sideBarOpened = true;
       }
-    })
+    });
   }
 
   getRecordData() {
+    this.loading = true;
     this.crud.getRecordData(this.record.type, this.record.id).subscribe(res => {
       this.recordTitle = `${res.firstName} ${res.lastName}`;
       this.recordData = res;
