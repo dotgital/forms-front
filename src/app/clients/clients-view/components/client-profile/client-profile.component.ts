@@ -11,15 +11,15 @@ import { Component, OnInit, Input, SimpleChanges, OnChanges } from '@angular/cor
 })
 export class ClientProfileComponent implements OnInit, OnChanges {
   @Input() recordData: any;
-  // public record: any;
   public input: FormItem;
   public inputList: FormItem[] = [];
-  public editing = false;
+  public editing: boolean;
   public creating: boolean;
-  public assignedTo;
+  public dataChanged: boolean;
+
   public profileForm: FormGroup;
-  public selectDisabled: boolean;
-  public form: any;
+  public emptyForm: any;
+  private oriData: any;
 
   constructor(
     private crud: CrudService,
@@ -30,24 +30,30 @@ export class ClientProfileComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(this.recordData){
-      this.creating = false;
-    }
-
-    if (this.form) {
-      this.form.then(() => {
+    this.creating = this.recordData ? false : true;
+    // check if the empty form is ready to patch the data
+    if (this.emptyForm) {
+      this.emptyForm.then(() => {
         this.setData();
       });
     }
   }
 
   ngOnInit(): void {
-    this.creating = true;
     this.buildForm();
+    this.profileForm.valueChanges.subscribe(res => {
+      if (this.oriData) {
+        if (JSON.stringify(this.oriData) !== JSON.stringify(this.profileForm.value)) {
+          this.dataChanged = true;
+        } else {
+          this.dataChanged = false;
+        }
+      }
+    });
   }
 
   async buildForm() {
-    this.form = this.settingService.getFieldSettings().toPromise()
+    this.emptyForm = this.settingService.getFieldSettings().toPromise()
     .then(res => {
       res.forEach(control => {
         if (control.visible) {
@@ -58,23 +64,27 @@ export class ClientProfileComponent implements OnInit, OnChanges {
       });
       return res;
     }).catch(err => console.log(err));
-    await this.form;
+    await this.emptyForm;
   }
 
   setData() {
     this.recordData.createdAt = new Date(this.recordData.createdAt).toLocaleString();
     this.recordData.updatedAt = new Date(this.recordData.updatedAt).toLocaleString();
     this.profileForm.patchValue(this.recordData);
-    this.selectDisabled = true;
+    this.oriData = this.profileForm.value;
+    this.editing = false;
+    // this.selectDisabled = true;
     this.profileForm.disable();
   }
 
   submitData() {
+    this.dataChanged = false;
     if (!this.profileForm.invalid) {
       if (!this.creating) {
         this.crud.updateData('clients', this.recordData.id, this.profileForm.value).subscribe(res => {
           console.log(res);
-          this.editing = false;
+          this.recordData = res;
+          this.setData();
         });
       } else {
         this.crud.createData('clients', this.profileForm.value).subscribe(res => {
@@ -90,7 +100,6 @@ export class ClientProfileComponent implements OnInit, OnChanges {
 
   enableForm() {
     this.editing = true;
-    this.selectDisabled = false;
     this.profileForm.enable();
   }
 

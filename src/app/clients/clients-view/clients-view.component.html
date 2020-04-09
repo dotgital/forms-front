@@ -10,7 +10,7 @@
   <div style="padding: 10px;">
     <mat-card class="mat-elevation-z1">
       <div fxLayout="row" class="card-header">
-        <h2 fxFlex style="font-weight: 300; margin: 0px;">{{recordTitle}}</h2>
+        <h2 fxFlex style="font-weight: 300; margin: 0px;">{{recordTitle || 'New Client'}}</h2>
       </div>
       <mat-tab-group color="primary" animationDuration="0ms">
         <mat-tab>
@@ -43,6 +43,15 @@
       <span fxFlex>History</span>
       <a mat-button class="history-toogle" (click)="toogleSideBar()" *ngIf="(isHandset$ | async) ? true : false"> Hide History<mat-icon>double_arrow</mat-icon></a>
     </mat-toolbar>
+    <div fxLayout="column" fxLayoutAlign="space-between stretch" fxLayoutGap="10px" style="padding: 10px; height: calc( 100vh - 120px );">
+      <div fxFlex style="border: 1px solid #d6d9d9; padding: 10px;">
+        activities
+      </div>
+      <div class="timestamp">
+        <div>Last Modified: <span>{{dateModified}}</span></div>
+        <div>Date Created: <span>{{dateCreated}}</span></div>
+      </div>
+    </div>
       <!-- <small>Last Modified: 01/01/2020 by Marcel Cruz</small>
       <small> Modified: 01/01/2020 by Marcel Cruz</small> -->
   </mat-sidenav>

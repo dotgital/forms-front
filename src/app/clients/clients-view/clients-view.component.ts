@@ -15,6 +15,8 @@ export class ClientsViewComponent implements OnInit {
   @ViewChild('sidebar') rightSide: MatSidenav;
   loading = true;
   recordTitle: string;
+  dateModified: string;
+  dateCreated: string;
   sideBarOpened: boolean;
   record = {
     id: '',
@@ -59,6 +61,9 @@ export class ClientsViewComponent implements OnInit {
     this.loading = true;
     this.crud.getRecordData(this.record.type, this.record.id).subscribe(res => {
       this.recordTitle = `${res.firstName} ${res.lastName}`;
+      this.dateModified = new Date(res.updatedAt).toLocaleString();
+      this.dateCreated = new Date(res.createdAt).toLocaleString();
+      console.log(res)
       this.recordData = res;
       this.loading = false;
     });

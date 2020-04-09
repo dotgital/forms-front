@@ -3,7 +3,7 @@
     <ng-container *ngIf="!creating" >
       <a mat-flat-button (click)="enableForm()" *ngIf="!editing" color="primary">Edit</a>
       <a mat-button (click)="cancelForm()" *ngIf="editing">Cancel</a>
-      <button mat-flat-button color="primary" *ngIf="editing">
+      <button mat-flat-button color="primary" *ngIf="editing" [disabled]="!dataChanged">
         Save
       </button>
     </ng-container>
