@@ -51,7 +51,6 @@ export class NavigationComponent implements OnInit {
         this.searchValue = value;
         this.getAutocompleteSearch();
     });
-    console.log(this.searchInput);
   }
 
   toggleSearch() {

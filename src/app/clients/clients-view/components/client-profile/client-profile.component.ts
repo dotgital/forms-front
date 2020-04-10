@@ -68,6 +68,7 @@ export class ClientProfileComponent implements OnInit, OnChanges {
   }
 
   setData() {
+    console.log(this.recordData);
     this.recordData.createdAt = new Date(this.recordData.createdAt).toLocaleString();
     this.recordData.updatedAt = new Date(this.recordData.updatedAt).toLocaleString();
     this.profileForm.patchValue(this.recordData);
@@ -78,6 +79,13 @@ export class ClientProfileComponent implements OnInit, OnChanges {
   }
 
   submitData() {
+    // Object.entries(this.oriData).map(([key, val]) => {
+    //   // console.log(this.profileForm.value[key]);
+    //   if ( this.profileForm.value[key] !== val) {
+    //     console.log(`${key} changed from "${val}" to "${this.profileForm.value[key]}"`);
+    //   }
+    //   // console.log(`key= ${key} value = ${val}`)
+    // })
     this.dataChanged = false;
     if (!this.profileForm.invalid) {
       if (!this.creating) {

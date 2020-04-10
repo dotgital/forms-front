@@ -48,8 +48,17 @@
         activities
       </div>
       <div class="timestamp">
-        <div>Last Modified: <span>{{dateModified}}</span></div>
-        <div>Date Created: <span>{{dateCreated}}</span></div>
+        <div class="timestamp-container">
+          <div class="timestamp-type">Modified</div>
+          <div class="timestamp-time">{{dateModified}}</div>
+          <div *ngIf="createdBy"> By: <a routerLink="/">{{createdBy.fullName}}</a></div>
+        </div>
+        <div class="timestamp-container" style="margin: 10px 0px -10px">
+          <div class="timestamp-type">Created</div>
+          <div class="timestamp-time">{{dateCreated}}</div>
+          <div *ngIf="createdBy"> By: <a routerLink="/">{{createdBy.fullName}}</a></div>
+        </div>
+        <!-- <div *ngIf="createdBy"><span>{{dateCreated}}</span> By <span><a routerLink="/">{{createdBy.fullName}}</a></span></div> -->
       </div>
     </div>
       <!-- <small>Last Modified: 01/01/2020 by Marcel Cruz</small>

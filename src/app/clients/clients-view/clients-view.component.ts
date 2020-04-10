@@ -17,6 +17,8 @@ export class ClientsViewComponent implements OnInit {
   recordTitle: string;
   dateModified: string;
   dateCreated: string;
+  createdBy: any;
+  modifiedBy: any;
   sideBarOpened: boolean;
   record = {
     id: '',
@@ -63,7 +65,9 @@ export class ClientsViewComponent implements OnInit {
       this.recordTitle = `${res.firstName} ${res.lastName}`;
       this.dateModified = new Date(res.updatedAt).toLocaleString();
       this.dateCreated = new Date(res.createdAt).toLocaleString();
-      console.log(res)
+      this.createdBy = res.createdBy;
+      this.modifiedBy = res.modifiedBy;
+      // console.log(res)
       this.recordData = res;
       this.loading = false;
     });
