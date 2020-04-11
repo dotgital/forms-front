@@ -47,7 +47,7 @@
       <div fxFlex style="border: 1px solid #d6d9d9; padding: 10px;">
         activities
       </div>
-      <div class="timestamp">
+      <!-- <div class="timestamp">
         <div class="timestamp-container" *ngIf="modifiedBy" >
           <div class="timestamp-type">Modified</div>
           <div class="timestamp-time">{{dateModified}}</div>
@@ -58,7 +58,20 @@
           <div class="timestamp-time">{{dateCreated}}</div>
           <div *ngIf="createdBy"> By: <a routerLink="/">{{createdBy.fullName}}</a></div>
         </div>
-        <!-- <div *ngIf="createdBy"><span>{{dateCreated}}</span> By <span><a routerLink="/">{{createdBy.fullName}}</a></span></div> -->
+      </div> -->
+
+      <div *ngIf="modifiedBy"
+        class="timestamp-line">
+          Modified: {{dateModified}} By
+          <a routerLink="/"
+          matTooltip="{{createdBy.fullName}}">{{modifiedBy.fullName}}</a>
+      </div>
+      <div *ngIf="createdBy"
+        class="timestamp-line"
+        style="margin-top: -10px;">
+          Created: {{dateCreated}} By
+          <a routerLink="/"
+          matTooltip="{{createdBy.fullName}}">{{createdBy.fullName}}</a>
       </div>
     </div>
       <!-- <small>Last Modified: 01/01/2020 by Marcel Cruz</small>

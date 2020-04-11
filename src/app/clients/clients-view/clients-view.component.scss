@@ -70,3 +70,13 @@ mat-sidenav{
     text-decoration: none;
   }
 }
+.timestamp-line{
+  font-size: 12px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  a{
+    color: #1c88e4;
+    text-decoration: none;
+  }
+}

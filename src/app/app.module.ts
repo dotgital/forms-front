@@ -33,6 +33,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatSortModule } from '@angular/material/sort';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatMenuModule } from '@angular/material/menu';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { DragDropModule } from '@angular/cdk/drag-drop';
@@ -85,6 +86,7 @@ import { DropdownOptionsComponent } from './_components/dropdown-options/dropdow
     MatIconModule,
     MatListModule,
     MatProgressBarModule,
+    MatTooltipModule,
     MatChipsModule,
     MatCardModule,
     MatFormFieldModule,
