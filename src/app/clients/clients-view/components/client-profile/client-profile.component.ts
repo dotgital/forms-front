@@ -95,8 +95,11 @@ export class ClientProfileComponent implements OnInit, OnChanges {
           this.setData();
         });
       } else {
+        this.creating = false;
         this.crud.createData('clients', this.profileForm.value).subscribe(res => {
           console.log(res);
+          this.recordData = res;
+          this.setData();
         });
       }
     }

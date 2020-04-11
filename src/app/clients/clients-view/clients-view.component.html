@@ -48,12 +48,12 @@
         activities
       </div>
       <div class="timestamp">
-        <div class="timestamp-container">
+        <div class="timestamp-container" *ngIf="modifiedBy" >
           <div class="timestamp-type">Modified</div>
           <div class="timestamp-time">{{dateModified}}</div>
-          <div *ngIf="createdBy"> By: <a routerLink="/">{{createdBy.fullName}}</a></div>
+          <div *ngIf="createdBy"> By: <a routerLink="/">{{modifiedBy.fullName}}</a></div>
         </div>
-        <div class="timestamp-container" style="margin: 10px 0px -10px">
+        <div class="timestamp-container" *ngIf="createdBy"  style="margin: 5px 0px -10px">
           <div class="timestamp-type">Created</div>
           <div class="timestamp-time">{{dateCreated}}</div>
           <div *ngIf="createdBy"> By: <a routerLink="/">{{createdBy.fullName}}</a></div>
