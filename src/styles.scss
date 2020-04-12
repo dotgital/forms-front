@@ -96,6 +96,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   }
   .isHandset{
     display: block;
+    margin-top: 2px;
     .label-text{
       margin-top: -10px;
       font-size: 12px;
@@ -137,6 +138,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 .mat-select-disabled .mat-select-value {
   color: rgb(0, 0, 0);
+}
+
+.mat-chip-list-stacked .mat-chip-list-wrapper{
+  margin: 0px -10px !important;
 }
 // .mat-form-field-appearance-outline .mat-form-field-outline {
 //   color: rgb(214, 217, 217);

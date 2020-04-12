@@ -44,6 +44,8 @@
           (ngModelChange)="this.searchUpdate.next($event)">
         <mat-autocomplete #auto="matAutocomplete"
           autoActiveFirstOption>
+          <mat-option *ngIf="searchLoading" >Loading...</mat-option>
+          <mat-option *ngIf="searchNoResults" >No results found</mat-option>
           <mat-option *ngFor="let option of options"
             (onSelectionChange)="goTo(option)"
             value="{{option.firstName}} {{option.lastName}}">

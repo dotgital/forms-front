@@ -20,6 +20,8 @@ export class NavigationComponent implements OnInit {
   fullMenu: boolean;
   search: boolean;
   isHandset: boolean;
+  searchLoading: boolean;
+  searchNoResults: boolean;
   searchValue: string;
   searchControl = new FormControl();
   options = [];
@@ -43,11 +45,12 @@ export class NavigationComponent implements OnInit {
     });
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.searchUpdate.pipe(
       debounceTime(400),
       distinctUntilChanged())
       .subscribe(value => {
+        this.searchLoading = true;
         this.searchValue = value;
         this.getAutocompleteSearch();
     });
@@ -55,7 +58,7 @@ export class NavigationComponent implements OnInit {
 
   toggleSearch() {
     this.search = !this.search;
-    if(this.search){
+    if (this.search) {
       setTimeout(() => {
         this.searchInput.nativeElement.focus();
       }, 1);
@@ -64,16 +67,25 @@ export class NavigationComponent implements OnInit {
     }
   }
 
-  goTo(e){
+  goTo(e) {
     this.router.navigate([`/clients/${e.id}`]);
   }
 
   getAutocompleteSearch() {
     if (this.searchValue !== '') {
       this.searchService.autocompleSearch(this.searchValue).subscribe(res => {
+        this.searchLoading = false;
         this.options = res;
+        console.log(res);
+        if (res.length === 0) {
+          this.searchNoResults = true;
+          setTimeout(() => {
+            this.searchNoResults = false;
+          }, 1000);
+        }
       });
     } else {
+      this.searchLoading = false;
       this.options = [];
     }
   }

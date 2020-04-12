@@ -1,8 +1,12 @@
+import { MatSidenav } from '@angular/material/sidenav';
+import { map, shareReplay } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { FormItem } from './../../_interfaces/form-item';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { SettingsService } from './../../services/settings.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-settings-layout',
@@ -10,6 +14,7 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
   styleUrls: ['./settings-layout.component.scss']
 })
 export class SettingsLayoutComponent implements OnInit {
+  @ViewChild('sidebar') rightSide: MatSidenav;
   loading = true;
   left = [];
   right = [];
@@ -21,6 +26,12 @@ export class SettingsLayoutComponent implements OnInit {
   layoutChanged: boolean;
   fieldChanged: boolean;
   fieldType: string;
+
+  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
+  .pipe(
+    map(result => result.matches),
+    shareReplay()
+  );
 
   formItem: FormItem = {
     name: null,
@@ -47,6 +58,7 @@ export class SettingsLayoutComponent implements OnInit {
   });
 
   constructor(
+    private breakpointObserver: BreakpointObserver,
     private settingService: SettingsService,
   ) {}
 
@@ -148,6 +160,7 @@ export class SettingsLayoutComponent implements OnInit {
   }
 
   editField(field) {
+    this.rightSide.open();
     this.editFieldForm.enable();
     this.editFieldForm.patchValue(field);
     this.fieldType = field.fieldType;

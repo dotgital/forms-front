@@ -1,5 +1,8 @@
-<mat-progress-bar mode="indeterminate" color="primary" class="loading-top" *ngIf="loading" ></mat-progress-bar>
-<mat-toolbar class="component-header">
+<mat-progress-bar mode="indeterminate" color="primary" class="loading-top" *ngIf="loading"></mat-progress-bar>
+<mat-sidenav-container style="height: calc( 100vh - 55px );">
+
+  <mat-sidenav-content class="content-outlet">
+<mat-toolbar class="component-header content-toolbar">
   <span>Layout Settings</span>
 </mat-toolbar>
 <div class="main-content" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="10px">
@@ -64,7 +67,7 @@
         </div>
     </mat-card>
   </div>
-  <div fxFlex="25" fxFlex.md="30">
+  <!-- <div fxFlex="25" fxFlex.md="30">
       <mat-card  class="mat-elevation-z1">
         <div fxLayout="row" fxLayoutAlign="end center" class="card-header">
           <h2 fxFlex  style="font-weight: 300; margin: 0px;">Field Settings</h2>
@@ -72,7 +75,6 @@
           <mat-card-content style="font-size: 14px">
             <form id="input-form" [formGroup]="editFieldForm" novalidate>
 
-              <!-- Field Type -->
               <mat-form-field class="full-width" floatLabel="always" appearance="outline">
                 <mat-label>Field Type</mat-label>
                 <mat-select formControlName="fieldType" [(value)]="fieldType">
@@ -81,13 +83,11 @@
                 </mat-select>
               </mat-form-field>
 
-              <!-- Field Label -->
               <mat-form-field class="full-width" floatLabel="always" appearance="outline" >
                 <mat-label>Label</mat-label>
                 <input matInput formControlName="label">
               </mat-form-field>
 
-              <!-- Field Default -->
               <mat-form-field class="full-width" floatLabel="always" appearance="outline" *ngIf="fieldType == 'text'">
                 <mat-label>Default Value</mat-label>
                 <input matInput formControlName="default">
@@ -101,7 +101,6 @@
                 *ngIf="fieldType == 'dropdown'">
               </app-searchable-select>
 
-              <!-- Field visibility -->
               <div fxLayout="row" style="padding-bottom: 1.34375em;">
                 <span fxFlex>Visible</span>
                 <mat-slide-toggle
@@ -110,7 +109,6 @@
                 </mat-slide-toggle>
               </div>
 
-              <!-- Field required -->
               <div fxLayout="row" style="padding-bottom: 1.34375em;">
                 <span fxFlex>Required</span>
                 <mat-slide-toggle
@@ -119,7 +117,6 @@
                 </mat-slide-toggle>
               </div>
 
-              <!-- Dropdown Options -->
               <app-dropdown-options
                 *ngIf="fieldType == 'dropdown'"
                 [data]="options"
@@ -135,5 +132,88 @@
             </form>
         </mat-card-content>
       </mat-card>
-  </div>
+  </div> -->
 </div>
+</mat-sidenav-content>
+
+<mat-sidenav #sidebar position="end" fullscreen
+fixedInViewport
+autosize
+[attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+[mode]="(isHandset$ | async) ? 'over' : 'side'"
+[opened]="(isHandset$ | async) ? false : true">
+  <mat-toolbar color="primary" class="main-tool-bar">Menu</mat-toolbar>
+  <mat-toolbar class="component-header">
+    <span fxFlex>Field Settings</span>
+    <a mat-button class="settings-toogle" (click)="sidebar.close()"> Hide Settings<mat-icon>double_arrow</mat-icon></a>
+  </mat-toolbar>
+  <div fxLayout="column" fxLayoutAlign="space-between stretch" fxLayoutGap="10px" style="padding: 10px; height: calc( 100vh - 120px );">
+    <form id="input-form" [formGroup]="editFieldForm" novalidate>
+
+      <!-- Field Type -->
+      <mat-form-field class="full-width" floatLabel="always" appearance="outline">
+        <mat-label>Field Type</mat-label>
+        <mat-select formControlName="fieldType" [(value)]="fieldType">
+          <mat-option value="text">Text</mat-option>
+          <mat-option value="dropdown">Dropdown</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Field Label -->
+      <mat-form-field class="full-width" floatLabel="always" appearance="outline" >
+        <mat-label>Label</mat-label>
+        <input matInput formControlName="label">
+      </mat-form-field>
+
+      <!-- Field Default -->
+      <mat-form-field class="full-width" floatLabel="always" appearance="outline" *ngIf="fieldType == 'text'">
+        <mat-label>Default Value</mat-label>
+        <input matInput formControlName="default">
+      </mat-form-field>
+
+      <app-searchable-select
+        [options]="options"
+        label="Default Value"
+        [defaultOption]="defaultValue"
+        formControlName="default"
+        *ngIf="fieldType == 'dropdown'">
+      </app-searchable-select>
+
+      <!-- Field visibility -->
+      <div fxLayout="row" style="padding-bottom: 1.34375em;">
+        <span fxFlex>Visible</span>
+        <mat-slide-toggle
+            color="primary"
+            formControlName="visible">
+        </mat-slide-toggle>
+      </div>
+
+      <!-- Field required -->
+      <div fxLayout="row" style="padding-bottom: 1.34375em;">
+        <span fxFlex>Required</span>
+        <mat-slide-toggle
+            color="primary"
+            formControlName="required">
+        </mat-slide-toggle>
+      </div>
+
+      <!-- Dropdown Options -->
+      <app-dropdown-options
+        *ngIf="fieldType == 'dropdown'"
+        [data]="options"
+        formControlName="options">
+      </app-dropdown-options>
+
+      <div fxLayout="row" fxLayoutAlign="end center">
+        <a mat-button (click)="cancelField()" *ngIf="fieldChanged">Cancel</a>
+        <button mat-flat-button color="primary" [disabled]="!fieldChanged" (click)="saveField()" >
+          Save
+        </button>
+      </div>
+    </form>
+  </div>
+    <!-- <small>Last Modified: 01/01/2020 by Marcel Cruz</small>
+    <small> Modified: 01/01/2020 by Marcel Cruz</small> -->
+</mat-sidenav>
+
+</mat-sidenav-container>

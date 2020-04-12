@@ -16,9 +16,12 @@
   </div>
 
   <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutAlign="space-between center">
-    <ng-container *ngFor="let input of inputList" [ngSwitch]="input.type" >
-      <ng-container *ngSwitchCase="'dropdown'" fxFlex="50">
+    <ng-container *ngFor="let input of inputList" [ngSwitch]="input.fieldType" >
+      <ng-container *ngSwitchCase="'dropdown'">
         <app-searchable-select
+        fxFlex="49"
+        fxFlex.lt-md="100"
+        class="full-width"
         [options]="input.options"
         [label]="input.label"
         [isRequired]="input.required"
