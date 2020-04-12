@@ -94,9 +94,9 @@
               </mat-form-field>
 
               <app-searchable-select
-                [data]="options"
+                [options]="options"
                 label="Default Value"
-                [valueSelected]="defaultValue"
+                [defaultOption]="defaultValue"
                 formControlName="default"
                 *ngIf="fieldType == 'dropdown'">
               </app-searchable-select>

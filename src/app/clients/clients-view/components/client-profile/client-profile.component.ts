@@ -68,13 +68,11 @@ export class ClientProfileComponent implements OnInit, OnChanges {
   }
 
   setData() {
-    console.log(this.recordData);
     this.recordData.createdAt = new Date(this.recordData.createdAt).toLocaleString();
     this.recordData.updatedAt = new Date(this.recordData.updatedAt).toLocaleString();
     this.profileForm.patchValue(this.recordData);
     this.oriData = this.profileForm.value;
     this.editing = false;
-    // this.selectDisabled = true;
     this.profileForm.disable();
   }
 

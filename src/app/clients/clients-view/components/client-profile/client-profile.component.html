@@ -15,23 +15,43 @@
 
   </div>
 
-  <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+  <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutAlign="space-between center">
+    <ng-container *ngFor="let input of inputList" [ngSwitch]="input.type" >
+      <ng-container *ngSwitchCase="'dropdown'" fxFlex="50">
+        <app-searchable-select
+        [options]="input.options"
+        [label]="input.label"
+        [isRequired]="input.required"
+        [formControlName]="input.name"
+        [defaultOption]="input.default"></app-searchable-select>
+      </ng-container>
+
+      <mat-form-field class="full-width" floatLabel="always" appearance="outline"  *ngSwitchDefault fxFlex="49" fxFlex.lt-md="100">
+        <mat-label>{{input.label}}</mat-label>
+        <input matInput [formControlName]="input.name" [required]="input.required">
+        <mat-error *ngIf="profileForm.controls[input.name].hasError('required')">
+          {{input.label}} is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+    </ng-container>
+  </div>
+  <!-- <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
     <div fxLayout="column" fxLayoutAlign="start start" fxFlex="50" fxFlex.lt-md="100">
       <ng-container *ngFor="let input of inputList" [ngSwitch]="input.type" >
         <div *ngIf="input.column == 'left'" class="full-width">
 
-          <mat-form-field class="full-width" appearance="fill"  *ngSwitchCase="'relation'">
-            <mat-label>{{input.label}}</mat-label>
-            <mat-select placeholder="Placeholder" [formControlName]="input.name">
-              <mat-option *ngFor="let item of input.options" [value]="item.value">
-                {{item.value}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+          <ng-container *ngSwitchCase="'dropdown'">
+            <app-searchable-select
+            [options]="input.options"
+            [label]="input.label"
+            [isRequired]="input.required"
+            [formControlName]="input.name"
+            [defaultOption]="input.default"></app-searchable-select>
+          </ng-container>
 
           <mat-form-field class="full-width" floatLabel="always" appearance="outline"  *ngSwitchDefault>
             <mat-label>{{input.label}}</mat-label>
-            <input matInput [formControlName]="input.name">
+            <input matInput [formControlName]="input.name" [required]="input.required">
             <mat-error *ngIf="profileForm.controls[input.name].hasError('required')">
               {{input.label}} is <strong>required</strong>
             </mat-error>
@@ -45,25 +65,18 @@
       <ng-container *ngFor="let input of inputList" [ngSwitch]="input.fieldType" >
         <div *ngIf="input.column == 'right'" class="full-width">
 
-          <app-searchable-select
-          *ngSwitchCase="'dropdown'"
-          [data]="input.options"
-          [label]="input.label"
-          [formControlName]="input.name"
-          [valueSelected]="input.default"></app-searchable-select>
-
-          <!-- <mat-form-field class="full-width" appearance="fill"  *ngSwitchCase="'dropdown'">
-            <mat-label>{{input.label}}</mat-label>
-            <mat-select placeholder="Placeholder" [formControlName]="input.name">
-              <mat-option *ngFor="let item of input.options" [value]="item.value">
-                {{item.value}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field> -->
+          <ng-container *ngSwitchCase="'dropdown'">
+            <app-searchable-select
+            [options]="input.options"
+            [label]="input.label"
+            [isRequired]="input.required"
+            [formControlName]="input.name"
+            [defaultOption]="input.default"></app-searchable-select>
+          </ng-container>
 
           <mat-form-field class="full-width" floatLabel="always"  appearance="outline"  *ngSwitchDefault>
             <mat-label>{{input.label}}</mat-label>
-            <input matInput [formControlName]="input.name">
+            <input matInput [formControlName]="input.name" [required]="input.required">
             <mat-error *ngIf="profileForm.controls[input.name].hasError('required')">
               {{input.label}} is <strong>required</strong>
             </mat-error>
@@ -72,5 +85,5 @@
         </div>
       </ng-container>
     </div>
-  </div>
+  </div> -->
 </form>

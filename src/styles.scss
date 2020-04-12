@@ -86,12 +86,28 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 .mat-tab-labels .mat-tab-label{
-  height: 40px;
+  height: 42px;
+  .notHandset{
+    display: inline-flex;
+    .label-text{
+      font-size: 12px;
+      font-weight: 400;
+    }
+  }
+  .isHandset{
+    display: block;
+    .label-text{
+      margin-top: -10px;
+      font-size: 12px;
+      font-weight: 400;
+    }
+  }
   .mat-icon{
     height: 17px;
     width: 17px;
     font-size: 17px;
     margin-right: 5px;
+    line-height: unset;
   }
 }
 

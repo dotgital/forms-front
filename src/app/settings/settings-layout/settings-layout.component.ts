@@ -98,6 +98,10 @@ export class SettingsLayoutComponent implements OnInit {
       el.position = key;
       this.fieldsNew.push(el);
     });
+    this.fieldsNew.sort((a, b) => {
+      return a.position - b.position;
+    });
+    console.log(this.fieldsNew);
     this.layoutChanged = true;
     // console.log(this.fields)
   }

@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild, OnDestroy, Input, OnChanges, SimpleChanges, Output, EventEmitter, forwardRef } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 import { MatSelect } from '@angular/material/select';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
+import { ReplaySubject, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-searchable-select',
@@ -16,25 +16,26 @@ import { Observable, ReplaySubject, Subject } from 'rxjs';
   }]
 })
 export class SearchableSelectComponent implements OnInit, OnDestroy, OnChanges {
-  options: string[] = [];
+  @Input() options: string[];
+  @Input() defaultOption: string;
+  @Input() label: string;
+  @Input() isRequired: boolean;
+
   filteredOptions: ReplaySubject<string[]> = new ReplaySubject<string[]>(1);
   onDestroy = new Subject<void>();
   SearchPlaceholder = 'Search';
   defaultSelected: FormControl = new FormControl();
   defaultFilter: FormControl = new FormControl();
-  isDisabled: boolean;
   formLabel: string;
-  @Input() data: string[];
-  @Input() valueSelected: string;
-  @Input() label: string;
-  // @Input() disabled: boolean;
+
   @Output() changeSelected: EventEmitter<string> = new EventEmitter<string>();
   @ViewChild('singleSelect', { static: true }) singleSelect: MatSelect;
   onChange = (_: string) => { };
+
   constructor() { }
 
   ngOnChanges(data: SimpleChanges): void {
-    this.options = this.data ? this.data : [];
+    this.options = this.options ? this.options : [];
     this.formLabel = this.label ? this.label : '';
     this.filterOptions();
   }
@@ -48,17 +49,23 @@ export class SearchableSelectComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   writeValue(value: any): void {
-      this.defaultSelected = value ? value : this.defaultSelected;
-   }
+    const formValue: string = value ? value : this.defaultOption;
+    this.defaultSelected.patchValue(formValue);
+  }
 
   registerOnChange(fn: any): void {
     this.onChange = fn;
   }
 
   registerOnTouched(fn: any): void { }
+
   setDisabledState(isDisabled: boolean): void {
-    this.isDisabled = isDisabled;
-   }
+    if (isDisabled) {
+      this.defaultSelected.disable();
+    } else {
+      this.defaultSelected.enable();
+    }
+  }
 
   filterOptions() {
     if (!this.options) {
@@ -78,7 +85,6 @@ export class SearchableSelectComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   optionSelected(e) {
-    // console.log(e)
     this.onChange(e.value);
     this.changeSelected.emit(e.value);
   }

@@ -15,7 +15,7 @@ import { MatTable, MatTableDataSource } from '@angular/material/table';
 export class ClientsListComponent implements OnInit {
 
   public startPage = 0;
-  public pageSize = 5;
+  public pageSize = 10;
   public totalPages: number;
   public sortBy = 'createdAt';
   public sortDirection = 'desc';

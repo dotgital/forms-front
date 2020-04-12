@@ -15,17 +15,21 @@
       <mat-tab-group color="primary" animationDuration="0ms">
         <mat-tab>
           <ng-template mat-tab-label>
-            <mat-icon class="example-tab-icon">contacts</mat-icon>
-            Profile
+            <div [class]="(isHandset$ | async) ? 'isHandset' : 'notHandset'">
+              <mat-icon>contacts</mat-icon>
+              <div class="label-text">Profile</div>
+            </div>
           </ng-template>
           <app-client-profile [recordData]="recordData"></app-client-profile>
         </mat-tab>
         <mat-tab>
           <ng-template mat-tab-label>
-            <mat-icon class="example-tab-icon">picture_as_pdf</mat-icon>
-            Forms
+            <div [class]="(isHandset$ | async) ? 'isHandset' : 'notHandset'">
+              <mat-icon>picture_as_pdf</mat-icon>
+              <div class="label-text">Forms</div>
+            </div>
           </ng-template>
-          Forms
+          Forms Page
         </mat-tab>
       </mat-tab-group>
     </mat-card>
@@ -64,7 +68,7 @@
         class="timestamp-line">
           Modified: {{dateModified}} By
           <a routerLink="/"
-          matTooltip="{{createdBy.fullName}}">{{modifiedBy.fullName}}</a>
+          matTooltip="{{modifiedBy.fullName}}">{{modifiedBy.fullName}}</a>
       </div>
       <div *ngIf="createdBy"
         class="timestamp-line"

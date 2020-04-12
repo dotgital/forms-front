@@ -1,7 +1,7 @@
 <mat-form-field class="full-width" floatLabel="always" appearance="outline">
   <mat-label>{{formLabel}}</mat-label>
-  <mat-select [(ngModel)]="defaultSelected" [value]="defaultSelected" #singleSelect (selectionChange)="optionSelected($event)"
-  [disabled]="isDisabled">
+  <mat-select [formControl]="defaultSelected" [value]="defaultSelected" #singleSelect (selectionChange)="optionSelected($event)"
+  [required]="isRequired">
     <mat-option>
       <ngx-mat-select-search [placeholderLabel]="SearchPlaceholder" [formControl]="defaultFilter">
       </ngx-mat-select-search>
@@ -10,4 +10,7 @@
       {{option}}
     </mat-option>
   </mat-select>
+  <mat-error *ngIf="defaultSelected.hasError('required')">
+    {{label}} is <strong>required</strong>
+  </mat-error>
 </mat-form-field>
