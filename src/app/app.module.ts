@@ -31,12 +31,14 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatSortModule } from '@angular/material/sort';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatMenuModule } from '@angular/material/menu';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { OverlayModule } from '@angular/cdk/overlay'
 import { GraphQLModule } from './graphql.module';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
@@ -51,6 +53,7 @@ import { ClientsViewComponent } from './clients/clients-view/clients-view.compon
 import { ClientProfileComponent } from './clients/clients-view/components/client-profile/client-profile.component';
 import { SearchableSelectComponent } from './_components/searchable-select/searchable-select.component';
 import { DropdownOptionsComponent } from './_components/dropdown-options/dropdown-options.component';
+import { OverlayLoadingComponent } from './_components/overlay-loading/overlay-loading.component';
 
 
 @NgModule({
@@ -68,7 +71,8 @@ import { DropdownOptionsComponent } from './_components/dropdown-options/dropdow
     ClientProfileComponent,
     ClientsListComponent,
     SearchableSelectComponent,
-    DropdownOptionsComponent
+    DropdownOptionsComponent,
+    OverlayLoadingComponent
   ],
   imports: [
     BrowserModule,
@@ -89,6 +93,7 @@ import { DropdownOptionsComponent } from './_components/dropdown-options/dropdow
     MatTooltipModule,
     MatChipsModule,
     MatCardModule,
+    MatProgressSpinnerModule,
     MatFormFieldModule,
     MatInputModule,
     MatMenuModule,
@@ -101,6 +106,7 @@ import { DropdownOptionsComponent } from './_components/dropdown-options/dropdow
     MatSortModule,
     NgxMatSelectSearchModule,
     DragDropModule,
+    OverlayModule,
     GraphQLModule,
     MatSelectModule,
     MatRadioModule,

@@ -1,3 +1,4 @@
+import { UiService } from './../../services/ui.service';
 import { MatSidenav } from '@angular/material/sidenav';
 import { map, shareReplay } from 'rxjs/operators';
 import { Observable } from 'rxjs';
@@ -37,6 +38,7 @@ export class ClientsViewComponent implements OnInit {
     private breakpointObserver: BreakpointObserver,
     private route: ActivatedRoute,
     private crud: CrudService,
+    private ui: UiService
   ) { }
 
   ngOnInit(): void {

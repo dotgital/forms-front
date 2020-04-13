@@ -143,7 +143,7 @@ autosize
 [mode]="(isHandset$ | async) ? 'over' : 'side'"
 [opened]="(isHandset$ | async) ? false : true">
   <mat-toolbar color="primary" class="main-tool-bar">Menu</mat-toolbar>
-  <mat-toolbar class="component-header">
+  <mat-toolbar class="component-header content-toolbar">
     <span fxFlex>Field Settings</span>
     <a mat-button class="settings-toogle" (click)="sidebar.close()"> Hide Settings<mat-icon>double_arrow</mat-icon></a>
   </mat-toolbar>

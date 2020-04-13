@@ -2,6 +2,8 @@
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
 @import '~@angular/material/theming';
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
@@ -48,6 +50,29 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .loading-top.mat-progress-bar{
   position: absolute;
   z-index: 100;
+}
+
+.overlay-loading{
+  background: #fff;
+  position: absolute;
+  z-index: 2;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  opacity: 0.9;
+  mat-spinner{
+    width: 100px;
+    height: 100px;
+    margin: auto;
+    top: calc( 50% - 30px );
+  }
+}
+
+
+.cdk-overlay-backdrop.cdk-overlay-backdrop-showing.dark-backdrop {
+  background: #000;
+  opacity: 0.75 !important;
 }
 
 .main-tool-bar{
