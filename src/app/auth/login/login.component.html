@@ -1,6 +1,11 @@
-<div fxLayout="row" fxLayoutAlign="center center" class="content-bg" style="height: 100vh;">
+<div fxLayout="row" fxLayoutAlign="center center" class="content-bg" style="min-height: 100vh;">
   <div fxFlex> </div>
-  <mat-card fxFlex.lg="30" fxFlex.md="35" fxFlex.sm="50" fxFlex.xs="80"  class="mat-elevation-z1">
+  <div fxFlex.lg="30" fxFlex.lg="30"
+  fxFlex.md="35"
+  fxFlex.sm="55"
+  fxFlex.xs="95" style="text-align: center; margin: 20px 0px;" >
+  <mat-card class="mat-elevation-z1">
+    <app-overlay-loading *ngIf="loading" ></app-overlay-loading>
     <form [formGroup]="loginForm" (ngSubmit)="login()">
       <mat-card-content>
         <mat-card-title class="text-center full-width" style="text-align: center; margin: 10px 0px 20px;">Login</mat-card-title>
@@ -35,6 +40,12 @@
         </div>
       </mat-card-actions>
       </form>
-  </mat-card>
-  <div fxFlex> </div>
+
+    </mat-card>
+    <div class="link-container">
+      <a routerLink="/register" class="link">Register new company</a>
+    </div>
+  </div>
+  <div fxFlex>
+  </div>
 </div>

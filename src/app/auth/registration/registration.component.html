@@ -1,0 +1,76 @@
+<div fxLayout="row" fxLayoutAlign="center center" class="content-bg" style="min-height: 100%;">
+  <div fxFlex> </div>
+  <mat-card fxFlex.lg="30"
+    fxFlex.md="35"
+    fxFlex.sm="55"
+    fxFlex.xs="95"
+    class="mat-elevation-z1"
+    style="margin: 20px 0px;">
+    <app-overlay-loading *ngIf="loading" ></app-overlay-loading>
+    <form [formGroup]="registerForm" (ngSubmit)="register()" novalidate>
+      <mat-card-content>
+        <mat-card-title class="text-center full-width" style="text-align: center; margin: 10px 0px 20px;">Register</mat-card-title>
+        <mat-card-subtitle class="text-center full-width" style="text-align: center;">Using your email address</mat-card-subtitle>
+
+        <mat-form-field appearance="outline" floatLabel="always" color="primary" class="full-width">
+          <mat-label>Company Name</mat-label>
+          <input matInput formControlName="company" required>
+          <mat-error *ngIf="registerForm.controls['company'].hasError('required')">
+           Company is <strong>required</strong>
+         </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" floatLabel="always" color="primary" class="full-width">
+          <mat-label>First Name</mat-label>
+          <input matInput formControlName="firstName" required>
+          <mat-error *ngIf="registerForm.controls['firstName'].hasError('required')">
+            First Name is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" floatLabel="always" color="primary" class="full-width">
+          <mat-label>Last Name</mat-label>
+          <input matInput formControlName="lastName" required>
+          <mat-error *ngIf="registerForm.controls['lastName'].hasError('required')">
+            Last Name is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" floatLabel="always" class="full-width">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" required>
+          <mat-icon matSuffix>email</mat-icon>
+          <mat-error *ngIf="registerForm.controls['email'].hasError('required')">
+            Email is <strong>required</strong>
+          </mat-error>
+          <mat-error *ngIf="registerForm.controls['email'].hasError('email')">
+            Please type a valid email address
+          </mat-error>
+          <!-- <mat-error *ngIf="registerForm.controls['email'].errors && !registerForm.controls['email'].errors.required">Please type a valid email address</mat-error> -->
+          <!-- <mat-hint>Hint</mat-hint> -->
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" floatLabel="always" color="primary" class="full-width">
+          <mat-label>Password</mat-label>
+          <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" required>
+          <a mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </a>
+          <mat-hint>Password should be at least 6 characters</mat-hint>
+          <mat-error *ngIf="registerForm.controls['password'].hasError('required')">
+            Password is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+
+        <!-- <a mat-flat-button routerLink="/forgot-password">Forgot Password?</a> -->
+        <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="space-evenly center">
+            <button mat-flat-button color="primary" [disabled]="!registerForm.valid" fxFlex>Register</button>
+            <a mat-stroked-button routerLink="/login" color="primary" fxFlex>Back to Login</a>
+        </div>
+
+        </mat-card-content>
+      </form>
+  </mat-card>
+  <div fxFlex> </div>
+</div>

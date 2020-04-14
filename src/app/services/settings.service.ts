@@ -25,8 +25,9 @@ export class SettingsService {
   }
 
   getFieldSettings() {
+    console.log(environment.settingsId);
     const query = `query {
-      setting (id: "5e822e6ffdf2c30517c789f1") {
+      setting (id: "${environment.settingsId}") {
         fields
       }
     }`;
@@ -44,7 +45,7 @@ export class SettingsService {
   }
 
   setFieldSettings(fields) {
-    return this.http.put<FieldSettings>(`${environment.backendUrl}settings/5e822e6ffdf2c30517c789f1`, {fields})
+    return this.http.put<FieldSettings>(`${environment.backendUrl}settings/${environment.settingsId}`, {fields})
     .pipe(map(settings => {
       return settings;
     }));

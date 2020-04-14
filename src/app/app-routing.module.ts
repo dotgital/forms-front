@@ -1,3 +1,4 @@
+import { RegistrationComponent } from './auth/registration/registration.component';
 import { ClientsListComponent } from './clients/clients-list/clients-list.component';
 import { SettingsLayoutComponent } from './settings/settings-layout/settings-layout.component';
 import { SettingsComponent } from './settings/settings.component';
@@ -14,6 +15,7 @@ import { ClientsViewComponent } from './clients/clients-view/clients-view.compon
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegistrationComponent },
   { path: 'forgot-password', component: ForgotComponent },
   { path: 'reset-password', component: ResetComponent },
   { path: '', component: NavigationComponent, canActivate: [AuthGuard], children: [

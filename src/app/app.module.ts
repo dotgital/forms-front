@@ -54,6 +54,7 @@ import { ClientProfileComponent } from './clients/clients-view/components/client
 import { SearchableSelectComponent } from './_components/searchable-select/searchable-select.component';
 import { DropdownOptionsComponent } from './_components/dropdown-options/dropdown-options.component';
 import { OverlayLoadingComponent } from './_components/overlay-loading/overlay-loading.component';
+import { RegistrationComponent } from './auth/registration/registration.component';
 
 
 @NgModule({
@@ -72,7 +73,8 @@ import { OverlayLoadingComponent } from './_components/overlay-loading/overlay-l
     ClientsListComponent,
     SearchableSelectComponent,
     DropdownOptionsComponent,
-    OverlayLoadingComponent
+    OverlayLoadingComponent,
+    RegistrationComponent
   ],
   imports: [
     BrowserModule,

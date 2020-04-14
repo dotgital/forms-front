@@ -1,6 +1,11 @@
-<div fxLayout="row" fxLayoutAlign="center center" class="content-bg" style="height: 100vh;">
+<div fxLayout="row" fxLayoutAlign="center center" class="content-bg" style="min-height: 100vh;">
   <div fxFlex> </div>
-  <mat-card fxFlex.lg="30" fxFlex.md="35" fxFlex.sm="50" fxFlex.xs="80"  class="mat-elevation-z1">
+  <mat-card fxFlex.lg="30"
+    fxFlex.md="35"
+    fxFlex.sm="55"
+    fxFlex.xs="95"
+    style="margin: 20px 0px;"
+    class="mat-elevation-z1">
       <form [formGroup]="forgotForm" (ngSubmit)="forgot()">
             <mat-card-content class="ion-padding">
               <mat-card-title class="ion-text-center full-width" style="text-align: center; margin: 10px 0px 20px;">Forgot Password</mat-card-title>
