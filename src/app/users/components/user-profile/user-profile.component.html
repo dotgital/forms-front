@@ -1,0 +1,36 @@
+<form id="input-form" [formGroup]="profileForm" novalidate (ngSubmit)="submitData()" style.fontSize.px="26px">
+  <div fxLayout="row" fxLayoutAlign="end center" class="action-row" style="margin: 10px 0px;">
+    <ng-container *ngIf="!creating" >
+      <a mat-flat-button (click)="enableForm()" *ngIf="!editing" color="primary">Edit</a>
+      <a mat-button (click)="cancelForm()" *ngIf="editing">Cancel</a>
+      <button mat-flat-button color="primary" *ngIf="editing" [disabled]="!dataChanged">
+        Save
+      </button>
+    </ng-container>
+    <ng-container *ngIf="creating">
+      <button mat-flat-button color="primary">
+        Create
+      </button>
+    </ng-container>
+  </div>
+
+  <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutAlign="space-between center">
+
+    <mat-form-field appearance="outline" floatLabel="always" color="primary" class="full-width" fxFlex="49" fxFlex.lt-md="100">
+      <mat-label>First Name</mat-label>
+      <input matInput formControlName="firstName" required>
+      <mat-error *ngIf="profileForm.controls['firstName'].hasError('required')">
+      First Name is <strong>required</strong>
+    </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" floatLabel="always" color="primary" class="full-width" fxFlex="49" fxFlex.lt-md="100">
+      <mat-label>Last Name</mat-label>
+      <input matInput formControlName="lastName" required>
+      <mat-error *ngIf="profileForm.controls['lastName'].hasError('required')">
+      First Name is <strong>required</strong>
+    </mat-error>
+    </mat-form-field>
+
+  </div>
+</form>

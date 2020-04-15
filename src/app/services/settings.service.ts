@@ -25,7 +25,6 @@ export class SettingsService {
   }
 
   getFieldSettings() {
-    console.log(environment.settingsId);
     const query = `query {
       setting (id: "${environment.settingsId}") {
         fields

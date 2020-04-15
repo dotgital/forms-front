@@ -1,7 +1,8 @@
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from './../../services/auth.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ɵConsole } from '@angular/core';
+import { User } from 'src/app/_interfaces/user';
 
 @Component({
   selector: 'app-registration',
@@ -12,6 +13,7 @@ export class RegistrationComponent implements OnInit {
 
   public hide = true;
   public loading: boolean;
+  public userId: string;
 
   registerForm = new FormGroup({
     email: new FormControl(null, [Validators.required, Validators.email]),
@@ -33,9 +35,21 @@ export class RegistrationComponent implements OnInit {
     }
   }
 
-  register(){
+  register() {
     this.loading = true;
-    console.log('Register');
+    if (!this.registerForm.invalid) {
+      this.authService.register(this.registerForm.value).subscribe(res => {
+        this.userId = res.user.id;
+        console.log(res);
+        this.createCompany();
+      });
+    }
   }
 
+  createCompany() {
+    this.authService.createCompany(this.registerForm.value, this.userId).subscribe(res => {
+      console.log(res);
+      this.router.navigate(['/']);
+    });
+  }
 }

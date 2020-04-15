@@ -27,6 +27,30 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
+  register(registrationData){
+    return this.http.post<any>(`${environment.backendUrl}auth/local/register`, {
+      username: registrationData.email,
+      email: registrationData.email,
+      password: registrationData.password,
+      firstName: registrationData.firstName,
+      lastName: registrationData.lastName,
+    }).pipe(map(user => {
+      localStorage.setItem('currentUser', JSON.stringify(user));
+      this.currentUserSubject.next(user);
+      return user;
+    }));
+  }
+
+  createCompany(registrationData, userId: string) {
+    console.log(userId);
+    return this.http.post<any>(`${environment.backendUrl}companies`, {
+      name: registrationData.company,
+      users: [userId]
+    }).pipe(map(companyRes => {
+      return companyRes;
+    }));
+  }
+
   login(username: string, pw: string) {
     return this.http.post<any>(`${environment.backendUrl}auth/local`, {
         identifier: username,

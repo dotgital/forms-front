@@ -55,6 +55,9 @@ import { SearchableSelectComponent } from './_components/searchable-select/searc
 import { DropdownOptionsComponent } from './_components/dropdown-options/dropdown-options.component';
 import { OverlayLoadingComponent } from './_components/overlay-loading/overlay-loading.component';
 import { RegistrationComponent } from './auth/registration/registration.component';
+import { UsersViewComponent } from './users/users-view/users-view.component';
+import { UsersListComponent } from './users/users-list/users-list.component';
+import { UserProfileComponent } from './users/components/user-profile/user-profile.component';
 
 
 @NgModule({
@@ -74,7 +77,10 @@ import { RegistrationComponent } from './auth/registration/registration.componen
     SearchableSelectComponent,
     DropdownOptionsComponent,
     OverlayLoadingComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    UsersViewComponent,
+    UsersListComponent,
+    UserProfileComponent
   ],
   imports: [
     BrowserModule,

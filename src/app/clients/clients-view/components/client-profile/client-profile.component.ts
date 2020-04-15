@@ -15,6 +15,7 @@ export class ClientProfileComponent implements OnInit, OnChanges {
   public inputList: FormItem[] = [];
   public editing: boolean;
   public creating: boolean;
+  public defaultValue: object = {};
   public dataChanged: boolean;
 
   public profileForm: FormGroup;
@@ -31,6 +32,8 @@ export class ClientProfileComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     this.creating = this.recordData ? false : true;
+    console.log(this.creating);
+
     // check if the empty form is ready to patch the data
     if (this.emptyForm) {
       this.emptyForm.then(() => {
@@ -60,11 +63,15 @@ export class ClientProfileComponent implements OnInit, OnChanges {
           const formControl = control.required ? new FormControl(null, Validators.required) : new FormControl(null);
           this.profileForm.addControl(control.name, formControl);
           this.inputList.push(control);
+          this.defaultValue[control.name] = control.default;
         }
       });
       return res;
     }).catch(err => console.log(err));
     await this.emptyForm;
+    if (this.creating) {
+      this.profileForm.patchValue(this.defaultValue);
+    }
   }
 
   setData() {
@@ -77,13 +84,7 @@ export class ClientProfileComponent implements OnInit, OnChanges {
   }
 
   submitData() {
-    // Object.entries(this.oriData).map(([key, val]) => {
-    //   // console.log(this.profileForm.value[key]);
-    //   if ( this.profileForm.value[key] !== val) {
-    //     console.log(`${key} changed from "${val}" to "${this.profileForm.value[key]}"`);
-    //   }
-    //   // console.log(`key= ${key} value = ${val}`)
-    // })
+    console.log(this.profileForm.value);
     this.dataChanged = false;
     if (!this.profileForm.invalid) {
       if (!this.creating) {

@@ -1,3 +1,5 @@
+import { UsersViewComponent } from './users/users-view/users-view.component';
+import { UsersListComponent } from './users/users-list/users-list.component';
 import { RegistrationComponent } from './auth/registration/registration.component';
 import { ClientsListComponent } from './clients/clients-list/clients-list.component';
 import { SettingsLayoutComponent } from './settings/settings-layout/settings-layout.component';
@@ -23,7 +25,9 @@ const routes: Routes = [
     { path: 'clients/:id', component: ClientsViewComponent },
     { path: 'forms', component: FillComponent },
     { path: 'settings', component: SettingsComponent },
-    { path: 'settings/layout', component: SettingsLayoutComponent }
+    { path: 'settings/layout', component: SettingsLayoutComponent },
+    { path: 'users', component: UsersListComponent },
+    { path: 'users/:id', component: UsersViewComponent }
   ]},
 ];
 

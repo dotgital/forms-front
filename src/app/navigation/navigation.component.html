@@ -4,13 +4,23 @@
       [mode]="(isHandset$ | async) ? 'over' : 'side'"
       [opened]="(isHandset$ | async) ? false : true">
     <mat-toolbar color="primary">Menu</mat-toolbar>
+
     <mat-nav-list style="padding-top: 0px">
       <a mat-list-item
         routerLink="/clients"
         (click)="toggleMenu()" >
-        <mat-icon style="margin-right: 10px;">people</mat-icon>Clients
+        <mat-icon style="margin-right: 10px;">contact_mail</mat-icon>Clients
       </a>
     </mat-nav-list>
+
+    <mat-nav-list style="padding-top: 0px">
+      <a mat-list-item
+        routerLink="/users"
+        (click)="toggleMenu()" >
+        <mat-icon style="margin-right: 10px;">people</mat-icon>Users
+      </a>
+    </mat-nav-list>
+
   </mat-sidenav>
   <mat-sidenav-content class="content-outlet">
     <mat-toolbar color="primary" class="main-tool-bar">

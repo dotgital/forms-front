@@ -4,7 +4,7 @@
 
   <mat-sidenav-content class="content-outlet">
   <mat-toolbar class="component-header content-toolbar">
-    <span fxFlex>Client Profile</span>
+    <span fxFlex>User Profile</span>
     <a mat-button class="history-toogle" (click)="toogleSideBar()" *ngIf="!sideBarOpened" >Show History <mat-icon>double_arrow</mat-icon></a>
     <a mat-button class="history-toogle" (click)="toogleSideBar()" *ngIf="sideBarOpened" >Hide History <mat-icon>double_arrow</mat-icon></a>
   </mat-toolbar>
@@ -23,13 +23,13 @@
               <div class="label-text">Profile</div>
             </div>
           </ng-template>
-          <app-client-profile [recordData]="recordData"></app-client-profile>
+          <app-user-profile [recordData]="recordData"></app-user-profile>
         </mat-tab>
         <mat-tab>
           <ng-template mat-tab-label>
             <div [class]="(isHandset$ | async) ? 'isHandset' : 'notHandset'">
-              <mat-icon>picture_as_pdf</mat-icon>
-              <div class="label-text">Forms</div>
+              <mat-icon>lock</mat-icon>
+              <div class="label-text">Permissions</div>
             </div>
           </ng-template>
           Forms Page
