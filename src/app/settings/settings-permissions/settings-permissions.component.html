@@ -10,7 +10,64 @@
 <div class="main-content" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="10px">
   <div fxFlex>
     <mat-card class="mat-elevation-z1" style="margin-top: 0;" >
-      content
+      <app-overlay-loading *ngIf="loading"></app-overlay-loading>
+      <div fxLayout="row" class="card-header" fxLayoutGap="10px" fxLayoutAlign="start start">
+        <mat-form-field class="content-selector" floatLabel="always" appearance="outline">
+          <mat-label>Select Content Type</mat-label>
+          <mat-select placeholder="Select Module"  name="item" fxFlex>
+            <mat-option value="client">Clients</mat-option>
+            <mat-option value="users">Users</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div fxFlex></div>
+        <button mat-flat-button color="primary">Save</button>
+      </div>
+      <div>
+        <!-- <mat-list-item>
+          <span fxFlex fxLayoutGap="10px">Users</span>
+          <span fxFlex="30" fxLayoutGap="10px">View</span>
+          <span fxFlex="30" fxLayoutGap="10px">Edit</span>
+        </mat-list-item>
+        <mat-divider
+          [inset]="true">
+        </mat-divider> -->
+        <ng-container *ngFor="let item of permissions">
+          <div fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="space-between center" style="padding: 5px 0px;">
+            <span fxFlex="39"
+            fxFlex.lt-md="100"
+            class="permission-user">{{ item.firstName }} {{ item.lastName }}</span>
+
+            <mat-form-field floatLabel="always" class="full-width permission-type" appearance="outline"
+            fxFlex="29"
+            fxFlex.lt-md="100">
+              <mat-label>View</mat-label>
+              <mat-select name="item">
+                <mat-option value="Yes"> All</mat-option>
+                <mat-option value="No"> None</mat-option>
+                <mat-option value="Assigned"> Only Assigned</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field floatLabel="always" class="full-width permission-type" appearance="outline"
+            fxFlex="29"
+            fxFlex.lt-md="100">
+              <mat-label>Edit</mat-label>
+              <mat-select name="item">
+                <mat-option value="Yes"> All</mat-option>
+                <mat-option value="No"> None</mat-option>
+                <mat-option value="Assigned"> Only Assigned</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+          </div>
+
+          <mat-divider
+            [inset]="true">
+          </mat-divider>
+
+        </ng-container>
+
+      </div>
     </mat-card>
   </div>
 

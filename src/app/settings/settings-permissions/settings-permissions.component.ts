@@ -1,3 +1,4 @@
+import { CrudService } from './../../services/crud.service';
 import { MatSidenav } from '@angular/material/sidenav';
 import { map, shareReplay } from 'rxjs/operators';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
@@ -11,6 +12,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 })
 export class SettingsPermissionsComponent implements OnInit {
   @ViewChild('sidebar') rightSide: MatSidenav;
+  permissions: [] = [];
   sideBarOpened: boolean;
   loading: boolean;
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
@@ -21,9 +23,33 @@ export class SettingsPermissionsComponent implements OnInit {
 
   constructor(
     private breakpointObserver: BreakpointObserver,
+    private crud: CrudService
   ) { }
 
   ngOnInit(): void {
+    this.getUsersPermissions();
+  }
+
+  getUsersPermissions() {
+    this.loading = true;
+    const query = `query{
+      users{
+        id
+        firstName
+        lastName
+        customPermissions{
+          id
+          contentTypeName
+          view
+          edit
+        }
+      }
+    }`;
+    this.crud.getDatalist(query).subscribe(res => {
+      this.permissions = res.data.users;
+      console.log(res);
+      this.loading = false;
+    });
   }
 
   toogleSideBar(){
