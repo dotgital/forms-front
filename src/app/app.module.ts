@@ -58,6 +58,8 @@ import { RegistrationComponent } from './auth/registration/registration.componen
 import { UsersViewComponent } from './users/users-view/users-view.component';
 import { UsersListComponent } from './users/users-list/users-list.component';
 import { UserProfileComponent } from './users/components/user-profile/user-profile.component';
+import { SearchableSelectMultipleComponent } from './_components/searchable-select-multiple/searchable-select-multiple.component';
+import { SettingsPermissionsComponent } from './settings/settings-permissions/settings-permissions.component';
 
 
 @NgModule({
@@ -80,7 +82,9 @@ import { UserProfileComponent } from './users/components/user-profile/user-profi
     RegistrationComponent,
     UsersViewComponent,
     UsersListComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    SearchableSelectMultipleComponent,
+    SettingsPermissionsComponent
   ],
   imports: [
     BrowserModule,

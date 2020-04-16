@@ -15,18 +15,28 @@
 
   </div>
 
-  <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutAlign="space-between center">
+  <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutAlign="space-between start">
     <ng-container *ngFor="let input of inputList" [ngSwitch]="input.fieldType" >
       <ng-container *ngSwitchCase="'dropdown'">
         <app-searchable-select
-        fxFlex="49"
-        fxFlex.lt-md="100"
-        class="full-width"
-        [options]="input.options"
-        [label]="input.label"
-        [isRequired]="input.required"
-        [formControlName]="input.name"
-        [defaultOption]="input.default"></app-searchable-select>
+          fxFlex="49"
+          fxFlex.lt-md="100"
+          class="full-width"
+          [options]="input.options"
+          [label]="input.label"
+          [isRequired]="input.required"
+          [formControlName]="input.name"
+          [defaultOption]="input.default">
+        </app-searchable-select>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'dropdown-multiple'">
+        <app-searchable-select-multiple
+          fxFlex="100"
+          fxFlex.lt-md="100"
+          class="full-width"
+          [formControlName]="input.name">
+        </app-searchable-select-multiple>
       </ng-container>
 
       <mat-form-field class="full-width" floatLabel="always" appearance="outline"  *ngSwitchDefault fxFlex="49" fxFlex.lt-md="100">
@@ -36,6 +46,7 @@
           {{input.label}} is <strong>required</strong>
         </mat-error>
       </mat-form-field>
+
     </ng-container>
   </div>
 </form>

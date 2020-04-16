@@ -1,3 +1,4 @@
+import { Apollo } from 'apollo-angular';
 import { Router } from '@angular/router';
 import { environment } from './../../environments/environment';
 import { Injectable } from '@angular/core';
@@ -5,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { User } from '../_interfaces/user';
+import gql from 'graphql-tag';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +19,8 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private apollo: Apollo
   ) {
     this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
     this.currentUser = this.currentUserSubject.asObservable();
@@ -52,16 +55,34 @@ export class AuthService {
   }
 
   login(username: string, pw: string) {
-    return this.http.post<any>(`${environment.backendUrl}auth/local`, {
-        identifier: username,
-        password: pw
-      })
-      .pipe(map(user => {
+    const query = `mutation {
+      login (input: { identifier: "${username}", password: "${pw}" } ){
+        jwt
+        user{
+          id
+          email
+        }
+      }
+    }`;
+    return this.apollo.mutate<any>({
+      mutation: gql`${query}`
+    }).pipe(map(user => {
+        const userData: User = user.data.login;
         // store user details and jwt token in local storage to keep user logged in between page refreshes
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        this.currentUserSubject.next(user);
+        localStorage.setItem('currentUser', JSON.stringify(userData));
+        this.currentUserSubject.next(userData);
         return user;
       }));
+    // return this.http.post<any>(`${environment.backendUrl}auth/local`, {
+    //     identifier: username,
+    //     password: pw
+    //   })
+    //   .pipe(map(user => {
+    //     // store user details and jwt token in local storage to keep user logged in between page refreshes
+    //     localStorage.setItem('currentUser', JSON.stringify(user));
+    //     this.currentUserSubject.next(user);
+    //     return user;
+    //   }));
   }
 
   forgotPassword(emailAddress: string) {

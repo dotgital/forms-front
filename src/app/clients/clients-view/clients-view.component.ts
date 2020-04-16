@@ -64,7 +64,6 @@ export class ClientsViewComponent implements OnInit {
   getRecordData() {
     this.loading = true;
     this.crud.getRecordData(this.record.type, this.record.id).subscribe(res => {
-      console.log(res);
       this.recordTitle = `${res.firstName} ${res.lastName}`;
       const dateOptions = {hour: '2-digit', minute: '2-digit', year: 'numeric', month: 'numeric', day: 'numeric' }
       this.dateModified = new Date(res.updatedAt).toLocaleString([], dateOptions);

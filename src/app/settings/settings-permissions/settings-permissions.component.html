@@ -1,0 +1,36 @@
+<mat-progress-bar mode="indeterminate" color="primary" class="loading-top" *ngIf="loading"></mat-progress-bar>
+<mat-sidenav-container style="height: calc( 100vh - 55px );">
+
+<mat-sidenav-content class="content-outlet">
+<mat-toolbar class="component-header content-toolbar">
+  <span fxFlex>User Permissions</span>
+  <a mat-button class="sidebar-toogle" (click)="toogleSideBar()" *ngIf="!sideBarOpened" >Show <mat-icon>double_arrow</mat-icon></a>
+  <a mat-button class="sidebar-toogle" (click)="toogleSideBar()" *ngIf="sideBarOpened" >Hide <mat-icon>double_arrow</mat-icon></a>
+</mat-toolbar>
+<div class="main-content" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="10px">
+  <div fxFlex>
+    <mat-card class="mat-elevation-z1" style="margin-top: 0;" >
+      content
+    </mat-card>
+  </div>
+
+</div>
+</mat-sidenav-content>
+
+<mat-sidenav #sidebar position="end" fullscreen
+fixedInViewport
+autosize
+[attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+[mode]="(isHandset$ | async) ? 'over' : 'side'"
+[opened]="(isHandset$ | async) ? false : true">
+  <mat-toolbar color="primary" class="main-tool-bar">Menu</mat-toolbar>
+  <mat-toolbar class="component-header content-toolbar">
+    <span fxFlex>Field Settings</span>
+    <a mat-button class="sidebar-toogle" (click)="sidebar.close()" *ngIf="(isHandset$ | async) ? true : false"> Hide Settings<mat-icon>double_arrow</mat-icon></a>
+  </mat-toolbar>
+  <div fxLayout="column" fxLayoutAlign="space-between stretch" fxLayoutGap="10px" style="padding: 10px; height: calc( 100vh - 120px );">
+    side
+  </div>
+</mat-sidenav>
+
+</mat-sidenav-container>

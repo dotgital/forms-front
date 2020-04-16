@@ -1,3 +1,4 @@
+import { SettingsPermissionsComponent } from './settings/settings-permissions/settings-permissions.component';
 import { UsersViewComponent } from './users/users-view/users-view.component';
 import { UsersListComponent } from './users/users-list/users-list.component';
 import { RegistrationComponent } from './auth/registration/registration.component';
@@ -23,11 +24,12 @@ const routes: Routes = [
   { path: '', component: NavigationComponent, canActivate: [AuthGuard], children: [
     { path: 'clients', component: ClientsListComponent },
     { path: 'clients/:id', component: ClientsViewComponent },
+    { path: 'users', component: UsersListComponent },
+    { path: 'users/:id', component: UsersViewComponent },
     { path: 'forms', component: FillComponent },
     { path: 'settings', component: SettingsComponent },
     { path: 'settings/layout', component: SettingsLayoutComponent },
-    { path: 'users', component: UsersListComponent },
-    { path: 'users/:id', component: UsersViewComponent }
+    { path: 'settings/permissions', component: SettingsPermissionsComponent },
   ]},
 ];
 

@@ -32,7 +32,6 @@ export class ClientProfileComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     this.creating = this.recordData ? false : true;
-    console.log(this.creating);
 
     // check if the empty form is ready to patch the data
     if (this.emptyForm) {
@@ -77,6 +76,7 @@ export class ClientProfileComponent implements OnInit, OnChanges {
   setData() {
     this.recordData.createdAt = new Date(this.recordData.createdAt).toLocaleString();
     this.recordData.updatedAt = new Date(this.recordData.updatedAt).toLocaleString();
+    // console.log(this.recordData)
     this.profileForm.patchValue(this.recordData);
     this.oriData = this.profileForm.value;
     this.editing = false;
@@ -84,7 +84,7 @@ export class ClientProfileComponent implements OnInit, OnChanges {
   }
 
   submitData() {
-    console.log(this.profileForm.value);
+    // console.log(this.profileForm.value);
     this.dataChanged = false;
     if (!this.profileForm.invalid) {
       if (!this.creating) {
