@@ -22,6 +22,20 @@ export class CrudService {
     }));
   }
 
+  getUserPermissions(contentTypeName) {
+    return this.http.get<any>(`${environment.backendUrl}custom-permissions`)
+    .pipe(map(metaData => {
+      return metaData;
+    }));
+  }
+
+  setUserPermissions(data) {
+    return this.http.post(`${environment.backendUrl}set-permissions/`, data)
+    .pipe(map(settings => {
+      return settings;
+    }));
+  }
+
   getDatalist(query) {
     return this.apollo.query<any>({
       query: gql`${query}`,

@@ -14,13 +14,17 @@
       <div fxLayout="row" class="card-header" fxLayoutGap="10px" fxLayoutAlign="start start">
         <mat-form-field class="content-selector" floatLabel="always" appearance="outline">
           <mat-label>Select Content Type</mat-label>
-          <mat-select placeholder="Select Module"  name="item" fxFlex>
-            <mat-option value="client">Clients</mat-option>
+          <mat-select placeholder="Select Module"
+          [(ngModel)]="contentType"
+          [value]="contentType"
+          fxFlex
+          (selectionChange)="changeContentType($event)">
+            <mat-option value="clients">Clients</mat-option>
             <mat-option value="users">Users</mat-option>
           </mat-select>
         </mat-form-field>
         <div fxFlex></div>
-        <button mat-flat-button color="primary">Save</button>
+        <button mat-flat-button color="primary" (click)="saveUserPermissions()" >Save</button>
       </div>
       <div>
         <!-- <mat-list-item>
@@ -40,22 +44,26 @@
             <mat-form-field floatLabel="always" class="full-width permission-type" appearance="outline"
             fxFlex="29"
             fxFlex.lt-md="100">
-              <mat-label>View</mat-label>
-              <mat-select name="item">
-                <mat-option value="Yes"> All</mat-option>
-                <mat-option value="No"> None</mat-option>
-                <mat-option value="Assigned"> Only Assigned</mat-option>
+              <mat-label>View {{contentType}}</mat-label>
+              <mat-select name="view"
+              (selectionChange)="changeUserPermission($event, contentTypeView, item)"
+              [value]="item.custom_permission && item.custom_permission[contentTypeView]">
+                <mat-option value="All">All</mat-option>
+                <mat-option value="None">None</mat-option>
+                <mat-option value="onlyAssigned">Only Assigned</mat-option>
               </mat-select>
             </mat-form-field>
 
             <mat-form-field floatLabel="always" class="full-width permission-type" appearance="outline"
             fxFlex="29"
             fxFlex.lt-md="100">
-              <mat-label>Edit</mat-label>
-              <mat-select name="item">
-                <mat-option value="Yes"> All</mat-option>
-                <mat-option value="No"> None</mat-option>
-                <mat-option value="Assigned"> Only Assigned</mat-option>
+              <mat-label>Edit {{contentType}}</mat-label>
+              <mat-select name="item"
+              (selectionChange)="changeUserPermission($event, contentTypeEdit, item)"
+              [(ngModel)]="item.custom_permission && item.custom_permission[contentTypeEdit]">
+                <mat-option value="All"> All</mat-option>
+                <mat-option value="None"> None</mat-option>
+                <mat-option value="onlyAssigned"> Only Assigned</mat-option>
               </mat-select>
             </mat-form-field>
 
