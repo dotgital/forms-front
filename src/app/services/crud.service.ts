@@ -22,7 +22,7 @@ export class CrudService {
     }));
   }
 
-  getUserPermissions(contentTypeName) {
+  getUserPermissions() {
     return this.http.get<any>(`${environment.backendUrl}custom-permissions`)
     .pipe(map(metaData => {
       return metaData;

@@ -20,6 +20,7 @@ export class SettingsPermissionsComponent implements OnInit {
   contentType: string;
   contentTypeView: string;
   contentTypeEdit: string;
+  isChanged: boolean;
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
   .pipe(
     map(result => result.matches),
@@ -34,6 +35,7 @@ export class SettingsPermissionsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.isChanged = false;
     this.contentType = 'clients';
     this.contentTypeView = 'clients_view';
     this.contentTypeEdit = 'clients_edit';
@@ -42,25 +44,22 @@ export class SettingsPermissionsComponent implements OnInit {
 
   getUsersPermissions() {
     this.loading = true;
-    this.crud.getUserPermissions(this.contentType).subscribe(res => {
+    this.crud.getUserPermissions().subscribe(res => {
       this.permissions = res;
       this.loading = false;
       // this.newPermissions = res;
-      // console.log(this.permissions);
+      console.log(this.permissions);
     });
   }
 
   changeUserPermission(e, type, item) {
     this.permissions = this.permissions.map(el => {
       if (el.id === item.id) {
-        if (!el.custom_permission) {
-          el.custom_permission = this.emptyPermissions;
-        }
         el.custom_permission[type] = e.value;
       }
       return el;
     });
-    console.log(this.permissions);
+    this.isChanged = true;
   }
 
   changeContentType(e) {
@@ -69,9 +68,17 @@ export class SettingsPermissionsComponent implements OnInit {
     this.contentTypeEdit = `${this.contentType}_edit`;
   }
 
+  cancel() {
+    this.isChanged = false;
+    this.getUsersPermissions();
+  }
+
   saveUserPermissions() {
+    this.loading = true;
     this.crud.setUserPermissions(this.permissions).subscribe(res => {
-      this.getUsersPermissions();
+      console.log(res);
+      this.loading = false;
+      this.isChanged = false;
     });
   }
 

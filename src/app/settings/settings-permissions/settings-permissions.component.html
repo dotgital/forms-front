@@ -24,7 +24,8 @@
           </mat-select>
         </mat-form-field>
         <div fxFlex></div>
-        <button mat-flat-button color="primary" (click)="saveUserPermissions()" >Save</button>
+        <button mat-button color="primary" (click)="cancel()" *ngIf="isChanged">Cancel</button>
+        <button mat-flat-button color="primary" (click)="saveUserPermissions()" [disabled]="!isChanged">Save</button>
       </div>
       <div>
         <!-- <mat-list-item>
