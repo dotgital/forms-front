@@ -13,7 +13,7 @@ export class SearchService {
   ) { }
 
   autocompleSearch(search) {
-    return this.http.get<[]>(`${environment.backendUrl}clients?_q=${search}&_limit=10&_sort=updatedAt:DESC`).pipe(map(res => {
+    return this.http.get<[]>(`${environment.backendUrl}search?_q=${search}&_limit=10&_sort=updatedAt:DESC`).pipe(map(res => {
       return res;
     }));
   }

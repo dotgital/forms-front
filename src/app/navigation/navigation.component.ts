@@ -2,7 +2,7 @@ import { SearchService } from './../services/search.service';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from './../services/auth.service';
-import { Component, ViewChild, OnInit, ElementRef } from '@angular/core';
+import { Component, ViewChild, OnInit, ElementRef, HostListener } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay, debounceTime, distinctUntilChanged } from 'rxjs/operators';
@@ -12,7 +12,7 @@ import { Subject } from 'rxjs';
 @Component({
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',
-  styleUrls: ['./navigation.component.scss']
+  styleUrls: ['./navigation.component.scss'],
 })
 export class NavigationComponent implements OnInit {
   @ViewChild('drawer') drawer: MatSidenav;
@@ -32,6 +32,15 @@ export class NavigationComponent implements OnInit {
       map(result => result.matches),
       shareReplay()
     );
+  @HostListener('window:keydown', ['$event'])
+  doSomething($event) {
+    if ($event.key === 'k' && $event.ctrlKey === true) {
+      this.toggleSearch();
+    }
+    if ($event.key === 'k' && $event.metaKey === true) {
+      this.toggleSearch();
+    }
+  }
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -50,9 +59,11 @@ export class NavigationComponent implements OnInit {
       debounceTime(400),
       distinctUntilChanged())
       .subscribe(value => {
-        this.searchLoading = true;
-        this.searchValue = value;
-        this.getAutocompleteSearch();
+        if (value && value.trim() !== '') {
+          this.searchLoading = true;
+          this.searchValue = value;
+          this.getAutocompleteSearch();
+        }
     });
   }
 
