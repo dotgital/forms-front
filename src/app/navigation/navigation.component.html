@@ -59,8 +59,14 @@
           <mat-option *ngFor="let option of options"
             (onSelectionChange)="goTo(option)"
             value="{{option.firstName}} {{option.lastName}}">
-              <span class="module-icon {{option.model}}">{{option.model}}</span>{{option.firstName}} {{option.lastName}}
-              <!-- Phone: 8326144421 -->
+              <span class="module-icon {{option.model}}">{{option.model}}</span>
+              <div class="search-info" style="display: inline-block; line-height: 12px;vertical-align: top;">
+                <h3 class="title" style="display: block;margin: 0px;">{{option.firstName}} {{option.lastName}}</h3>
+                <span class="match" style="font-size: 12px; font-weight: 400;">testing</span>
+              </div>
+              <mat-divider
+                [inset]="false">
+              </mat-divider>
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>

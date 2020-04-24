@@ -59,11 +59,11 @@ export class NavigationComponent implements OnInit {
       debounceTime(400),
       distinctUntilChanged())
       .subscribe(value => {
-        if (value && value.trim() !== '') {
+        // if (value && value.trim() !== '') {
           this.searchLoading = true;
           this.searchValue = value;
           this.getAutocompleteSearch();
-        }
+        // }
     });
   }
 
