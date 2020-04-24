@@ -62,7 +62,9 @@
               <span class="module-icon {{option.model}}">{{option.model}}</span>
               <div class="search-info" style="display: inline-block; line-height: 12px;vertical-align: top;">
                 <h3 class="title" style="display: block;margin: 0px;">{{option.firstName}} {{option.lastName}}</h3>
-                <span class="match" style="font-size: 12px; font-weight: 400;">testing</span>
+                <span class="match" style="font-size: 12px; font-weight: 400;">
+                  {{option.matchProperty}}: <b>{{option.matchValue}}</b>
+                </span>
               </div>
               <mat-divider
                 [inset]="false">
