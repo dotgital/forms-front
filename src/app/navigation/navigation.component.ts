@@ -55,6 +55,7 @@ export class NavigationComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.search = false;
     this.searchUpdate.pipe(
       debounceTime(400),
       distinctUntilChanged())
@@ -101,6 +102,10 @@ export class NavigationComponent implements OnInit {
       this.searchLoading = false;
       this.options = [];
     }
+  }
+
+  resetSearch(){
+    this.searchControl.reset();
   }
 
   toggleMenu() {

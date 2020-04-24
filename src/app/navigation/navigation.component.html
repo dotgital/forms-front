@@ -35,7 +35,7 @@
       </button>
       <!-- close search -->
       <button mat-icon-button
-        *ngIf="search"
+        *ngIf="search && !isHandset"
         (click)="toggleSearch()" >
         <mat-icon>arrow_back</mat-icon>
       </button>
@@ -44,7 +44,8 @@
       <span class="spacer" *ngIf="!search"></span>
 
       <!-- search autocomplete -->
-      <mat-form-field appearance="outline" *ngIf="search" class="spacer search" color="primary">
+      <mat-form-field appearance="outline" *ngIf="search" class="spacer search" color="primary" fxFlex>
+        <button mat-icon-button matPrefix color="primary" *ngIf="isHandset" (click)="toggleSearch()"><mat-icon>arrow_back</mat-icon></button>
         <input #search
           placeholder="Search"
           type="text"
@@ -52,6 +53,7 @@
           [formControl]="searchControl"
           [matAutocomplete]="auto"
           (ngModelChange)="this.searchUpdate.next($event)">
+         <button mat-icon-button matSuffix color="primary" (click)="resetSearch()" ><mat-icon>close</mat-icon></button>
         <mat-autocomplete #auto="matAutocomplete"
           autoActiveFirstOption>
           <mat-option *ngIf="searchLoading" >Loading...</mat-option>
@@ -74,20 +76,23 @@
       </mat-form-field>
 
         <!-- open search -->
-      <button mat-icon-button (click)="toggleSearch()" ><mat-icon>search</mat-icon></button>
+      <button mat-icon-button (click)="toggleSearch()" *ngIf="!isHandset || !search" ><mat-icon>search</mat-icon></button>
 
-      <button mat-icon-button><img src="../../assets/avatar.png" class="navbar-avatar" [matMenuTriggerFor]="menu"/>
-        <mat-menu #menu="matMenu"  class="mat-elevation-z2" style="margin-top: 10px;">
-          <button mat-menu-item routerLink="/settings" class="profile-menu">
-            <mat-icon>settings</mat-icon>
-            <span>Settings</span>
-          </button>
-          <button mat-menu-item  (click)="logout()"  class="profile-menu">
-            <mat-icon>exit_to_app</mat-icon>
-            <span>Logout</span>
-          </button>
-        </mat-menu>
-      </button>
+      <ng-container *ngIf="!isHandset || !search">
+        <button mat-icon-button><img src="../../assets/avatar.png" class="navbar-avatar" [matMenuTriggerFor]="menu"/>
+          <mat-menu #menu="matMenu"  class="mat-elevation-z2" style="margin-top: 10px;">
+            <button mat-menu-item routerLink="/settings" class="profile-menu">
+              <mat-icon>settings</mat-icon>
+              <span>Settings</span>
+            </button>
+            <button mat-menu-item  (click)="logout()"  class="profile-menu">
+              <mat-icon>exit_to_app</mat-icon>
+              <span>Logout</span>
+            </button>
+          </mat-menu>
+        </button>
+      </ng-container>
+
     </mat-toolbar>
     <!-- Add Content Here -->
     <router-outlet></router-outlet>
