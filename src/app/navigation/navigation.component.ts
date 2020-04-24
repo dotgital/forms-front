@@ -79,7 +79,9 @@ export class NavigationComponent implements OnInit {
   }
 
   goTo(e) {
-    this.router.navigate([`/clients/${e.id}`]);
+    console.log(e);
+    const model = (e.model).toLowerCase();
+    this.router.navigate([`/${model}s/${e.id}`]);
   }
 
   getAutocompleteSearch() {

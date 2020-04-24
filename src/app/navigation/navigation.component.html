@@ -59,7 +59,7 @@
           <mat-option *ngFor="let option of options"
             (onSelectionChange)="goTo(option)"
             value="{{option.firstName}} {{option.lastName}}">
-              {{option.firstName}} {{option.lastName}}
+              <span class="module-icon {{option.model}}">{{option.model}}</span>{{option.firstName}} {{option.lastName}}
               <!-- Phone: 8326144421 -->
           </mat-option>
         </mat-autocomplete>
