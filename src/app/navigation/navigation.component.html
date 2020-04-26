@@ -45,7 +45,7 @@
 
       <!-- search autocomplete -->
       <mat-form-field appearance="outline" *ngIf="search" class="spacer search" color="primary" fxFlex>
-        <button mat-icon-button matPrefix color="primary" *ngIf="isHandset" (click)="toggleSearch()"><mat-icon>arrow_back</mat-icon></button>
+        <button mat-icon-button matPrefix class="search-buttons" *ngIf="isHandset" (click)="toggleSearch()"><mat-icon>arrow_back</mat-icon></button>
         <input #search
           placeholder="Search"
           type="text"
@@ -53,7 +53,7 @@
           [formControl]="searchControl"
           [matAutocomplete]="auto"
           (ngModelChange)="this.searchUpdate.next($event)">
-         <button mat-icon-button matSuffix color="primary" (click)="resetSearch()" ><mat-icon>close</mat-icon></button>
+         <button mat-icon-button matSuffix class="search-buttons" (click)="resetSearch()" ><mat-icon>close</mat-icon></button>
         <mat-autocomplete #auto="matAutocomplete"
           autoActiveFirstOption>
           <mat-option *ngIf="searchLoading" >Loading...</mat-option>

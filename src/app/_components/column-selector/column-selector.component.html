@@ -1,0 +1,26 @@
+<div class="column-selector">
+  <button mat-button [matMenuTriggerFor]="columMenu">
+    <mat-icon>settings</mat-icon>
+  </button>
+
+  <mat-menu #columMenu="matMenu">
+    <mat-selection-list #columnsMenu
+      [(ngModel)]="selectedColumns"
+      (ngModelChange)="setColumns($event)"
+      cdkDropList
+      (cdkDropListDropped)="drop($event)"
+      class="column-list"
+      fxLayout="column"
+      style="padding: 0px 5px 0px 0px;">
+
+        <mat-list-option *ngFor="let column of columns" (click)="$event.stopPropagation()" cdkDrag
+          class="column-list-option" fxFlex
+          color="primary"
+          [value]="column">
+          <span style="display: inline-flex;"><mat-icon>drag_indicator</mat-icon>{{column.label}}</span>
+        </mat-list-option>
+
+    </mat-selection-list>
+  </mat-menu>
+</div>
+

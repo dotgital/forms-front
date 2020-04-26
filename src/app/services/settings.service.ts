@@ -25,26 +25,33 @@ export class SettingsService {
   }
 
   getFieldSettings() {
-    const query = `query {
-      setting (id: "${environment.settingsId}") {
-        fields
-      }
-    }`;
-    return this.apollo.query<FormItem[]>({
-      query: gql`${query}`,
-      fetchPolicy: 'network-only',
-      errorPolicy: 'all',
-    }).pipe(map(res => {
-      const resp: any = res.data;
-      return resp.setting.fields;
+    return this.http.get<any>(`${environment.backendUrl}fields-settings/`)
+    .pipe(map(settings => {
+      return settings;
     }));
-    // return this.http.get<FormItem[]>(`${environment.backendUrl}settings/5e822e6ffdf2c30517c789f1`).pipe(map(res => {
-    //   return res;
-    // }));
   }
 
+  // getFieldSettings() {
+  //   const query = `query {
+  //     setting (id: "${environment.settingsId}") {
+  //       fields
+  //     }
+  //   }`;
+  //   return this.apollo.query<FormItem[]>({
+  //     query: gql`${query}`,
+  //     fetchPolicy: 'network-only',
+  //     errorPolicy: 'all',
+  //   }).pipe(map(res => {
+  //     const resp: any = res.data;
+  //     return resp.setting.fields;
+  //   }));
+  //   // return this.http.get<FormItem[]>(`${environment.backendUrl}settings/5e822e6ffdf2c30517c789f1`).pipe(map(res => {
+  //   //   return res;
+  //   // }));
+  // }
+
   setFieldSettings(fields) {
-    return this.http.put<FieldSettings>(`${environment.backendUrl}settings/${environment.settingsId}`, {fields})
+    return this.http.put<any>(`${environment.backendUrl}fields-settings/`, {fields})
     .pipe(map(settings => {
       return settings;
     }));

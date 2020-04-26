@@ -1,11 +1,19 @@
 import { CrudService } from './../../services/crud.service';
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild, forwardRef, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+  forwardRef,
+  OnChanges,
+  SimpleChanges,
+  ViewEncapsulation } from '@angular/core';
 import { FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ReplaySubject, Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 import { MatSelect } from '@angular/material/select';
 
-import { Option, BANKS } from './demo-data';
+import { Option } from './demo-data';
 
 @Component({
   selector: 'app-searchable-select-multiple',
@@ -96,6 +104,8 @@ export class SearchableSelectMultipleComponent implements OnInit, AfterViewInit,
         return {id, name};
       });
       this.optionMultiCtrl.patchValue(value);
+    } else {
+      this.optionMultiCtrl.patchValue([]);
     }
     // const formValue: string = value ? value : this.defaultOption;
     // this.defaultSelected.patchValue(formValue);

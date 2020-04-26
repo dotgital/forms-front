@@ -60,6 +60,7 @@ import { UsersListComponent } from './users/users-list/users-list.component';
 import { UserProfileComponent } from './users/components/user-profile/user-profile.component';
 import { SearchableSelectMultipleComponent } from './_components/searchable-select-multiple/searchable-select-multiple.component';
 import { SettingsPermissionsComponent } from './settings/settings-permissions/settings-permissions.component';
+import { ColumnSelectorComponent } from './_components/column-selector/column-selector.component';
 
 
 @NgModule({
@@ -84,7 +85,8 @@ import { SettingsPermissionsComponent } from './settings/settings-permissions/se
     UsersListComponent,
     UserProfileComponent,
     SearchableSelectMultipleComponent,
-    SettingsPermissionsComponent
+    SettingsPermissionsComponent,
+    ColumnSelectorComponent
   ],
   imports: [
     BrowserModule,

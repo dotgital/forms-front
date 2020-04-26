@@ -74,7 +74,7 @@ export class SettingsLayoutComponent implements OnInit {
     this.settingService.getFieldSettings().subscribe(res => {
       console.log(res);
       // this.fields = res;
-      this.fieldsNew = res;
+      this.fieldsNew = res.fields;
       this.displayLayout();
     });
   }
@@ -153,6 +153,7 @@ export class SettingsLayoutComponent implements OnInit {
 
   saveLayout() {
     this.loading = true;
+    console.log(this.fieldsNew);
     this.settingService.setFieldSettings(this.fieldsNew).subscribe(res => {
       this.layoutChanged = false;
       this.loading = false;

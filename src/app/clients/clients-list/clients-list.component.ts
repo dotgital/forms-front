@@ -1,3 +1,4 @@
+import { SettingsService } from './../../services/settings.service';
 import { Router } from '@angular/router';
 import { CrudService } from '../../services/crud.service';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
@@ -26,16 +27,35 @@ export class ClientsListComponent implements OnInit {
   dataSource: MatTableDataSource<any>;
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['firstName', 'lastName'];
+  visibleColumns = [];
+  tableColumns = [];
+  dataColumns = [];
 
   constructor(
     private crud: CrudService,
     private router: Router,
+    private settings: SettingsService,
   ) {}
 
   ngOnInit() {
-    this.getData();
+    this.getFields();
     // this.dataSource = new ListDataSource();
+  }
+
+  getFields() {
+    this.settings.getFieldSettings().subscribe(res => {
+      // this.tableColumns = [].concat(this.dataColumns, 'settings');
+      this.visibleColumns = res.fields.filter(col => col.fieldType !== 'dropdown-multiple');
+      this.dataColumns = this.visibleColumns.map(col => col.name);
+      // this.dataColumns = ["firstName", "lastName", "phoneMobile", "status"];
+      // this.visibleColumns = res.fields;
+
+
+      console.log(this.dataColumns);
+
+      this.getData();
+      // this.getData();
+    });
   }
 
   getData() {
@@ -43,7 +63,8 @@ export class ClientsListComponent implements OnInit {
     const query = `query{
       clients (sort: "${this.sortBy}:${this.sortDirection}", start: ${this.startPage}, limit: ${this.pageSize}, where: ${where}){
         id
-        ${this.displayedColumns}
+        recordName
+        ${this.dataColumns}
       }
       clientsConnection (where: ${where}) {
         aggregate {
@@ -53,6 +74,8 @@ export class ClientsListComponent implements OnInit {
     }`;
 
     this.crud.getDatalist(query).subscribe(({data, loading}) => {
+      console.log(data);
+      this.tableColumns = [].concat('recordName', this.dataColumns, 'settings');
       this.dataSource = new MatTableDataSource(data.clients);
       // this.dataSource.sort = this.sort;
       this.totalPages = data.clientsConnection.aggregate.count;
@@ -75,5 +98,9 @@ export class ClientsListComponent implements OnInit {
 
   goTo(row) {
     this.router.navigate([`/clients/${row.id}`]);
+  }
+
+  changeColumns(e){
+    console.log(e);
   }
 }

@@ -57,7 +57,7 @@ export class ClientProfileComponent implements OnInit, OnChanges {
   async buildForm() {
     this.emptyForm = this.settingService.getFieldSettings().toPromise()
     .then(res => {
-      res.forEach(control => {
+      res.fields.forEach(control => {
         if (control.visible) {
           const formControl = control.required ? new FormControl(null, Validators.required) : new FormControl(null);
           this.profileForm.addControl(control.name, formControl);
@@ -84,9 +84,9 @@ export class ClientProfileComponent implements OnInit, OnChanges {
   }
 
   submitData() {
-    // console.log(this.profileForm.value);
     this.dataChanged = false;
     if (!this.profileForm.invalid) {
+      console.log(this.profileForm.value);
       if (!this.creating) {
         this.crud.updateData('clients', this.recordData.id, this.profileForm.value).subscribe(res => {
           console.log(res);
