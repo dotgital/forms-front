@@ -1,12 +1,16 @@
 <!-- <mat-progress-bar mode="indeterminate" color="primary" class="loading-top"></mat-progress-bar> -->
 <mat-toolbar class="component-header">
-  <span>Clients</span>
+  <span fxFlex>Clients</span>
+  <button mat-flat-button color="primary" routerLink="/clients/add">Create</button>
 </mat-toolbar>
 <div class="main-content">
   <div class="mat-elevation-z1">
     <div fxLayout="row" fxLayoutAlign="end center" style="background-color: #fff; padding: 10px; border-bottom: 1px solid #e0e0e0;">
-      <button mat-flat-button color="primary"
-      routerLink="/clients/add">Create</button>
+
+
+      <app-column-selector
+      [columns]="allColumns"
+      (changeColumns)="changeColumns($event)"></app-column-selector>
     </div>
     <div class="table-container">
       <table mat-table class="full-width-table" matSort (matSortChange)="sortData($event)" aria-label="Elements">
@@ -33,9 +37,6 @@
         <!-- Settings -->
         <ng-container matColumnDef="settings" stickyEnd>
           <th mat-header-cell *matHeaderCellDef>
-            <app-column-selector
-            [columns]="visibleColumns"
-            (changeColumns)="changeColumns($event)"></app-column-selector>
           </th>
           <td mat-cell *matCellDef="let row">
             <button mat-icon-button><mat-icon>visibility</mat-icon></button>

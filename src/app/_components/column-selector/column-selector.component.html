@@ -1,19 +1,33 @@
 <div class="column-selector">
-  <button mat-button [matMenuTriggerFor]="columMenu">
-    <mat-icon>settings</mat-icon>
+  <button mat-icon-button [matMenuTriggerFor]="columMenu">
+    <mat-icon style="color: #797979">settings</mat-icon>
   </button>
 
   <mat-menu #columMenu="matMenu">
+
+
+    <!-- <mat-selection-list
+      (click)="$event.stopPropagation()"
+      style="padding: 0px 5px 0px 0px;">
+      <mat-list-option class="column-list-option"
+        color="primary"
+        fxFlex
+        value="true"
+        disabled>
+        <span style="display: inline-flex; color: #b0b0b0;"><mat-icon>drag_indicator</mat-icon>Name</span>
+      </mat-list-option>
+    </mat-selection-list> -->
+
     <mat-selection-list #columnsMenu
       [(ngModel)]="selectedColumns"
-      (ngModelChange)="setColumns($event)"
+      (click)="$event.stopPropagation()"
       cdkDropList
       (cdkDropListDropped)="drop($event)"
       class="column-list"
       fxLayout="column"
       style="padding: 0px 5px 0px 0px;">
 
-        <mat-list-option *ngFor="let column of columns" (click)="$event.stopPropagation()" cdkDrag
+        <mat-list-option *ngFor="let column of columns" (click)="setColumns($event)" cdkDrag
           class="column-list-option" fxFlex
           color="primary"
           [value]="column">
