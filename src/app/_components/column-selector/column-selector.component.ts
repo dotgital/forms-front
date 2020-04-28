@@ -7,13 +7,15 @@ import { MatSelectionList } from '@angular/material/list';
   selector: 'app-column-selector',
   templateUrl: './column-selector.component.html',
   styleUrls: ['./column-selector.component.scss'],
-  encapsulation : ViewEncapsulation.None,
+  // encapsulation : ViewEncapsulation.None,
 })
 export class ColumnSelectorComponent implements OnInit, OnChanges {
   @Input() columns: any[];
   @Output() changeColumns = new EventEmitter<any>();
   selectedColumns: any[];
   loading: boolean;
+  loadingHeight: number;
+  loadingWidth: number;
 
   constructor(
     private settings: SettingsService,
@@ -21,8 +23,13 @@ export class ColumnSelectorComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     // this.selectedColumns = [this.columns[1]];
-    if (this.columns) {
-      this.loading = true;
+    if (this.columns.length > 0) {
+      this.loadingWidth = 280;
+      this.loadingHeight = (this.columns.length * 48) + 16;
+      console.log(this.columns.length);
+      setTimeout(() => {
+        this.loading = false;
+      }, 100);
       this.selectedColumns = this.columns.map((res, key) => res.tableVisible === true ? this.columns[key] : null );
       this.selectedColumns = ['name'].concat(this.selectedColumns);
     }

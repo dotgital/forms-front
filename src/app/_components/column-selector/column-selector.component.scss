@@ -65,3 +65,16 @@
     margin-right: 10px;
   }
 }
+
+.loading-container{
+  background: #ffffff;
+  opacity: 0.85;
+  position: absolute;
+  z-index: 100;
+  width: 280px;
+  top: 5px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
