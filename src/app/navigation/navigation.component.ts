@@ -20,6 +20,7 @@ export class NavigationComponent implements OnInit {
   fullMenu: boolean;
   search: boolean;
   isHandset: boolean;
+  isAdmin: boolean;
   searchLoading: boolean;
   searchNoResults: boolean;
   searchValue: string;
@@ -55,6 +56,7 @@ export class NavigationComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.isAdmin = this.authService.currentUserValue.user.role.type === 'administrator';
     this.search = false;
     this.searchUpdate.pipe(
       debounceTime(400),

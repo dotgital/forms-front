@@ -7,7 +7,7 @@ export interface User {
       fullName: string;
       blocked: boolean;
       role: {
-          name: string;
+          type: string;
       };
       avatar: [{
           url: string;

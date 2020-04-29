@@ -38,20 +38,22 @@ export class LoginComponent implements OnInit {
     const email = this.loginForm.value.email;
     const password = this.loginForm.value.password;
 
-    this.authService.login(email, password)
-    .pipe(first())
-    .subscribe(
-        data => {
-          this.router.navigate(['/']).then(() => {
-            this.loading = false;
-          });
-        },
-        error => {
-          console.log(error);
-          this.loading = false;
-          const errorMessage = error['0'].messages['0'].message;
-          this.snackBard.open(errorMessage, null, {duration: 3000});
+    this.authService.login(email, password).subscribe(data => {
+      const code: any = data;
+      if (code.statusCode === 400 ){
+        const errorMessage = code.message[0].messages[0].message;
+        this.snackBard.open(errorMessage, null, {
+          duration: 3000,
+          verticalPosition: 'top',
+          panelClass: 'alert-error'
         });
+        this.loading = false;
+      } else {
+        this.router.navigate(['/']).then(() => {
+          this.loading = false;
+        });
+      }
+    });
   }
 
 }

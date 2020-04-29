@@ -4,7 +4,7 @@ import { environment } from './../../environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import { User } from '../_interfaces/user';
 import gql from 'graphql-tag';
 
@@ -16,6 +16,7 @@ export class AuthService {
   private currentUserSubject: BehaviorSubject < User > ;
   public currentUser: Observable < User > ;
   public user: User;
+  public data: Observable<any>;
 
   constructor(
     private http: HttpClient,
@@ -62,6 +63,9 @@ export class AuthService {
           id
           email
           username
+          role {
+            type
+          }
         }
       }
     }`;
@@ -73,7 +77,20 @@ export class AuthService {
         localStorage.setItem('currentUser', JSON.stringify(userData));
         this.currentUserSubject.next(userData);
         return user;
-      }));
+      }),
+      catchError(err => {
+        let error;
+        // whatever you want to handle error
+        if (err.graphQLErrors) {
+          error = err.graphQLErrors.map(({ extensions }) => extensions.exception.data );
+        }
+        if (err.networkError) {
+          console.log(err.networkError);
+        }
+        // default return
+        return error;
+    })
+      );
     // return this.http.post<any>(`${environment.backendUrl}auth/local`, {
     //     identifier: username,
     //     password: pw

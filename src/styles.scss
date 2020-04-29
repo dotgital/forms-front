@@ -47,6 +47,10 @@ $custom-typography: mat-typography-config(
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+.alert-error{
+  background: #e60000;
+}
+
 .loading-top.mat-progress-bar{
   position: absolute;
   z-index: 100;

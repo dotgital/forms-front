@@ -1,3 +1,4 @@
+import { RoleGuard } from './services/role.guard';
 import { SettingsPermissionsComponent } from './settings/settings-permissions/settings-permissions.component';
 import { UsersViewComponent } from './users/users-view/users-view.component';
 import { UsersListComponent } from './users/users-list/users-list.component';
@@ -27,9 +28,9 @@ const routes: Routes = [
     { path: 'users', component: UsersListComponent },
     { path: 'users/:id', component: UsersViewComponent },
     { path: 'forms', component: FillComponent },
-    { path: 'settings', component: SettingsComponent },
-    { path: 'settings/layout', component: SettingsLayoutComponent },
-    { path: 'settings/permissions', component: SettingsPermissionsComponent },
+    { path: 'settings', component: SettingsComponent, canActivate: [RoleGuard] },
+    { path: 'settings/layout', component: SettingsLayoutComponent, canActivate: [RoleGuard] },
+    { path: 'settings/permissions', component: SettingsPermissionsComponent, canActivate: [RoleGuard] },
   ]},
 ];
 
