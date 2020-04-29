@@ -40,20 +40,15 @@ export class ClientsListComponent implements OnInit {
 
   ngOnInit() {
     this.getFields();
-    // this.dataSource = new ListDataSource();
   }
 
   getFields() {
     this.settings.getSettings('columns', 'clients').subscribe(res => {
-      console.log(res);
-      // this.tableColumns = [].concat(this.dataColumns, 'settings');
+      res.fields.sort((a,b) => (a.tablePosition > b.tablePosition) ? 1 : ((b.tablePosition > a.tablePosition) ? -1 : 0));
       this.allColumns = res.fields.filter(col => col.fieldType !== 'dropdown-multiple');
       this.visibleColumns = res.fields.filter(col => col.fieldType !== 'dropdown-multiple' && col.tableVisible === true);
       this.dataColumns = this.visibleColumns.map(col => col.name);
-      // this.dataColumns = ["firstName", "lastName", "phoneMobile", "status"];
-      // this.visibleColumns = res.fields;
       this.getData();
-      // this.getData();
     });
   }
 
@@ -75,7 +70,6 @@ export class ClientsListComponent implements OnInit {
     this.crud.getDatalist(query).subscribe(({data, loading}) => {
       this.tableColumns = [].concat('recordName', this.dataColumns, 'settings');
       this.dataSource = new MatTableDataSource(data.clients);
-      // this.dataSource.sort = this.sort;
       this.totalPages = data.clientsConnection.aggregate.count;
       this.table.dataSource = this.dataSource;
     });
@@ -88,7 +82,6 @@ export class ClientsListComponent implements OnInit {
   }
 
   sortData(e) {
-    console.log(e);
     this.sortBy = e.active;
     this.sortDirection = e.direction;
     this.getData();
@@ -99,7 +92,6 @@ export class ClientsListComponent implements OnInit {
   }
 
   changeColumns(e){
-    console.log(e);
     this.getFields();
     // this.settings.setColumnsPreference(e);
   }

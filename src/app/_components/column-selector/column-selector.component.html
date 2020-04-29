@@ -33,7 +33,7 @@
       fxLayout="column"
       style="padding: 0px 5px 0px 0px;">
 
-        <mat-list-option *ngFor="let column of columns" (click)="setColumns($event)" cdkDrag
+        <mat-list-option *ngFor="let column of columns" (click)="setVisible()" cdkDrag
           class="column-list-option" fxFlex
           color="primary"
           [value]="column">
