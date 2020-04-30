@@ -55,9 +55,9 @@ export class ClientProfileComponent implements OnInit, OnChanges {
   }
 
   async buildForm() {
-    this.emptyForm = this.settingService.getFieldSettings().toPromise()
+    this.emptyForm = this.settingService.getSettings('layout', 'clients').toPromise()
     .then(res => {
-      res.fields.forEach(control => {
+      res.forEach(control => {
         if (control.visible) {
           const formControl = control.required ? new FormControl(null, Validators.required) : new FormControl(null);
           this.profileForm.addControl(control.name, formControl);

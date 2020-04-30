@@ -1,3 +1,4 @@
+import { SettingsService } from './../../services/settings.service';
 import { Router } from '@angular/router';
 import { CrudService } from './../../services/crud.service';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
@@ -9,61 +10,27 @@ import { Component, OnInit, ViewChild } from '@angular/core';
   styleUrls: ['./users-list.component.scss']
 })
 export class UsersListComponent implements OnInit {
-  public startPage = 0;
-  public pageSize = 10;
-  public totalPages: number;
-  public sortBy = 'createdAt';
-  public sortDirection = 'desc';
-
-  @ViewChild(MatTable) table: MatTable<any>;
-  dataSource: MatTableDataSource<any>;
-  displayedColumns = ['firstName', 'lastName'];
+  allColumns: any[];
+  usersPrefId: string;
 
   constructor(
-    private crud: CrudService,
-    private router: Router,
+    private settings: SettingsService,
   ) { }
 
   ngOnInit(): void {
-    this.getData();
+    this.getFields();
   }
 
-  getData() {
-    const where = `{}`;
-    const query = `query{
-      users (sort: "${this.sortBy}:${this.sortDirection}", start: ${this.startPage}, limit: ${this.pageSize}, where: ${where}){
-        id
-        ${this.displayedColumns}
-      }
-      usersConnection (where: ${where}) {
-        aggregate {
-            count
-        }
-    }
-    }`;
-
-    this.crud.getDatalist(query).subscribe(({data, loading}) => {
-      this.dataSource = new MatTableDataSource(data.users);
-      console.log(data)
-      this.totalPages = data.usersConnection.aggregate.count;
-      this.table.dataSource = this.dataSource;
+  getFields() {
+    this.settings.getSettings('columns', 'users').subscribe(res => {
+      this.usersPrefId = res.usersPrefId;
+      res.fields.sort((a, b) => (a.tablePosition > b.tablePosition) ? 1 : ((b.tablePosition > a.tablePosition) ? -1 : 0));
+      this.allColumns = res.fields.filter(col => col.fieldType !== 'dropdown-multiple');
     });
   }
 
-  paginator(e) {
-    this.startPage = e.pageIndex !== 0 ? e.pageIndex * e.pageSize : 0;
-    this.pageSize = e.pageSize;
-    this.getData();
-  }
-
-  sortData(e) {
-    console.log(e);
-    this.sortBy = e.active;
-    this.sortDirection = e.direction;
-    this.getData();
-  }
-
-  goTo(row) {
-    this.router.navigate([`/clients/${row.id}`]);
+  changeColumns(e){
+    this.getFields();
+    // this.settings.setColumnsPreference(e);
   }
 }

@@ -96,7 +96,6 @@ export class SearchableSelectMultipleComponent implements OnInit, AfterViewInit,
 
 
   writeValue(value: any): void {
-    console.log(value);
     if (value) {
       value = value.map(user => {
         const id = user.id;

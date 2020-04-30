@@ -71,10 +71,10 @@ export class SettingsLayoutComponent implements OnInit {
   }
 
   getFieldSettings() {
-    this.settingService.getFieldSettings().subscribe(res => {
+    this.settingService.getSettings('layout', 'clients').subscribe(res => {
       console.log(res);
       // this.fields = res;
-      this.fieldsNew = res.fields;
+      this.fieldsNew = res;
       this.displayLayout();
     });
   }
@@ -154,7 +154,7 @@ export class SettingsLayoutComponent implements OnInit {
   saveLayout() {
     this.loading = true;
     console.log(this.fieldsNew);
-    this.settingService.setFieldSettings(this.fieldsNew).subscribe(res => {
+    this.settingService.setSettings({clients: this.fieldsNew}).subscribe(res => {
       this.layoutChanged = false;
       this.loading = false;
     });
@@ -191,7 +191,8 @@ export class SettingsLayoutComponent implements OnInit {
       }
       return obj;
     });
-    this.settingService.setFieldSettings(this.fieldsNew).subscribe(res => {
+    console.log(this.fieldsNew)
+    this.settingService.setSettings({clients: this.fieldsNew}).subscribe(res => {
       this.fieldChanged = false;
       this.displayLayout();
     });

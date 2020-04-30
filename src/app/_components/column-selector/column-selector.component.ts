@@ -11,7 +11,10 @@ import { MatSelectionList } from '@angular/material/list';
 })
 export class ColumnSelectorComponent implements OnInit, OnChanges {
   @Input() columns: any[];
+  @Input() module: string;
+  @Input() usersPrefId: string;
   @Output() changeColumns = new EventEmitter<any>();
+
   selectedColumns: any[];
   initialValues: any[];
   loading: boolean;
@@ -24,9 +27,11 @@ export class ColumnSelectorComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     // this.selectedColumns = [this.columns[1]];
-    if (this.columns.length > 0) {
+    if (Array.isArray(this.columns) && this.columns.length) {
       this.initialValues = this.columns.map(col => {
         const val = {
+          id: col.id,
+          module: this.module,
           tableVisible: col.tableVisible ? true : false,
           tablePosition: col.tablePosition,
           fieldName: col.name
@@ -72,8 +77,12 @@ export class ColumnSelectorComponent implements OnInit, OnChanges {
     this.savePref();
   }
 
-  savePref(){
-    this.settings.setUserSetting(this.initialValues).subscribe(res => {
+  savePref() {
+    const data: {} = {};
+    const listView = `${this.module}ListView`;
+    data['id'] = this.usersPrefId;
+    data[listView] = this.initialValues;
+    this.settings.setUserSetting(data).subscribe(res => {
       this.changeColumns.emit(this.selectedColumns);
     });
   }

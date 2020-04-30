@@ -6,6 +6,7 @@ import { CrudService } from './../../services/crud.service';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-clients-view',
@@ -38,7 +39,8 @@ export class ClientsViewComponent implements OnInit {
     private breakpointObserver: BreakpointObserver,
     private route: ActivatedRoute,
     private crud: CrudService,
-    private ui: UiService
+    private ui: UiService,
+    private location: Location,
   ) { }
 
   ngOnInit(): void {
@@ -83,6 +85,10 @@ export class ClientsViewComponent implements OnInit {
     } else {
       this.sideBarOpened = false;
     }
+  }
+
+  goBack() {
+    this.location.back();
   }
 
 }

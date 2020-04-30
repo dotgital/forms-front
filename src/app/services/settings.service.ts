@@ -28,7 +28,14 @@ export class SettingsService {
   }
 
   getSettings(type, module) {
-    return this.http.get<any>(`${environment.backendUrl}fields-settings?type=${type}&module=${module}`)
+    return this.http.get<any>(`${environment.backendUrl}global-preferences?type=${type}&module=${module}`)
+    .pipe(map(settings => {
+      return settings;
+    }));
+  }
+
+  setSettings(fields) {
+    return this.http.put<any>(`${environment.backendUrl}global-preferences/`, fields)
     .pipe(map(settings => {
       return settings;
     }));
@@ -42,7 +49,7 @@ export class SettingsService {
   }
 
   setUserSetting(data) {
-    return this.http.put<any>(`${environment.backendUrl}users/${this.userId}`, {userPreferences: {listView: data}})
+    return this.http.put<any>(`${environment.backendUrl}users/${this.userId}`, {userPreferences: data})
     .pipe(map(settings => {
       return settings;
     }));
@@ -54,6 +61,8 @@ export class SettingsService {
       return settings;
     }));
   }
+
+
 
   // setColumnsPreference(columns) {
   //   console.log(columns);

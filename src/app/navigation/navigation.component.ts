@@ -58,7 +58,7 @@ export class NavigationComponent implements OnInit {
   ngOnInit() {
     this.authService.currentUser.subscribe(res => {
       this.isAdmin = res.user.role.type === 'administrator';
-    });
+    }).unsubscribe();
     this.search = false;
     this.searchUpdate.pipe(
       debounceTime(400),
