@@ -12,10 +12,10 @@
           </ng-container>
 
           <!-- Columns -->
-            <ng-container *ngFor="let item of visibleColumns" matColumnDef="{{item.name}}">
+            <ng-container *ngFor="let item of visibleColumns" matColumnDef="{{item.fieldName}}">
               <th mat-header-cell *matHeaderCellDef mat-sort-header>{{item.label}}</th>
               <td mat-cell *matCellDef="let row">
-                  {{row[item.name]}}
+                  {{row[item.fieldName]}}
               </td>
             </ng-container>
 

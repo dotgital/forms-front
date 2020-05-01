@@ -45,7 +45,7 @@ export class DataTableComponent implements OnInit, OnChanges {
 
   getFields() {
       this.visibleColumns = this.columns.filter(col => col.tableVisible === true);
-      this.dataColumns = this.visibleColumns.map(col => col.name);
+      this.dataColumns = this.visibleColumns.map(col => col.fieldName);
       this.getData();
   }
 

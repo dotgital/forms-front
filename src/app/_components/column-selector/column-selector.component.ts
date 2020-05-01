@@ -28,16 +28,17 @@ export class ColumnSelectorComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     // this.selectedColumns = [this.columns[1]];
     if (Array.isArray(this.columns) && this.columns.length) {
-      this.initialValues = this.columns.map(col => {
-        const val = {
-          id: col.id,
-          module: this.module,
-          tableVisible: col.tableVisible ? true : false,
-          tablePosition: col.tablePosition,
-          fieldName: col.name
-        };
-        return val;
-      });
+      // this.initialValues = this.columns.map(col => {
+      //   const val = {
+      //     id: col.id,
+      //     module: this.module,
+      //     tableVisible: col.tableVisible ? true : false,
+      //     tablePosition: col.tablePosition,
+      //     fieldName: col.fieldName
+      //   };
+      //   return val;
+      // });
+      this.initialValues = this.columns;
       this.loadingWidth = 280;
       this.loadingHeight = (this.columns.length * 48) + 16;
       this.selectedColumns = this.initialValues.map((res, key) => res.tableVisible === true ? this.columns[key] : null );
@@ -68,7 +69,7 @@ export class ColumnSelectorComponent implements OnInit, OnChanges {
     this.loading = true;
     this.initialValues = this.initialValues.map(field => {
       field.tableVisible = false;
-      if ( this.selectedColumns.some(selected => selected.name === field.fieldName) ) {
+      if ( this.selectedColumns.some(selected => selected.fieldName === field.fieldName) ) {
         field.tableVisible = true;
       }
       return field;
@@ -82,6 +83,7 @@ export class ColumnSelectorComponent implements OnInit, OnChanges {
     const listView = `${this.module}ListView`;
     data['id'] = this.usersPrefId;
     data[listView] = this.initialValues;
+    console.log(data);
     this.settings.setUserSetting(data).subscribe(res => {
       this.changeColumns.emit(this.selectedColumns);
     });
