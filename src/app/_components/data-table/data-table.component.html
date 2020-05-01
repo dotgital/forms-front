@@ -1,3 +1,4 @@
+<div class="table-container">
 <table mat-table class="full-width-table" matSort (matSortChange)="sortData($event)" aria-label="Elements">
   <!-- Id Column -->
 
@@ -40,3 +41,4 @@
     [pageSizeOptions]="[5, 10, 20]"
     (page)="paginator($event)">
 </mat-paginator>
+</div>

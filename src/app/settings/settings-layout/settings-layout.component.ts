@@ -191,7 +191,6 @@ export class SettingsLayoutComponent implements OnInit {
       }
       return obj;
     });
-    console.log(this.fieldsNew)
     this.settingService.setSettings({clients: this.fieldsNew}).subscribe(res => {
       this.fieldChanged = false;
       this.displayLayout();

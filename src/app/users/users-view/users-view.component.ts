@@ -5,6 +5,7 @@ import { CrudService } from './../../services/crud.service';
 import { Observable } from 'rxjs';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-users-view',
@@ -32,6 +33,7 @@ export class UsersViewComponent implements OnInit {
     private breakpointObserver: BreakpointObserver,
     private route: ActivatedRoute,
     private crud: CrudService,
+    private location: Location,
   ) { }
 
   ngOnInit(): void {
@@ -77,6 +79,10 @@ export class UsersViewComponent implements OnInit {
     } else {
       this.sideBarOpened = false;
     }
+  }
+
+  goBack() {
+    this.location.back();
   }
 
 }
