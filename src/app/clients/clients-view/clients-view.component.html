@@ -24,7 +24,10 @@
               <div class="label-text">Profile</div>
             </div>
           </ng-template>
-          <app-client-profile [recordData]="recordData"></app-client-profile>
+          <app-client-profile
+            [recordData]="recordData"
+            [create]="create">
+          </app-client-profile>
         </mat-tab>
         <mat-tab>
           <ng-template mat-tab-label>

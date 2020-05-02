@@ -1,4 +1,4 @@
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { ErrorMessagesService } from './error-messages.service';
 import { Injectable } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -11,7 +11,7 @@ export class RoleGuard implements CanActivate {
   constructor(
     private router: Router,
     private authenticationService: AuthService,
-    private snackBar: MatSnackBar,
+    private errorMessageService: ErrorMessagesService,
 ) { }
 
   canActivate(
@@ -21,11 +21,7 @@ export class RoleGuard implements CanActivate {
       if (currentUser.user.role.type === 'administrator') {
           return true;
       }
-      this.snackBar.open('You Dont have access to this Page', null, {
-        duration: 2000,
-        verticalPosition: 'top',
-        panelClass: 'alert-error'
-      });
+      this.errorMessageService.showError('You Dont have access to this Page');
 
       this.router.navigate(['/'], { queryParams: { returnUrl: state.url } });
       return false;

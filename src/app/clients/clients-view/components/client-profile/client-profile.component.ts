@@ -11,6 +11,7 @@ import { Component, OnInit, Input, SimpleChanges, OnChanges } from '@angular/cor
 })
 export class ClientProfileComponent implements OnInit, OnChanges {
   @Input() recordData: any;
+  @Input() create: boolean;
   public input: FormItem;
   public inputList: FormItem[] = [];
   public editing: boolean;
@@ -32,17 +33,21 @@ export class ClientProfileComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     this.creating = this.recordData ? false : true;
+    console.log('this record data', this.recordData);
+    console.log('this creating', this.create);
 
-    // check if the empty form is ready to patch the data
-    if (this.emptyForm) {
-      this.emptyForm.then(() => {
-        this.setData();
-      });
+    if (this.recordData || this.create === true) {
+      this.buildForm();
     }
+    // check if the empty form is ready to patch the data
+    // if (this.emptyForm) {
+    //   this.emptyForm.then(() => {
+    //     this.setData();
+    //   });
+    // }
   }
 
   ngOnInit(): void {
-    this.buildForm();
     this.profileForm.valueChanges.subscribe(res => {
       if (this.oriData) {
         if (JSON.stringify(this.oriData) !== JSON.stringify(this.profileForm.value)) {
@@ -55,23 +60,43 @@ export class ClientProfileComponent implements OnInit, OnChanges {
   }
 
   async buildForm() {
-    this.emptyForm = this.settingService.getSettings('layout', 'clients').toPromise()
-    .then(res => {
-      res.forEach(control => {
+    console.log('building forms');
+    this.emptyForm = this.settingService.getSettings('layout', 'clients').subscribe(async res => {
+      for await (const control of res) {
         if (control.visible) {
           const formControl = control.required ? new FormControl(null, Validators.required) : new FormControl(null);
-          this.profileForm.addControl(control.name, formControl);
+          this.profileForm.addControl(control.fieldName, formControl);
           this.inputList.push(control);
-          this.defaultValue[control.name] = control.default;
+          this.defaultValue[control.fieldName] = control.default;
         }
-      });
-      return res;
-    }).catch(err => console.log(err));
-    await this.emptyForm;
-    if (this.creating) {
-      this.profileForm.patchValue(this.defaultValue);
-    }
+      }
+      if (!this.create) {
+        this.setData();
+      } else {
+        this.profileForm.patchValue(this.defaultValue);
+      }
+
+    });
   }
+
+  // async buildForm() {
+  //   this.emptyForm = this.settingService.getSettings('layout', 'clients').toPromise()
+  //   .then(res => {
+  //     res.forEach(control => {
+  //       if (control.visible) {
+  //         const formControl = control.required ? new FormControl(null, Validators.required) : new FormControl(null);
+  //         this.profileForm.addControl(control.name, formControl);
+  //         this.inputList.push(control);
+  //         this.defaultValue[control.name] = control.default;
+  //       }
+  //     });
+  //     return res;
+  //   }).catch(err => console.log(err));
+  //   await this.emptyForm;
+  //   if (this.creating) {
+  //     this.profileForm.patchValue(this.defaultValue);
+  //   }
+  // }
 
   setData() {
     this.recordData.createdAt = new Date(this.recordData.createdAt).toLocaleString();
@@ -86,7 +111,6 @@ export class ClientProfileComponent implements OnInit, OnChanges {
   submitData() {
     this.dataChanged = false;
     if (!this.profileForm.invalid) {
-      console.log(this.profileForm.value);
       if (!this.creating) {
         this.crud.updateData('clients', this.recordData.id, this.profileForm.value).subscribe(res => {
           console.log(res);
@@ -96,7 +120,6 @@ export class ClientProfileComponent implements OnInit, OnChanges {
       } else {
         this.creating = false;
         this.crud.createData('clients', this.profileForm.value).subscribe(res => {
-          console.log(res);
           this.recordData = res;
           this.setData();
         });

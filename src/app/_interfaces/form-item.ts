@@ -1,5 +1,5 @@
 export interface FormItem {
-  name: string;
+  fieldName: string;
   type: string;
   label: string;
   default: string;

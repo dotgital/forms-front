@@ -3,10 +3,11 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { map, shareReplay } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { CrudService } from './../../services/crud.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Location } from '@angular/common';
+import { ErrorMessagesService } from 'src/app/services/error-messages.service';
 
 @Component({
   selector: 'app-clients-view',
@@ -16,6 +17,7 @@ import { Location } from '@angular/common';
 export class ClientsViewComponent implements OnInit {
   @ViewChild('sidebar') rightSide: MatSidenav;
   loading = true;
+  create: boolean;
   recordTitle: string;
   dateModified: string;
   dateCreated: string;
@@ -38,20 +40,23 @@ export class ClientsViewComponent implements OnInit {
   constructor(
     private breakpointObserver: BreakpointObserver,
     private route: ActivatedRoute,
+    private router: Router,
     private crud: CrudService,
     private ui: UiService,
     private location: Location,
+    private erroMessageService: ErrorMessagesService,
   ) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       this.record.id = params.get('id');
-      if (this.record.id !== 'add') {
-        this.getRecordData();
-      } else {
+      if (this.record.id === 'add') {
+        this.create = true;
         this.recordData = '';
         this.recordTitle = 'New Client';
         this.loading = false;
+      } else {
+        this.getRecordData();
       }
     });
     this.isHandset$.subscribe(res => {
@@ -75,6 +80,10 @@ export class ClientsViewComponent implements OnInit {
       // console.log(res)
       this.recordData = res;
       this.loading = false;
+    },
+    err => {
+      this.erroMessageService.showError('Record Not Found');
+      this.router.navigate(['/clients']);
     });
   }
 

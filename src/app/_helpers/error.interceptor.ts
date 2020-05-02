@@ -1,4 +1,4 @@
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { ErrorMessagesService } from './../services/error-messages.service';
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
@@ -13,7 +13,7 @@ export class ErrorInterceptor implements HttpInterceptor {
     constructor(
         private authenticationService: AuthService,
         private router: Router,
-        private snackBar: MatSnackBar,
+        private errorMessageService: ErrorMessagesService,
     ) { }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -24,11 +24,7 @@ export class ErrorInterceptor implements HttpInterceptor {
                 // location.reload(true);
             }
             if (err.status === 403) {
-              this.snackBar.open('You Dont have access to this Page', null, {
-                duration: 2000,
-                verticalPosition: 'top',
-                panelClass: 'alert-error'
-              });
+              this.errorMessageService.showError('You Dont have access to this Page');
               this.router.navigate(['/']);
             }
             // console.log(err)

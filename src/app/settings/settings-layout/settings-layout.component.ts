@@ -34,7 +34,7 @@ export class SettingsLayoutComponent implements OnInit {
   );
 
   formItem: FormItem = {
-    name: null,
+    fieldName: null,
     label: null,
     default: null,
     type: null,
@@ -48,7 +48,7 @@ export class SettingsLayoutComponent implements OnInit {
   };
 
   editFieldForm = new FormGroup({
-    name: new FormControl(null, Validators.required),
+    fieldName: new FormControl(null, Validators.required),
     label: new FormControl(null, Validators.required),
     options: new FormControl(null),
     default:  new FormControl(null),
@@ -146,9 +146,6 @@ export class SettingsLayoutComponent implements OnInit {
   cancelLayout() {
     this.loading = true;
     this.getFieldSettings();
-    // this.fieldsNew = this.fields;
-    // this.displayLayout();
-    // this.layoutChanged = false;
   }
 
   saveLayout() {
@@ -177,11 +174,11 @@ export class SettingsLayoutComponent implements OnInit {
   }
 
   saveField() {
-    // console.log(this.editFieldForm.value)
+    console.log(this.editFieldForm.value)
     this.loading = true;
-    const fieldName = this.editFieldForm.value.name;
+    const fieldName = this.editFieldForm.value.fieldName;
     this.fieldsNew = this.fieldsNew.map((obj) => {
-      if ( obj.name === fieldName ) {
+      if ( obj.fieldName === fieldName ) {
         obj.label = this.editFieldForm.value.label;
         obj.visible =  this.editFieldForm.value.visible;
         obj.required = this.editFieldForm.value.required;

@@ -25,7 +25,7 @@
           [options]="input.options"
           [label]="input.label"
           [isRequired]="input.required"
-          [formControlName]="input.name"
+          [formControlName]="input.fieldName"
           [defaultOption]="input.default">
         </app-searchable-select>
       </ng-container>
@@ -35,14 +35,14 @@
           fxFlex="100"
           fxFlex.lt-md="100"
           class="full-width"
-          [formControlName]="input.name">
+          [formControlName]="input.fieldName">
         </app-searchable-select-multiple>
       </ng-container>
 
       <mat-form-field class="full-width" floatLabel="always" appearance="outline"  *ngSwitchDefault fxFlex="49" fxFlex.lt-md="100">
         <mat-label>{{input.label}}</mat-label>
-        <input matInput [formControlName]="input.name" [required]="input.required">
-        <mat-error *ngIf="profileForm.controls[input.name].hasError('required')">
+        <input matInput [formControlName]="input.fieldName" [required]="input.required">
+        <mat-error *ngIf="profileForm.controls[input.fieldName].hasError('required')">
           {{input.label}} is <strong>required</strong>
         </mat-error>
       </mat-form-field>
