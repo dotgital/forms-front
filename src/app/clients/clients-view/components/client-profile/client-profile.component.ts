@@ -33,18 +33,10 @@ export class ClientProfileComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     this.creating = this.recordData ? false : true;
-    console.log('this record data', this.recordData);
-    console.log('this creating', this.create);
-
     if (this.recordData || this.create === true) {
+      this.inputList = [];
       this.buildForm();
     }
-    // check if the empty form is ready to patch the data
-    // if (this.emptyForm) {
-    //   this.emptyForm.then(() => {
-    //     this.setData();
-    //   });
-    // }
   }
 
   ngOnInit(): void {
@@ -60,7 +52,6 @@ export class ClientProfileComponent implements OnInit, OnChanges {
   }
 
   async buildForm() {
-    console.log('building forms');
     this.emptyForm = this.settingService.getSettings('layout', 'clients').subscribe(async res => {
       for await (const control of res) {
         if (control.visible) {
@@ -78,25 +69,6 @@ export class ClientProfileComponent implements OnInit, OnChanges {
 
     });
   }
-
-  // async buildForm() {
-  //   this.emptyForm = this.settingService.getSettings('layout', 'clients').toPromise()
-  //   .then(res => {
-  //     res.forEach(control => {
-  //       if (control.visible) {
-  //         const formControl = control.required ? new FormControl(null, Validators.required) : new FormControl(null);
-  //         this.profileForm.addControl(control.name, formControl);
-  //         this.inputList.push(control);
-  //         this.defaultValue[control.name] = control.default;
-  //       }
-  //     });
-  //     return res;
-  //   }).catch(err => console.log(err));
-  //   await this.emptyForm;
-  //   if (this.creating) {
-  //     this.profileForm.patchValue(this.defaultValue);
-  //   }
-  // }
 
   setData() {
     this.recordData.createdAt = new Date(this.recordData.createdAt).toLocaleString();

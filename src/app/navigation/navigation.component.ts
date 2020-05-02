@@ -90,7 +90,8 @@ export class NavigationComponent implements OnInit {
   }
 
   getAutocompleteSearch() {
-    if (this.searchValue !== '') {
+    console.log(this.searchValue);
+    if (this.searchValue !== '' && this.searchValue !== null) {
       this.searchService.autocompleSearch(this.searchValue).subscribe(res => {
         this.searchLoading = false;
         this.options = res;
@@ -108,8 +109,11 @@ export class NavigationComponent implements OnInit {
     }
   }
 
-  resetSearch(){
+  resetSearch() {
     this.searchControl.reset();
+    if (this.searchControl.value === null && this.options.length === 0) {
+      this.search = !this.search;
+    }
   }
 
   toggleMenu() {
