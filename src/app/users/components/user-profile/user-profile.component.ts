@@ -115,6 +115,9 @@ export class UserProfileComponent implements OnInit, OnChanges, AfterViewInit {
       this.oriData = this.profileForm.value;
       this.dataUpdated.emit({ record: res, loading: false });
       this.formChanged.emit(false);
+    }, err => {
+      console.log(err);
+      this.dataUpdated.emit({ err, loading: false });
     });
   }
 

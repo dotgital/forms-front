@@ -13,8 +13,37 @@
     <mat-card class="mat-elevation-z1">
 
       <app-overlay-loading *ngIf="loading"></app-overlay-loading>
-      <div fxLayout="row" class="card-header">
-        <h2 fxFlex style="font-weight: 300; margin: 0px;">{{recordTitle || 'New Client'}}</h2>
+      <div fxLayout="row" fxLayout.lt-md="column" class="card-header" fxLayoutGap="10px">
+        <div fxFlex>
+          <button mat-icon-button style="margin: -6px 10px 0px 0px;">
+            <img src="../../assets/avatar.png" class="user-avatar"/>
+          </button>
+          <h2 fxFlex style="font-weight: 300; margin: 0px;">{{recordTitle || 'New Client'}}</h2>
+        </div>
+
+        <mat-divider
+          *ngIf="(isHandset$ | async) ? true : false"
+          [inset]="true">
+        </mat-divider>
+        <div>
+          <div fxFlex></div>
+          <ng-container *ngIf="!creating">
+            <a mat-flat-button color="primary" *ngIf="!editing" (click)="editRecord()" >Edit</a>
+            <a mat-button *ngIf="editing" (click)="cancelRecord()">Cancel</a>
+            <button mat-flat-button
+              color="primary"
+              *ngIf="editing"
+              (click)="saveRecord()"
+              [disabled]="!disableSubmit">
+              Save
+            </button>
+          </ng-container>
+          <ng-container *ngIf="creating">
+            <button mat-flat-button color="primary" (click)="createRecord()">
+              Create
+            </button>
+          </ng-container>
+        </div>
       </div>
       <mat-tab-group color="primary" animationDuration="0ms">
         <mat-tab>
@@ -24,9 +53,12 @@
               <div class="label-text">Profile</div>
             </div>
           </ng-template>
-          <app-client-profile
+          <app-client-profile #clientProfile
             [recordData]="recordData"
-            [create]="create">
+            [create]="create"
+            (formChanged)="dataChanged($event)"
+            (dataCreated)="dataCreated($event)"
+            (dataUpdated)="dataUpdated($event)">
           </app-client-profile>
         </mat-tab>
         <mat-tab>

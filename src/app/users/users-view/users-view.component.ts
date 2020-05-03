@@ -113,6 +113,10 @@ export class UsersViewComponent implements OnInit, AfterViewInit {
     if (e.record && e.record.recordName) {
       this.recordTitle = e.record.recordName;
     }
+    if ( e.err ) {
+      this.getRecordData();
+    }
+
     this.loading = e.loading;
   }
 

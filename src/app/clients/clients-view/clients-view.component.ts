@@ -1,10 +1,11 @@
+import { ClientProfileComponent } from './components/client-profile/client-profile.component';
 import { UiService } from './../../services/ui.service';
 import { MatSidenav } from '@angular/material/sidenav';
 import { map, shareReplay } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { CrudService } from './../../services/crud.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Location } from '@angular/common';
 import { ErrorMessagesService } from 'src/app/services/error-messages.service';
@@ -14,9 +15,13 @@ import { ErrorMessagesService } from 'src/app/services/error-messages.service';
   templateUrl: './clients-view.component.html',
   styleUrls: ['./clients-view.component.scss']
 })
-export class ClientsViewComponent implements OnInit {
+export class ClientsViewComponent implements OnInit, AfterViewInit {
   @ViewChild('sidebar') rightSide: MatSidenav;
+  @ViewChild('clientProfile') clientProfile: ClientProfileComponent;
   loading = true;
+  editing: boolean;
+  creating: boolean;
+  disableSubmit: boolean;
   create: boolean;
   recordTitle: string;
   dateModified: string;
@@ -47,11 +52,18 @@ export class ClientsViewComponent implements OnInit {
     private errorMessageService: ErrorMessagesService,
   ) { }
 
+  ngAfterViewInit(): void {
+    // this.userProfile.profileForm.valueChanges.subscribe(res => {
+    //   console.log(res);
+    // });
+  }
+
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       this.record.id = params.get('id');
       if (this.record.id === 'add') {
         this.create = true;
+        this.creating = true;
         this.recordData = '';
         this.recordTitle = 'New Client';
         this.loading = false;
@@ -98,6 +110,57 @@ export class ClientsViewComponent implements OnInit {
 
   goBack() {
     this.location.back();
+  }
+
+  dataChanged(e) {
+    console.log(e)
+    this.disableSubmit = e;
+  }
+
+  dataUpdated(e) {
+    console.log(e);
+    if (e.record && e.record.recordName) {
+      this.recordTitle = e.record.recordName;
+    }
+    if ( e.err ) {
+      this.getRecordData();
+    }
+
+    this.loading = e.loading;
+  }
+
+  dataCreated(e) {
+    this.loading = e.loading;
+    console.log(e);
+    if ( e.dataCreated ) {
+      this.loading = true;
+      this.creating = false;
+      this.record.id = e.recordId;
+      this.location.go(`/users/${this.record.id}`);
+      this.getRecordData();
+    } else {
+      this.creating = true;
+    }
+  }
+
+  editRecord() {
+    this.editing = !this.editing;
+    this.clientProfile.enableForm();
+  }
+
+  cancelRecord() {
+    this.editing = !this.editing;
+    this.getRecordData();
+    // this.clientProfile.cancelForm();
+  }
+
+  saveRecord() {
+    this.clientProfile.updateClient();
+  }
+
+  createRecord() {
+    this.creating = !this.creating;
+    this.clientProfile.createClient();
   }
 
 }

@@ -2,7 +2,7 @@ import { SettingsService } from '../../../../services/settings.service';
 import { FormItem } from '../../../../_interfaces/form-item';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { CrudService } from '../../../../services/crud.service';
-import { Component, OnInit, Input, SimpleChanges, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, OnChanges, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-client-profile',
@@ -12,6 +12,7 @@ import { Component, OnInit, Input, SimpleChanges, OnChanges } from '@angular/cor
 export class ClientProfileComponent implements OnInit, OnChanges {
   @Input() recordData: any;
   @Input() create: boolean;
+  @Output() formChanged: EventEmitter<boolean> = new EventEmitter();
   public input: FormItem;
   public inputList: FormItem[] = [];
   public editing: boolean;
@@ -43,9 +44,9 @@ export class ClientProfileComponent implements OnInit, OnChanges {
     this.profileForm.valueChanges.subscribe(res => {
       if (this.oriData) {
         if (JSON.stringify(this.oriData) !== JSON.stringify(this.profileForm.value)) {
-          this.dataChanged = true;
+          this.formChanged.emit(true);
         } else {
-          this.dataChanged = false;
+          this.formChanged.emit(false);
         }
       }
     });
@@ -80,30 +81,51 @@ export class ClientProfileComponent implements OnInit, OnChanges {
     this.profileForm.disable();
   }
 
-  submitData() {
-    this.dataChanged = false;
+  updateClient() {
     if (!this.profileForm.invalid) {
-      if (!this.creating) {
-        this.crud.updateData('clients', this.recordData.id, this.profileForm.value).subscribe(res => {
-          console.log(res);
-          this.recordData = res;
-          this.setData();
-        });
-      } else {
-        this.creating = false;
-        this.crud.createData('clients', this.profileForm.value).subscribe(res => {
-          this.recordData = res;
-          this.setData();
-        });
-      }
+      this.crud.updateData('clients', this.recordData.id, this.profileForm.value).subscribe(res => {
+        console.log(res);
+        this.recordData = res;
+        this.setData();
+      });
     }
   }
+
+  createClient() {
+    if (!this.profileForm.invalid) {
+      this.creating = false;
+      this.crud.createData('clients', this.profileForm.value).subscribe(res => {
+        this.recordData = res;
+        this.setData();
+      });
+    }
+  }
+
+  // submitData() {
+  //   this.dataChanged = false;
+  //   if (!this.profileForm.invalid) {
+  //     if (!this.creating) {
+  //       this.crud.updateData('clients', this.recordData.id, this.profileForm.value).subscribe(res => {
+  //         console.log(res);
+  //         this.recordData = res;
+  //         this.setData();
+  //       });
+  //     } else {
+  //       this.creating = false;
+  //       this.crud.createData('clients', this.profileForm.value).subscribe(res => {
+  //         this.recordData = res;
+  //         this.setData();
+  //       });
+  //     }
+  //   }
+  // }
 
   setDefaultValue(name: string, e) {
     // this.profileForm.patchValue({status: e});
   }
 
   enableForm() {
+    console.log('enabling forms');
     this.editing = true;
     this.profileForm.enable();
   }

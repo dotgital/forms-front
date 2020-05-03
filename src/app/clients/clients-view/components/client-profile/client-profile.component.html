@@ -1,5 +1,5 @@
-<form id="input-form" [formGroup]="profileForm" novalidate (ngSubmit)="submitData()" style.fontSize.px="26px">
-  <div fxLayout="row" fxLayoutAlign="end center" class="action-row" style="margin: 10px 0px;">
+<form id="input-form" [formGroup]="profileForm" novalidate style.fontSize.px="26px">
+  <!-- <div fxLayout="row" fxLayoutAlign="end center" class="action-row" style="margin: 10px 0px;">
     <ng-container *ngIf="!creating" >
       <a mat-flat-button (click)="enableForm()" *ngIf="!editing" color="primary">Edit</a>
       <a mat-button (click)="cancelForm()" *ngIf="editing">Cancel</a>
@@ -13,7 +13,7 @@
       </button>
     </ng-container>
 
-  </div>
+  </div> -->
 
   <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutAlign="space-between start">
     <ng-container *ngFor="let input of inputList" [ngSwitch]="input.fieldType" >

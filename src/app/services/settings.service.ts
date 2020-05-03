@@ -49,7 +49,7 @@ export class SettingsService {
   }
 
   setUserSetting(data) {
-    return this.http.put<any>(`${environment.backendUrl}users/${this.userId}`, {userPreferences: data})
+    return this.http.put<any>(`${environment.backendUrl}user-update/${this.userId}`, {userPreferences: data})
     .pipe(map(settings => {
       return settings;
     }));
