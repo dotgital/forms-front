@@ -84,18 +84,15 @@ export class NavigationComponent implements OnInit {
   }
 
   goTo(e) {
-    console.log(e);
     const model = (e.model).toLowerCase();
     this.router.navigate([`/${model}s/${e.id}`]);
   }
 
   getAutocompleteSearch() {
-    console.log(this.searchValue);
     if (this.searchValue !== '' && this.searchValue !== null) {
       this.searchService.autocompleSearch(this.searchValue).subscribe(res => {
         this.searchLoading = false;
         this.options = res;
-        console.log(res);
         if (res.length === 0) {
           this.searchNoResults = true;
           setTimeout(() => {
@@ -110,10 +107,10 @@ export class NavigationComponent implements OnInit {
   }
 
   resetSearch() {
-    this.searchControl.reset();
-    if (this.searchControl.value === null && this.options.length === 0) {
+    if (this.searchControl.value === null && this.searchValue === null) {
       this.search = !this.search;
     }
+    this.searchControl.reset();
   }
 
   toggleMenu() {

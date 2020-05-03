@@ -11,7 +11,7 @@ export class ErrorMessagesService {
   ) { }
 
   showError(msg: string) {
-    this.snackBar.open(msg, 'close', {
+    this.snackBar.open(msg, 'Close', {
       duration: 2000,
       verticalPosition: 'top',
       panelClass: 'alert-error'

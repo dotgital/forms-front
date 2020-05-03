@@ -58,6 +58,20 @@ export class CrudService {
     }));
   }
 
+  createUser(userData) {
+    return this.http.post(`${environment.backendUrl}users/`, userData)
+    .pipe(map(settings => {
+      return settings;
+    }));
+  }
+
+  updateUser(userId, userData) {
+    console.log(userId);
+    return this.http.put(`${environment.backendUrl}user-update/${userId}`, userData)
+    .pipe(map(settings => {
+      return settings;
+    }));
+  }
 
   // getRecordData(query){
   //   return this.apollo.query<any>({

@@ -44,7 +44,7 @@ export class ClientsViewComponent implements OnInit {
     private crud: CrudService,
     private ui: UiService,
     private location: Location,
-    private erroMessageService: ErrorMessagesService,
+    private errorMessageService: ErrorMessagesService,
   ) { }
 
   ngOnInit(): void {
@@ -72,7 +72,7 @@ export class ClientsViewComponent implements OnInit {
     this.loading = true;
     this.crud.getRecordData(this.record.type, this.record.id).subscribe(res => {
       this.recordTitle = `${res.firstName} ${res.lastName}`;
-      const dateOptions = {hour: '2-digit', minute: '2-digit', year: 'numeric', month: 'numeric', day: 'numeric' }
+      const dateOptions = {hour: '2-digit', minute: '2-digit', year: 'numeric', month: 'numeric', day: 'numeric' };
       this.dateModified = new Date(res.updatedAt).toLocaleString([], dateOptions);
       this.dateCreated = new Date(res.createdAt).toLocaleString([], dateOptions);
       this.createdBy = res.createdBy;
@@ -82,14 +82,14 @@ export class ClientsViewComponent implements OnInit {
       this.loading = false;
     },
     err => {
-      this.erroMessageService.showError('Record Not Found');
+      this.errorMessageService.showError('Record Not Found');
       this.router.navigate(['/clients']);
     });
   }
 
-  toogleSideBar(){
-    this.rightSide.toggle()
-    if (this.rightSide.opened ){
+  toogleSideBar() {
+    this.rightSide.toggle();
+    if (this.rightSide.opened ) {
       this.sideBarOpened = true;
     } else {
       this.sideBarOpened = false;

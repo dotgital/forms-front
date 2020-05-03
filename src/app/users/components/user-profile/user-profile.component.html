@@ -1,5 +1,5 @@
-<form id="input-form" [formGroup]="profileForm" novalidate (ngSubmit)="submitData()" style.fontSize.px="26px">
-  <div fxLayout="row" fxLayoutAlign="end center" class="action-row" style="margin: 10px 0px;">
+<form id="input-form" [formGroup]="profileForm" novalidate (ngSubmit)="createUser()" style.fontSize.px="26px">
+  <!-- <div fxLayout="row" fxLayoutAlign="end center" class="action-row" style="margin: 10px 0px;">
     <ng-container *ngIf="!creating" >
       <a mat-flat-button (click)="enableForm()" *ngIf="!editing" color="primary">Edit</a>
       <a mat-button (click)="cancelForm()" *ngIf="editing">Cancel</a>
@@ -12,7 +12,7 @@
         Create
       </button>
     </ng-container>
-  </div>
+  </div> -->
 
   <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutAlign="space-between center">
 
@@ -28,8 +28,26 @@
       <mat-label>Last Name</mat-label>
       <input matInput formControlName="lastName" required>
       <mat-error *ngIf="profileForm.controls['lastName'].hasError('required')">
-      First Name is <strong>required</strong>
+      Last Name is <strong>required</strong>
     </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" floatLabel="always" color="primary" class="full-width" fxFlex="49" fxFlex.lt-md="100">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" required>
+      <mat-error *ngIf="profileForm.controls['email'].errors && profileForm.controls['email'].errors.required">
+        Email is <strong>required</strong></mat-error>
+      <mat-error *ngIf="profileForm.controls['email'].errors && !profileForm.controls['email'].errors.required">
+        Please type a <strong>valid</strong> email address</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" floatLabel="always" color="primary" class="full-width" fxFlex="49" fxFlex.lt-md="100"
+    *ngIf="creating">
+      <mat-label>Password</mat-label>
+      <input matInput formControlName="password" required>
+      <a mat-button matSuffix style="top: -9px; margin-right: -8px;" (click)="generatePassword()" >Generate</a>
+      <mat-error *ngIf="profileForm.controls['password'].hasError('required')">
+      Password is <strong>required</strong></mat-error>
     </mat-form-field>
 
   </div>

@@ -24,8 +24,8 @@ export class ErrorInterceptor implements HttpInterceptor {
                 // location.reload(true);
             }
             if (err.status === 403) {
-              this.errorMessageService.showError('You Dont have access to this Page');
-              this.router.navigate(['/']);
+              this.errorMessageService.showError(err.error.message.message);
+              // this.router.navigate(['/']);
             }
             // console.log(err)
             const error = err.error.message || err.statusText;

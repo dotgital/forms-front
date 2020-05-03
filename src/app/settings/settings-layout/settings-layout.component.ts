@@ -115,33 +115,7 @@ export class SettingsLayoutComponent implements OnInit {
     });
     console.log(this.fieldsNew);
     this.layoutChanged = true;
-    // console.log(this.fields)
   }
-
-  // drop(event: CdkDragDrop < FormItem[] > ) {
-  //   console.log(this.fields)
-  //   if (event.previousContainer === event.container) {
-  //     moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-  //   } else {
-  //     transferArrayItem(event.previousContainer.data,
-  //       event.container.data,
-  //       event.previousIndex,
-  //       event.currentIndex);
-  //   }
-  //   this.fieldsNew = [];
-  //   this.left.forEach((el, key) => {
-  //     el.column = 'left';
-  //     el.position = key;
-  //     this.fieldsNew.push(el);
-  //   });
-  //   this.right.forEach((el, key) => {
-  //     el.column = 'right';
-  //     el.position = key;
-  //     this.fieldsNew.push(el);
-  //   });
-  //   this.layoutChanged = true;
-  //   console.log(this.fields)
-  // }
 
   cancelLayout() {
     this.loading = true;
@@ -174,7 +148,7 @@ export class SettingsLayoutComponent implements OnInit {
   }
 
   saveField() {
-    console.log(this.editFieldForm.value)
+    console.log(this.editFieldForm.value);
     this.loading = true;
     const fieldName = this.editFieldForm.value.fieldName;
     this.fieldsNew = this.fieldsNew.map((obj) => {
