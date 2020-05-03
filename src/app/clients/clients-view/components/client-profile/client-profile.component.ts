@@ -13,6 +13,8 @@ export class ClientProfileComponent implements OnInit, OnChanges {
   @Input() recordData: any;
   @Input() create: boolean;
   @Output() formChanged: EventEmitter<boolean> = new EventEmitter();
+  @Output() dataCreated: EventEmitter<any> = new EventEmitter();
+  @Output() dataUpdated: EventEmitter<any> = new EventEmitter();
   public input: FormItem;
   public inputList: FormItem[] = [];
   public editing: boolean;
@@ -81,22 +83,53 @@ export class ClientProfileComponent implements OnInit, OnChanges {
     this.profileForm.disable();
   }
 
+  enableForm() {
+    this.editing = true;
+    this.profileForm.enable();
+  }
+
+  cancelForm() {
+    this.editing = false;
+    this.profileForm.reset();
+    this.setData();
+  }
+
   updateClient() {
+    // Touch all controls to show any error
+    this.profileForm.markAllAsTouched();
+
     if (!this.profileForm.invalid) {
+      // Emit to parent to start Loading overlay and disable save button
+      this.dataUpdated.emit({ loading: true });
+      this.formChanged.emit(false);
+
       this.crud.updateData('clients', this.recordData.id, this.profileForm.value).subscribe(res => {
-        console.log(res);
+        this.dataUpdated.emit({ record: res, loading: false });
+        this.formChanged.emit(false);
         this.recordData = res;
         this.setData();
+      }, err => {
+        console.log(err);
+        this.dataUpdated.emit({ err, loading: false });
       });
     }
   }
 
   createClient() {
+    // Touch all controls to show any error
+    this.profileForm.markAllAsTouched();
+
     if (!this.profileForm.invalid) {
+      // Emit to parent to start loading overlay
+      this.dataCreated.emit({ loading: true });
       this.creating = false;
       this.crud.createData('clients', this.profileForm.value).subscribe(res => {
+        this.dataCreated.emit( {dataCreated: true, recordId: res['id'], loading: false} );
         this.recordData = res;
         this.setData();
+      }, err => {
+        console.log(err);
+        this.dataCreated.emit( {dataCreated: false, loading: false} );
       });
     }
   }
@@ -119,20 +152,4 @@ export class ClientProfileComponent implements OnInit, OnChanges {
   //     }
   //   }
   // }
-
-  setDefaultValue(name: string, e) {
-    // this.profileForm.patchValue({status: e});
-  }
-
-  enableForm() {
-    console.log('enabling forms');
-    this.editing = true;
-    this.profileForm.enable();
-  }
-
-  cancelForm() {
-    this.editing = false;
-    this.profileForm.reset();
-    this.setData();
-  }
 }

@@ -89,7 +89,6 @@ export class ClientsViewComponent implements OnInit, AfterViewInit {
       this.dateCreated = new Date(res.createdAt).toLocaleString([], dateOptions);
       this.createdBy = res.createdBy;
       this.modifiedBy = res.modifiedBy;
-      // console.log(res)
       this.recordData = res;
       this.loading = false;
     },
@@ -113,12 +112,10 @@ export class ClientsViewComponent implements OnInit, AfterViewInit {
   }
 
   dataChanged(e) {
-    console.log(e)
     this.disableSubmit = e;
   }
 
   dataUpdated(e) {
-    console.log(e);
     if (e.record && e.record.recordName) {
       this.recordTitle = e.record.recordName;
     }
@@ -135,8 +132,9 @@ export class ClientsViewComponent implements OnInit, AfterViewInit {
     if ( e.dataCreated ) {
       this.loading = true;
       this.creating = false;
+      this.create = false;
       this.record.id = e.recordId;
-      this.location.go(`/users/${this.record.id}`);
+      this.location.go(`/clients/${this.record.id}`);
       this.getRecordData();
     } else {
       this.creating = true;

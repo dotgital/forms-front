@@ -79,16 +79,18 @@ export class UserProfileComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   createUser() {
-    // Emit to parent to start loading overlay
-    this.dataCreated.emit({ loading: true });
-
     // Generating User Name and Record Name
     const username = this.profileForm.value.email;
     const recordName = `${this.profileForm.value.firstName} ${this.profileForm.value.lastName}`;
     this.profileForm.patchValue({username});
     this.profileForm.patchValue({recordName});
 
+    // Touch all controls to show any error
+    this.profileForm.markAllAsTouched();
+
     if (!this.profileForm.invalid) {
+      // Emit to parent to start loading overlay
+      this.dataCreated.emit({ loading: true });
       this.crud.createUser(this.profileForm.value).subscribe(res => {
         this.dataCreated.emit( {dataCreated: true, recordId: res['id'], loading: false} );
       }, err => {
@@ -101,24 +103,29 @@ export class UserProfileComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   updateUser() {
-    // Emit to parent to start Loading overlay and disable save button
-    this.dataUpdated.emit({ loading: true });
-    this.formChanged.emit(false);
+    // Touch all controls to show any error
+    this.profileForm.markAllAsTouched();
 
-    // Updating the recorName
-    const recordName = `${this.profileForm.value.firstName} ${this.profileForm.value.lastName}`;
-    this.profileForm.patchValue({recordName});
-
-    this.crud.updateUser(this.recordData.id, this.profileForm.value).subscribe(res => {
-      this.recordData = res;
-      this.profileForm.patchValue(res);
-      this.oriData = this.profileForm.value;
-      this.dataUpdated.emit({ record: res, loading: false });
+    if (!this.profileForm.invalid) {
+      // Emit to parent to start Loading overlay and disable save button
+      this.dataUpdated.emit({ loading: true });
       this.formChanged.emit(false);
-    }, err => {
-      console.log(err);
-      this.dataUpdated.emit({ err, loading: false });
-    });
+
+      // Updating the recorName
+      const recordName = `${this.profileForm.value.firstName} ${this.profileForm.value.lastName}`;
+      this.profileForm.patchValue({recordName});
+
+      this.crud.updateUser(this.recordData.id, this.profileForm.value).subscribe(res => {
+        this.recordData = res;
+        this.profileForm.patchValue(res);
+        this.oriData = this.profileForm.value;
+        this.dataUpdated.emit({ record: res, loading: false });
+        this.formChanged.emit(false);
+      }, err => {
+        console.log(err);
+        this.dataUpdated.emit({ err, loading: false });
+      });
+    }
   }
 
   // submitData() {

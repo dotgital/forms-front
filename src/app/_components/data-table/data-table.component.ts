@@ -79,9 +79,12 @@ export class DataTableComponent implements OnInit, OnChanges {
   }
 
   sortData(e) {
-    this.sortBy = e.active;
-    this.sortDirection = e.direction;
-    this.getData();
+    console.log(e)
+    if (e.direction) {
+      this.sortBy = e.active;
+      this.sortDirection = e.direction;
+      this.getData();
+    }
   }
 
   goTo(row) {

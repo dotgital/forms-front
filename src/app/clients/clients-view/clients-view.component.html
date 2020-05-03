@@ -6,8 +6,8 @@
   <mat-toolbar class="component-header content-toolbar">
     <button mat-icon-button (click)="goBack()" style="margin-left: -10px;" ><mat-icon>arrow_back</mat-icon></button>
     <span fxFlex>Client Profile</span>
-    <a mat-button class="history-toogle" (click)="toogleSideBar()" *ngIf="!sideBarOpened" >Show History <mat-icon>double_arrow</mat-icon></a>
-    <a mat-button class="history-toogle" (click)="toogleSideBar()" *ngIf="sideBarOpened" >Hide History <mat-icon>double_arrow</mat-icon></a>
+    <a mat-button class="history-toogle" (click)="toogleSideBar()" *ngIf="!sideBarOpened" > <mat-icon>keyboard_arrow_left</mat-icon> History</a>
+    <a mat-button class="history-toogle" (click)="toogleSideBar()" *ngIf="sideBarOpened" > History <mat-icon>keyboard_arrow_right</mat-icon></a>
   </mat-toolbar>
   <div style="padding: 10px;">
     <mat-card class="mat-elevation-z1">
@@ -84,7 +84,7 @@
     <mat-toolbar color="primary" class="main-tool-bar">Menu</mat-toolbar>
     <mat-toolbar class="component-header">
       <span fxFlex>History</span>
-      <a mat-button class="history-toogle" (click)="toogleSideBar()" *ngIf="(isHandset$ | async) ? true : false"> Hide History<mat-icon>double_arrow</mat-icon></a>
+      <a mat-button class="history-toogle" (click)="toogleSideBar()" *ngIf="(isHandset$ | async) ? true : false"> History<mat-icon>keyboard_arrow_right</mat-icon></a>
     </mat-toolbar>
     <div fxLayout="column" fxLayoutAlign="space-between stretch" fxLayoutGap="10px" style="padding: 10px; height: calc( 100vh - 120px );">
       <div fxFlex style="border: 1px solid #d6d9d9; padding: 10px;">
