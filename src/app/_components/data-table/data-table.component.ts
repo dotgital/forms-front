@@ -50,27 +50,41 @@ export class DataTableComponent implements OnInit, OnChanges {
   }
 
   getData() {
-    const where = `{}`;
-    const query = `query{
-      ${this.module} (sort: "${this.sortBy}:${this.sortDirection}", start: ${this.startPage}, limit: ${this.pageSize}, where: ${where}){
-        id
-        recordName
-        ${this.dataColumns}
-      }
-      ${this.module}Connection (where: ${where}) {
-        aggregate {
-            count
-        }
-    }
-    }`;
-    this.crud.getDatalist(query).subscribe(({data, loading}) => {
-      const connection = `${this.module}Connection`;
+    const module = this.module;
+    const query = `_sort=${this.sortBy}:${this.sortDirection}&_start=${this.startPage}&_limit=${this.pageSize}`;
+    const columns = ['id', 'recordName'].concat(this.dataColumns);
+    this.crud.getList(module, query, columns).subscribe(res => {
       this.tableColumns = [].concat('recordName', this.dataColumns, 'settings');
-      this.dataSource = new MatTableDataSource(data[this.module]);
-      this.totalPages = data[connection].aggregate.count;
+      this.dataSource = new MatTableDataSource(res['entities']);
+      this.totalPages = res['count'];
       this.table.dataSource = this.dataSource;
+      console.log(res);
     });
   }
+
+  // getData() {
+  //   const where = `{}`;
+  //   const query = `query{
+  //     ${this.module} (sort: "${this.sortBy}:${this.sortDirection}", start: ${this.startPage}, limit: ${this.pageSize}, where: ${where}){
+  //       id
+  //       recordName
+  //       ${this.dataColumns}
+  //     }
+  //     ${this.module}Connection (where: ${where}) {
+  //       aggregate {
+  //           count
+  //       }
+  //   }
+  //   }`;
+  //   this.crud.getDatalist(query).subscribe(({data, loading}) => {
+  //     console.log(data);
+  //     const connection = `${this.module}Connection`;
+  //     this.tableColumns = [].concat('recordName', this.dataColumns, 'settings');
+  //     this.dataSource = new MatTableDataSource(data[this.module]);
+  //     this.totalPages = data[connection].aggregate.count;
+  //     this.table.dataSource = this.dataSource;
+  //   });
+  // }
 
   paginator(e) {
     this.startPage = e.pageIndex !== 0 ? e.pageIndex * e.pageSize : 0;

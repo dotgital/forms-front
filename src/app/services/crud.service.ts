@@ -36,6 +36,13 @@ export class CrudService {
     }));
   }
 
+  getList(module: string, query, columns) {
+    return this.http.post(`${environment.backendUrl}list/${module}?${query}`, {columns})
+    .pipe(map(settings => {
+      return settings;
+    }));
+  }
+
   getDatalist(query) {
     return this.apollo.query<any>({
       query: gql`${query}`,
