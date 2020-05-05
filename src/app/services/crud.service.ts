@@ -104,8 +104,8 @@ export class CrudService {
   }
 
   uploadAvatar(avatar) {
-    // let headers = new HttpHeaders();
-    // headers = headers.set('Content-Type', 'multipart/form-data');
+    let headers = new HttpHeaders();
+    headers = headers.set('Content-Type', 'application/x-www-form-urlencoded');
     return this.http.post<any>(`${environment.backendUrl}/upload`, avatar, {
       reportProgress: true, // These fields are required to receive HttpEvents
       observe: 'events',
