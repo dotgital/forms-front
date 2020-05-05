@@ -1,3 +1,5 @@
+import { environment } from './../../../environments/environment';
+import { AvatarComponent } from './../../_components/avatar/avatar.component';
 import { UserProfileComponent } from './../components/user-profile/user-profile.component';
 import { ErrorMessagesService } from 'src/app/services/error-messages.service';
 import { map, shareReplay } from 'rxjs/operators';
@@ -17,6 +19,9 @@ import { Location } from '@angular/common';
 export class UsersViewComponent implements OnInit, AfterViewInit {
   @ViewChild('sidebar') rightSide: MatSidenav;
   @ViewChild('userProfile') userProfile: UserProfileComponent;
+  @ViewChild('avatar') avatar: AvatarComponent;
+  avatarUrl: any;
+  isAvatarChanged: boolean;
   loading = true;
   editing: boolean;
   creating: boolean;
@@ -84,6 +89,11 @@ export class UsersViewComponent implements OnInit, AfterViewInit {
       // console.log(res)
       this.recordData = res;
       this.loading = false;
+      if (this.isAvatarChanged){
+        this.avatar.uploadAvatar(res);
+      } else {
+        this.avatarUrl = res.avatar ? `${environment.backendUrl}${res.avatar.formats.thumbnail.url}` : '../../../assets/avatar.png';
+      }
     },
     err => {
       this.errorMessageService.showError('Record Not Found');
@@ -111,6 +121,9 @@ export class UsersViewComponent implements OnInit, AfterViewInit {
   dataUpdated(e) {
     console.log(e);
     if (e.record && e.record.recordName) {
+      if (this.isAvatarChanged) {
+        this.avatar.uploadAvatar(e.record);
+      }
       this.recordTitle = e.record.recordName;
     }
     if ( e.err ) {
@@ -120,7 +133,7 @@ export class UsersViewComponent implements OnInit, AfterViewInit {
     this.loading = e.loading;
   }
 
-  dataCreated(e) {
+  async dataCreated(e) {
     this.loading = e.loading;
     console.log(e);
     if ( e.dataCreated ) {
@@ -135,7 +148,7 @@ export class UsersViewComponent implements OnInit, AfterViewInit {
   }
 
   editRecord() {
-    this.editing = !this.editing;
+    this.editing = true;
     this.userProfile.editForm();
   }
 
@@ -152,5 +165,10 @@ export class UsersViewComponent implements OnInit, AfterViewInit {
   createRecord() {
     this.creating = !this.creating;
     this.userProfile.createUser();
+  }
+  avatarChanged(e){
+    this.isAvatarChanged = true;
+    this.editRecord();
+    this.disableSubmit = true;
   }
 }

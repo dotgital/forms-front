@@ -24,7 +24,8 @@ export class ClientsListComponent implements OnInit {
       console.log(res);
       this.usersPrefId = res.usersPrefId;
       res.fields.sort((a, b) => (a.tablePosition > b.tablePosition) ? 1 : ((b.tablePosition > a.tablePosition) ? -1 : 0));
-      this.allColumns = res.fields.filter(col => col.fieldType !== 'dropdown-multiple');
+      // this.allColumns = res.fields.filter(col => col.fieldType !== 'dropdown-multiple');
+      this.allColumns = res.fields;
     });
   }
 

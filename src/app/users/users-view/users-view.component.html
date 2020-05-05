@@ -6,17 +6,21 @@
   <mat-toolbar class="component-header content-toolbar">
     <button mat-icon-button (click)="goBack()" style="margin-left: -10px;" ><mat-icon>arrow_back</mat-icon></button>
     <span fxFlex>User Profile</span>
-    <a mat-button class="history-toogle" (click)="toogleSideBar()" *ngIf="!sideBarOpened" > <mat-icon>keyboard_arrow_left</mat-icon> History</a>
-    <a mat-button class="history-toogle" (click)="toogleSideBar()" *ngIf="sideBarOpened" >History <mat-icon>keyboard_arrow_right</mat-icon></a>
+    <a mat-button class="history-toogle" (click)="toogleSideBar()" *ngIf="!sideBarOpened"> <mat-icon>keyboard_arrow_left</mat-icon> History</a>
+    <a mat-button class="history-toogle" (click)="toogleSideBar()" *ngIf="sideBarOpened">History <mat-icon>keyboard_arrow_right</mat-icon></a>
   </mat-toolbar>
   <div style="padding: 10px;">
     <mat-card class="mat-elevation-z1">
-
       <app-overlay-loading *ngIf="loading"></app-overlay-loading>
       <div fxLayout="row" fxLayout.lt-md="column" class="card-header" fxLayoutGap="10px">
         <div fxFlex>
           <button mat-icon-button style="margin: -6px 10px 0px 0px;">
-            <img src="../../assets/avatar.png" class="user-avatar"/>
+
+            <app-avatar #avatar
+            size="40"
+            (avatarChanged)="avatarChanged($event)"
+            [avatarUrl]="avatarUrl"></app-avatar>
+            <!-- <img src="../../assets/avatar.png" class="user-avatar"/> -->
           </button>
           <h2 fxFlex style="font-weight: 300; margin: 0px;">{{recordTitle || 'New User'}}</h2>
         </div>

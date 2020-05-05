@@ -1,10 +1,13 @@
 overlay-loading{
   background: #fff;
   position: fixed;
-  z-index: 100;
+  z-index: 101;
   opacity: 0.9;
   top: 0;
   right: 0px;
   left: 0px;
   bottom: 0px;
+}
+.overlay-loading{
+  z-index: 101;
 }

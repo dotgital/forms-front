@@ -79,7 +79,9 @@
       <button mat-icon-button (click)="toggleSearch()" *ngIf="!isHandset || !search" ><mat-icon>search</mat-icon></button>
 
       <ng-container *ngIf="!isHandset || !search">
-        <button mat-icon-button><img src="../../assets/avatar.png" class="navbar-avatar" [matMenuTriggerFor]="menu"/>
+        <button mat-icon-button>
+          <!-- <img src="../../assets/avatar.png" *ngIf="!avatarUrl"  class="navbar-avatar" [matMenuTriggerFor]="menu"/> -->
+          <img [src]="avatarUrl" class="navbar-avatar" [matMenuTriggerFor]="menu"/>
           <mat-menu #menu="matMenu"  class="mat-elevation-z2" style="margin-top: 10px;">
             <button mat-menu-item routerLink="/settings" class="profile-menu" *ngIf="isAdmin" >
               <mat-icon>settings</mat-icon>

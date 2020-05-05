@@ -1,0 +1,21 @@
+<form #avatarUpload>
+  <mat-spinner style="position: absolute; margin: -5px;"
+    diameter="50"
+    strokeWidth="3"
+    mode="determinate"
+    [value]="uploadProgress">
+  </mat-spinner>
+  <div fxLayout="row" fxLayoutAlign="center center">
+      <div class="image-upload" style="z-index: 100;">
+          <label for="file-input">
+              <img class="avatar"
+              [src]="imageSrc || '../../../assets/avatar.png'"
+              alt="your image"
+              [style.width.px]="size"
+              [style.height.px]="size"/>
+          </label>
+          <input id="file-input" #avatarInput type='file' (change)="preview($event.target.files);"/>
+          <!-- <input hidden id="file-input" type='file' (change)="preview($event);" formControlName="avatar" value=''/> -->
+      </div>
+  </div>
+</form>

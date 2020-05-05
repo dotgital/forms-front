@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  // backendUrl: 'https://forms-back.dotgital.com/',
-  backendUrl: '/api/',
+  backendUrl: 'https://forms-back.dotgital.com',
+  // backendUrl: '/api',
   settingsId: '5e9481f75592d72a6fc419b6'
 };
 

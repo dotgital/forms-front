@@ -22,41 +22,41 @@ export class SettingsService {
   }
 
   getUsers() {
-    return this.http.get(`${environment.backendUrl}users`).pipe(map(res => {
+    return this.http.get(`${environment.backendUrl}/users`).pipe(map(res => {
       return res;
     }));
   }
 
   getSettings(type, module) {
-    return this.http.get<any>(`${environment.backendUrl}global-preferences?type=${type}&module=${module}`)
+    return this.http.get<any>(`${environment.backendUrl}/global-preferences?type=${type}&module=${module}`)
     .pipe(map(settings => {
       return settings;
     }));
   }
 
   setSettings(fields) {
-    return this.http.put<any>(`${environment.backendUrl}global-preferences/`, fields)
+    return this.http.put<any>(`${environment.backendUrl}/global-preferences/`, fields)
     .pipe(map(settings => {
       return settings;
     }));
   }
 
   getFieldSettings() {
-    return this.http.get<any>(`${environment.backendUrl}fields-settings/`)
+    return this.http.get<any>(`${environment.backendUrl}/fields-settings/`)
     .pipe(map(settings => {
       return settings;
     }));
   }
 
   setUserSetting(data) {
-    return this.http.put<any>(`${environment.backendUrl}user-update/${this.userId}`, {userPreferences: data})
+    return this.http.put<any>(`${environment.backendUrl}/user-update/${this.userId}`, {userPreferences: data})
     .pipe(map(settings => {
       return settings;
     }));
   }
 
   setFieldSettings(fields) {
-    return this.http.put<any>(`${environment.backendUrl}fields-settings/`, {fields})
+    return this.http.put<any>(`${environment.backendUrl}/fields-settings/`, {fields})
     .pipe(map(settings => {
       return settings;
     }));

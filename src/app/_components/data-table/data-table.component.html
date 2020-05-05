@@ -6,9 +6,11 @@
           <ng-container matColumnDef="recordName" stickyEnd>
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
             <td mat-cell *matCellDef="let row">
-              <a color="primary" class="record-name" routerLink="/{{module}}/{{row.id}}">
-                {{row.recordName}}
-              </a>
+              <span>
+                <a color="primary" class="record-name" routerLink="/{{module}}/{{row.id}}">
+                  {{row.recordName}}
+                </a>
+              </span>
             </td>
           </ng-container>
 
@@ -16,7 +18,24 @@
             <ng-container *ngFor="let item of visibleColumns" matColumnDef="{{item.fieldName}}">
               <th mat-header-cell *matHeaderCellDef mat-sort-header>{{item.label}}</th>
               <td mat-cell *matCellDef="let row">
-                  {{row[item.fieldName]}}
+
+                <ng-container *ngIf="isString(row[item.fieldName])" >
+                  <span>
+                    {{row[item.fieldName]}}
+                  </span>
+                </ng-container>
+                <ng-container *ngIf="!isString(row[item.fieldName])">
+                  <a color="primary" class="record-name" *ngFor="let item of row[item.fieldName]">
+                    <span style="margin: 1px;
+                    background: #b3b3b32e;
+                    padding: 3px 5px;
+                    border-radius: 20px;
+                    font-size: 12px;">
+                    <mat-icon>person</mat-icon>
+                      {{item.recordName}}
+                    </span>
+                  </a>
+                </ng-container>
               </td>
             </ng-container>
 

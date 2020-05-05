@@ -24,12 +24,21 @@ td.mat-column-settings {
 
 .mat-cell{
   padding: 0px 24px 0px 0px;
-  white-space: nowrap;
   max-width: 200px;
   overflow: hidden;
   text-overflow: ellipsis;
   font-size: 14px;
   font-weight: 400;
+  white-space: break-spaces;
+  span{
+    white-space: nowrap;
+    .mat-icon{
+      vertical-align: sub;
+      font-size: 16px;
+      height: 16px;
+      width: 16px;
+    }
+  }
 }
 
 .record-name{

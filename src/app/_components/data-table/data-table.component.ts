@@ -103,4 +103,9 @@ export class DataTableComponent implements OnInit, OnChanges {
   goTo(row) {
     this.router.navigate([`/clients/${row.id}`]);
   }
+
+  isString(val): boolean {
+    // console.log(typeof val)
+    return typeof val === 'string';
+  }
 }

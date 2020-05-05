@@ -1,3 +1,5 @@
+import { environment } from './../../environments/environment';
+import { CrudService } from './../services/crud.service';
 import { SearchService } from './../services/search.service';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -27,6 +29,7 @@ export class NavigationComponent implements OnInit {
   searchControl = new FormControl();
   options = [];
   searchUpdate = new Subject<string>();
+  avatarUrl: any;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -48,6 +51,7 @@ export class NavigationComponent implements OnInit {
     private authService: AuthService,
     private searchService: SearchService,
     private router: Router,
+    private crud: CrudService,
   ) {
     // this.search = false;
     this.isHandset$.subscribe(res => {
@@ -69,6 +73,20 @@ export class NavigationComponent implements OnInit {
           this.searchValue = value;
           this.getAutocompleteSearch();
         // }
+    });
+    this.downloadUserAvatar();
+  }
+
+  downloadUserAvatar(){
+    const query = `query {
+      user(id: "${this.authService.currentUserValue.user.id}") {
+        avatar{
+            formats
+        }
+      }
+    }`;
+    this.crud.getData(query).subscribe(res => {
+      this.avatarUrl = res.data.user.avatar ? `${environment.backendUrl}${res.data.user.avatar.formats.thumbnail.url}` : '../../assets/avatar.png';
     });
   }
 

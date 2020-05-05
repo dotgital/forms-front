@@ -62,6 +62,7 @@ import { SearchableSelectMultipleComponent } from './_components/searchable-sele
 import { SettingsPermissionsComponent } from './settings/settings-permissions/settings-permissions.component';
 import { ColumnSelectorComponent } from './_components/column-selector/column-selector.component';
 import { DataTableComponent } from './_components/data-table/data-table.component';
+import { AvatarComponent } from './_components/avatar/avatar.component';
 
 
 @NgModule({
@@ -88,7 +89,8 @@ import { DataTableComponent } from './_components/data-table/data-table.componen
     SearchableSelectMultipleComponent,
     SettingsPermissionsComponent,
     ColumnSelectorComponent,
-    DataTableComponent
+    DataTableComponent,
+    AvatarComponent
   ],
   imports: [
     BrowserModule,

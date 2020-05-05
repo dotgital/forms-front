@@ -32,7 +32,7 @@ export class AuthService {
   }
 
   register(registrationData){
-    return this.http.post<any>(`${environment.backendUrl}auth/local/register`, {
+    return this.http.post<any>(`${environment.backendUrl}/auth/local/register`, {
       username: registrationData.email,
       email: registrationData.email,
       password: registrationData.password,
@@ -47,7 +47,7 @@ export class AuthService {
 
   createCompany(registrationData, userId: string) {
     console.log(userId);
-    return this.http.post<any>(`${environment.backendUrl}companies`, {
+    return this.http.post<any>(`${environment.backendUrl}/companies`, {
       name: registrationData.company,
       users: [userId]
     }).pipe(map(companyRes => {
@@ -104,7 +104,7 @@ export class AuthService {
   }
 
   forgotPassword(emailAddress: string) {
-    return this.http.post<any>(`${environment.backendUrl}auth/forgot-password`, {
+    return this.http.post<any>(`${environment.backendUrl}/auth/forgot-password`, {
         email: emailAddress,
         url: `${environment.backendUrl}admin/plugins/users-permissions/auth/reset-password`
       })
@@ -114,7 +114,7 @@ export class AuthService {
   }
 
   reset(code: string, pw: string, pwcnf: string) {
-    return this.http.post<any>( `${environment.backendUrl}auth/reset-password`, {
+    return this.http.post<any>( `${environment.backendUrl}/auth/reset-password`, {
         code,
         password: pw,
         passwordConfirmation: pwcnf
