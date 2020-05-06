@@ -1,10 +1,10 @@
+import { CrudService } from './../../services/crud.service';
 import { MatSidenav } from '@angular/material/sidenav';
 import { map, shareReplay } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { FormItem } from './../../_interfaces/form-item';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { SettingsService } from './../../services/settings.service';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
@@ -59,7 +59,7 @@ export class SettingsLayoutComponent implements OnInit {
 
   constructor(
     private breakpointObserver: BreakpointObserver,
-    private settingService: SettingsService,
+    private crud: CrudService,
   ) {}
 
   ngOnInit(): void {
@@ -71,8 +71,7 @@ export class SettingsLayoutComponent implements OnInit {
   }
 
   getFieldSettings() {
-    this.settingService.getSettings('layout', 'clients').subscribe(res => {
-      console.log(res);
+    this.crud.getSettings('layout', 'clients').subscribe(res => {
       // this.fields = res;
       this.fieldsNew = res;
       this.displayLayout();
@@ -87,7 +86,6 @@ export class SettingsLayoutComponent implements OnInit {
 
   toggleHidden() {
     this.showHidden = !this.showHidden;
-    console.log(this.showHidden);
   }
 
   drop(event: CdkDragDrop<string[]>) {
@@ -113,7 +111,6 @@ export class SettingsLayoutComponent implements OnInit {
     this.fieldsNew.sort((a, b) => {
       return a.position - b.position;
     });
-    console.log(this.fieldsNew);
     this.layoutChanged = true;
   }
 
@@ -124,8 +121,7 @@ export class SettingsLayoutComponent implements OnInit {
 
   saveLayout() {
     this.loading = true;
-    console.log(this.fieldsNew);
-    this.settingService.setSettings({clients: this.fieldsNew}).subscribe(res => {
+    this.crud.updateRecord('global-preferences', '', {clients: this.fieldsNew}).subscribe(res => {
       this.layoutChanged = false;
       this.loading = false;
     });
@@ -148,7 +144,6 @@ export class SettingsLayoutComponent implements OnInit {
   }
 
   saveField() {
-    console.log(this.editFieldForm.value);
     this.loading = true;
     const fieldName = this.editFieldForm.value.fieldName;
     this.fieldsNew = this.fieldsNew.map((obj) => {
@@ -162,7 +157,7 @@ export class SettingsLayoutComponent implements OnInit {
       }
       return obj;
     });
-    this.settingService.setSettings({clients: this.fieldsNew}).subscribe(res => {
+    this.crud.updateRecord('global-preferences', '', {clients: this.fieldsNew}).subscribe(res => {
       this.fieldChanged = false;
       this.displayLayout();
     });

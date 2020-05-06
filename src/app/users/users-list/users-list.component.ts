@@ -1,8 +1,5 @@
-import { SettingsService } from './../../services/settings.service';
-import { Router } from '@angular/router';
 import { CrudService } from './../../services/crud.service';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-users-list',
@@ -14,7 +11,7 @@ export class UsersListComponent implements OnInit {
   usersPrefId: string;
 
   constructor(
-    private settings: SettingsService,
+    private crud: CrudService
   ) { }
 
   ngOnInit(): void {
@@ -22,7 +19,7 @@ export class UsersListComponent implements OnInit {
   }
 
   getFields() {
-    this.settings.getSettings('columns', 'users').subscribe(res => {
+    this.crud.getSettings('columns', 'users').subscribe(res => {
       this.usersPrefId = res.usersPrefId;
       res.fields.sort((a, b) => (a.tablePosition > b.tablePosition) ? 1 : ((b.tablePosition > a.tablePosition) ? -1 : 0));
       this.allColumns = res.fields.filter(col => col.fieldType !== 'dropdown-multiple');
@@ -31,6 +28,5 @@ export class UsersListComponent implements OnInit {
 
   changeColumns(e){
     this.getFields();
-    // this.settings.setColumnsPreference(e);
   }
 }

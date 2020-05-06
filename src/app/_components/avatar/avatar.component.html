@@ -3,7 +3,8 @@
     diameter="50"
     strokeWidth="3"
     mode="determinate"
-    [value]="uploadProgress">
+    [value]="uploadProgress"
+    *ngIf="uploadLoading" >
   </mat-spinner>
   <div fxLayout="row" fxLayoutAlign="center center">
       <div class="image-upload" style="z-index: 100;">
@@ -14,7 +15,7 @@
               [style.width.px]="size"
               [style.height.px]="size"/>
           </label>
-          <input id="file-input" #avatarInput type='file' (change)="preview($event.target.files);"/>
+          <input id="file-input" #avatarInput type='file' (change)="preview($event.target.files);" accept="image/*"/>
           <!-- <input hidden id="file-input" type='file' (change)="preview($event);" formControlName="avatar" value=''/> -->
       </div>
   </div>

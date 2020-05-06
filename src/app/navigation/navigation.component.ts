@@ -85,7 +85,7 @@ export class NavigationComponent implements OnInit {
         }
       }
     }`;
-    this.crud.getData(query).subscribe(res => {
+    this.crud.graphQl(query).subscribe(res => {
       this.avatarUrl = res.data.user.avatar ? `${environment.backendUrl}${res.data.user.avatar.formats.thumbnail.url}` : '../../assets/avatar.png';
     });
   }

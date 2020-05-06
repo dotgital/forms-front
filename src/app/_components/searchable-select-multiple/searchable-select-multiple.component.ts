@@ -67,7 +67,7 @@ export class SearchableSelectMultipleComponent implements OnInit, AfterViewInit,
         lastName
       }
     }`;
-    this.crud.getDatalist(query).subscribe(res => {
+    this.crud.graphQl(query).subscribe(res => {
       this.options = res.data.users.map(user => {
         const id = user.id;
         const name = `${user.firstName} ${user.lastName}`;

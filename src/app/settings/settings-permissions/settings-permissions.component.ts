@@ -44,7 +44,7 @@ export class SettingsPermissionsComponent implements OnInit {
 
   getUsersPermissions() {
     this.loading = true;
-    this.crud.getUserPermissions().subscribe(res => {
+    this.crud.getRecordList('custom-permissions').subscribe(res => {
       this.permissions = res;
       this.loading = false;
       // this.newPermissions = res;
@@ -75,7 +75,7 @@ export class SettingsPermissionsComponent implements OnInit {
 
   saveUserPermissions() {
     this.loading = true;
-    this.crud.setUserPermissions(this.permissions).subscribe(res => {
+    this.crud.createRecord('set-permissions', this.permissions).subscribe(res => {
       console.log(res);
       this.loading = false;
       this.isChanged = false;

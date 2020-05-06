@@ -8,7 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CrudService } from './../../services/crud.service';
 import { Observable } from 'rxjs';
 import { MatSidenav } from '@angular/material/sidenav';
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
 
 @Component({
@@ -16,25 +16,30 @@ import { Location } from '@angular/common';
   templateUrl: './users-view.component.html',
   styleUrls: ['./users-view.component.scss']
 })
-export class UsersViewComponent implements OnInit, AfterViewInit {
+export class UsersViewComponent implements OnInit {
   @ViewChild('sidebar') rightSide: MatSidenav;
   @ViewChild('userProfile') userProfile: UserProfileComponent;
   @ViewChild('avatar') avatar: AvatarComponent;
+
   avatarUrl: any;
   isAvatarChanged: boolean;
+
   loading = true;
   editing: boolean;
   creating: boolean;
-  disableSubmit: boolean;
-  recordTitle: string;
-  dateModified: string;
-  dateCreated: string;
-  createdBy: any;
-  modifiedBy: any;
-  sideBarOpened: boolean;
-  record: any = {};
-  recordData: any;
+  submit: string;
+  disabledSubmit: boolean;
 
+  // recordTitle: string;
+  record: any = {
+    id: '',
+    title: 'New User',
+    data: null
+  };
+
+  // recordData: any;
+
+  sideBarOpened: boolean;
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
   .pipe(
     map(result => result.matches),
@@ -50,54 +55,23 @@ export class UsersViewComponent implements OnInit, AfterViewInit {
     private router: Router,
   ) { }
 
-  ngAfterViewInit(): void {
-    // this.userProfile.profileForm.valueChanges.subscribe(res => {
-    //   console.log(res);
-    // });
-  }
-
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
-      this.record.id = params.get('id');
-      if (this.record.id === 'add') {
+      if (params.get('id') === 'add') {
         this.creating = true;
-        this.recordData = '';
-        this.recordTitle = 'New User';
         this.loading = false;
       } else {
+        this.record.id = params.get('id');
         this.getRecordData();
       }
     });
+
     this.isHandset$.subscribe(res => {
       if (res) {
         this.sideBarOpened = false;
       } else {
         this.sideBarOpened = true;
       }
-    });
-  }
-
-  getRecordData() {
-    this.loading = true;
-    this.crud.getRecordData('users', this.record.id).subscribe(res => {
-      this.recordTitle = res.recordName;
-      const dateOptions = {hour: '2-digit', minute: '2-digit', year: 'numeric', month: 'numeric', day: 'numeric' };
-      this.dateModified = new Date(res.updatedAt).toLocaleString([], dateOptions);
-      this.dateCreated = new Date(res.createdAt).toLocaleString([], dateOptions);
-      this.createdBy = res.createdBy;
-      this.modifiedBy = res.modifiedBy;
-      // console.log(res)
-      this.recordData = res;
-      this.loading = false;
-      if (this.isAvatarChanged){
-        this.avatar.uploadAvatar(res);
-      } else {
-        this.avatarUrl = res.avatar ? `${environment.backendUrl}${res.avatar.formats.thumbnail.url}` : '../../../assets/avatar.png';
-      }
-    },
-    err => {
-      this.errorMessageService.showError('Record Not Found');
-      this.router.navigate(['/users']);
     });
   }
 
@@ -114,61 +88,89 @@ export class UsersViewComponent implements OnInit, AfterViewInit {
     this.location.back();
   }
 
-  dataChanged(e) {
-    this.disableSubmit = e;
-  }
-
-  dataUpdated(e) {
-    console.log(e);
-    if (e.record && e.record.recordName) {
-      if (this.isAvatarChanged) {
-        this.avatar.uploadAvatar(e.record);
-      }
-      this.recordTitle = e.record.recordName;
-    }
-    if ( e.err ) {
-      this.getRecordData();
-    }
-
-    this.loading = e.loading;
-  }
-
-  async dataCreated(e) {
-    this.loading = e.loading;
-    console.log(e);
-    if ( e.dataCreated ) {
-      this.loading = true;
+  getRecordData() {
+    this.loading = true;
+    this.crud.getRecordData('users', this.record.id).subscribe(res => {
+      this.record.title = res.recordName;
+      this.record.data = res;
       this.creating = false;
-      this.record.id = e.recordId;
-      this.location.go(`/users/${this.record.id}`);
-      this.getRecordData();
-    } else {
-      this.creating = true;
-    }
+      this.submit = 'disabled';
+      this.avatarUrl = res.avatar ? `${environment.backendUrl}${res.avatar.formats.thumbnail.url}` : '../../../assets/avatar.png';
+      this.loading = false;
+    },
+    err => {
+      this.errorMessageService.showError('Record Not Found');
+      this.router.navigate(['/users']);
+    });
   }
 
+  /*
+  Buttons and chaild profile event listener
+  */
   editRecord() {
+    this.submit  = 'disabled';
     this.editing = true;
     this.userProfile.editForm();
   }
 
   cancelRecord() {
-    this.editing = !this.editing;
+    this.editing = false;
     this.getRecordData();
-    // this.userProfile.cancelForm();
   }
 
   saveRecord() {
+    this.submit  = 'disabled';
+    this.loading = true;
     this.userProfile.updateUser();
   }
 
   createRecord() {
-    this.creating = !this.creating;
+    this.loading = true;
+    // this.creating = false;
     this.userProfile.createUser();
   }
+
+  profileChange(change){
+    console.log(change)
+    this.submit = change.formChanged ? 'enabled' : 'disabled';
+
+    if (change.dataCreated && this.isAvatarChanged) {
+      this.record.id = change.recordId;
+      this.avatar.uploadAvatar({id: this.record.id});
+    } else if (change.dataCreated && !this.isAvatarChanged) {
+      this.getRecordData();
+    } else if (change.dataCreated === false) {
+      this.loading = false;
+      this.creating = true;
+    }
+
+    if (change.dataUpdated === true) {
+      this.record.title = change.record.recordName;
+      if (this.isAvatarChanged) {
+        this.avatar.uploadAvatar(change.record.id);
+      } else {
+        this.loading = false;
+      }
+    } else if (change.dataUpdated === false){
+      this.getRecordData();
+    }
+  }
+
   avatarChanged(e){
+    if (!this.creating) {
+      this.editRecord();
+      this.submit  = 'enabled';
+    }
     this.isAvatarChanged = true;
-    this.editRecord();
-    this.disableSubmit = true;
+  }
+
+  avatarUploaded(uploaded) {
+    console.log(uploaded);
+    if (uploaded) {
+      this.isAvatarChanged = false;
+      this.getRecordData();
+    } else {
+      this.loading = false;
+    }
   }
 }

@@ -1,145 +1,93 @@
 <mat-progress-bar mode="indeterminate" color="primary" class="loading-top" *ngIf="loading"></mat-progress-bar>
 
 <mat-sidenav-container style="height: calc( 100vh - 55px );">
-
   <mat-sidenav-content class="content-outlet">
-  <mat-toolbar class="component-header content-toolbar">
-    <button mat-icon-button (click)="goBack()" style="margin-left: -10px;" ><mat-icon>arrow_back</mat-icon></button>
-    <span fxFlex>User Profile</span>
-    <a mat-button class="history-toogle" (click)="toogleSideBar()" *ngIf="!sideBarOpened"> <mat-icon>keyboard_arrow_left</mat-icon> History</a>
-    <a mat-button class="history-toogle" (click)="toogleSideBar()" *ngIf="sideBarOpened">History <mat-icon>keyboard_arrow_right</mat-icon></a>
-  </mat-toolbar>
-  <div style="padding: 10px;">
-    <mat-card class="mat-elevation-z1">
-      <app-overlay-loading *ngIf="loading"></app-overlay-loading>
-      <div fxLayout="row" fxLayout.lt-md="column" class="card-header" fxLayoutGap="10px">
-        <div fxFlex>
-          <button mat-icon-button style="margin: -6px 10px 0px 0px;">
 
-            <app-avatar #avatar
-            size="40"
-            (avatarChanged)="avatarChanged($event)"
-            [avatarUrl]="avatarUrl"></app-avatar>
-            <!-- <img src="../../assets/avatar.png" class="user-avatar"/> -->
-          </button>
-          <h2 fxFlex style="font-weight: 300; margin: 0px;">{{recordTitle || 'New User'}}</h2>
+    <mat-toolbar class="component-header content-toolbar">
+      <button mat-icon-button (click)="goBack()" style="margin-left: -10px;" ><mat-icon>arrow_back</mat-icon></button>
+      <span fxFlex>User Profile</span>
+      <a mat-button class="history-toogle" (click)="toogleSideBar()" *ngIf="!sideBarOpened"> <mat-icon>keyboard_arrow_left</mat-icon> History</a>
+      <a mat-button class="history-toogle" (click)="toogleSideBar()" *ngIf="sideBarOpened">History <mat-icon>keyboard_arrow_right</mat-icon></a>
+    </mat-toolbar>
+
+    <div #profile style="padding: 10px;">
+      <mat-card class="mat-elevation-z1">
+        <app-overlay-loading *ngIf="loading"></app-overlay-loading>
+        <div fxLayout="row" fxLayout.lt-md="column" class="card-header" fxLayoutGap="10px">
+
+          <div #profileTitle fxFlex>
+            <button mat-icon-button style="margin: -6px 10px 0px 0px;">
+              <app-avatar #avatar size="40"
+                (avatarChanged)="avatarChanged($event)"
+                (avatarUploaded)="avatarUploaded($event)"
+                [avatarUrl]="avatarUrl">
+              </app-avatar>
+            </button>
+            <h2 fxFlex style="font-weight: 300; margin: 0px;">{{record.title || 'New User'}}</h2>
+          </div>
+          <mat-divider *ngIf="(isHandset$ | async) ? true : false" [inset]="true"></mat-divider>
+
+          <div #profileActions>
+            <div fxFlex></div>
+            <a mat-flat-button color="primary" *ngIf="!creating && !editing" (click)="editRecord()">
+              Edit</a>
+            <a mat-button *ngIf="editing" (click)="cancelRecord()">
+              Cancel</a>
+            <button mat-flat-button color="primary" *ngIf="editing" (click)="saveRecord()" [disabled]="submit == 'disabled'">
+              Save</button>
+            <button  *ngIf="creating" mat-flat-button color="primary" (click)="createRecord()">
+              Create</button>
+          </div>
         </div>
 
-        <mat-divider
-          *ngIf="(isHandset$ | async) ? true : false"
-          [inset]="true">
-        </mat-divider>
-        <div>
-          <div fxFlex></div>
-          <ng-container *ngIf="!creating">
-            <a mat-flat-button color="primary" *ngIf="!editing" (click)="editRecord()" >Edit</a>
-            <a mat-button *ngIf="editing" (click)="cancelRecord()">Cancel</a>
-            <button mat-flat-button
-              color="primary"
-              *ngIf="editing"
-              (click)="saveRecord()"
-              [disabled]="!disableSubmit">
-              Save
-            </button>
-          </ng-container>
-          <ng-container *ngIf="creating">
-            <button mat-flat-button color="primary" (click)="createRecord()">
-              Create
-            </button>
-          </ng-container>
-        </div>
-      </div>
+        <mat-tab-group color="primary" animationDuration="0ms">
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <div [class]="(isHandset$ | async) ? 'isHandset' : 'notHandset'">
+                <mat-icon>contacts</mat-icon>
+                <div class="label-text">Profile</div>
+              </div>
+            </ng-template>
+            <app-user-profile #userProfile
+              [recordData]="record.data"
+              (profileChange)="profileChange($event)">
+            </app-user-profile>
+          </mat-tab>
 
-      <mat-tab-group color="primary" animationDuration="0ms">
-        <mat-tab>
-          <ng-template mat-tab-label>
-            <div [class]="(isHandset$ | async) ? 'isHandset' : 'notHandset'">
-              <mat-icon>contacts</mat-icon>
-              <div class="label-text">Profile</div>
-            </div>
-          </ng-template>
-          <app-user-profile #userProfile
-          [recordData]="recordData"
-          (formChanged)="dataChanged($event)"
-          (dataCreated)="dataCreated($event)"
-          (dataUpdated)="dataUpdated($event)">
-          </app-user-profile>
-        </mat-tab>
-        <mat-tab>
-          <ng-template mat-tab-label>
-            <div [class]="(isHandset$ | async) ? 'isHandset' : 'notHandset'">
-              <mat-icon>lock</mat-icon>
-              <div class="label-text">Permissions</div>
-            </div>
-          </ng-template>
-          Forms Page
-        </mat-tab>
-      </mat-tab-group>
-    </mat-card>
-  </div>
+          <!-- <mat-tab>
+            <ng-template mat-tab-label>
+              <div [class]="(isHandset$ | async) ? 'isHandset' : 'notHandset'">
+                <mat-icon>lock</mat-icon>
+                <div class="label-text">Permissions</div>
+              </div>
+            </ng-template>
+            Forms Page
+          </mat-tab> -->
+
+        </mat-tab-group>
+      </mat-card>
+    </div>
+
   </mat-sidenav-content>
 
   <mat-sidenav #sidebar position="end" fullscreen
-  fixedInViewport
-  autosize
-  [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-  [mode]="(isHandset$ | async) ? 'over' : 'side'"
-  [opened]="(isHandset$ | async) ? false : true">
+    fixedInViewport
+    autosize
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="(isHandset$ | async) ? false : true">
+
     <mat-toolbar color="primary" class="main-tool-bar">Menu</mat-toolbar>
     <mat-toolbar class="component-header">
       <span fxFlex>History</span>
       <a mat-button class="history-toogle" (click)="toogleSideBar()" *ngIf="(isHandset$ | async) ? true : false"> History<mat-icon>keyboard_arrow_right</mat-icon></a>
     </mat-toolbar>
+
     <div fxLayout="column" fxLayoutAlign="space-between stretch" fxLayoutGap="10px" style="padding: 10px; height: calc( 100vh - 120px );">
       <div fxFlex style="border: 1px solid #d6d9d9; padding: 10px;">
         activities
       </div>
-      <!-- <div class="timestamp">
-        <div class="timestamp-container" *ngIf="modifiedBy" >
-          <div class="timestamp-type">Modified</div>
-          <div class="timestamp-time">{{dateModified}}</div>
-          <div *ngIf="createdBy"> By: <a routerLink="/">{{modifiedBy.fullName}}</a></div>
-        </div>
-        <div class="timestamp-container" *ngIf="createdBy"  style="margin: 5px 0px -10px">
-          <div class="timestamp-type">Created</div>
-          <div class="timestamp-time">{{dateCreated}}</div>
-          <div *ngIf="createdBy"> By: <a routerLink="/">{{createdBy.fullName}}</a></div>
-        </div>
-      </div> -->
-
-      <div *ngIf="modifiedBy"
-        class="timestamp-line">
-          Modified: {{dateModified}} By
-          <a routerLink="/"
-          matTooltip="{{modifiedBy.firstName}} {{modifiedBy.lastName}}">
-            {{modifiedBy.firstName}} {{modifiedBy.lastName}}</a>
-      </div>
-      <div *ngIf="createdBy"
-        class="timestamp-line"
-        style="margin-top: -10px;">
-          Created: {{dateCreated}} By
-          <a routerLink="/"
-          matTooltip="{{createdBy.firstName}} {{createdBy.lastName}}">
-          {{createdBy.firstName}} {{createdBy.lastName}}</a>
-      </div>
     </div>
-      <!-- <small>Last Modified: 01/01/2020 by Marcel Cruz</small>
-      <small> Modified: 01/01/2020 by Marcel Cruz</small> -->
   </mat-sidenav>
 
 </mat-sidenav-container>
-
-<!-- <div fxFlex="25" fxFlex.md="30" fxLayout="column">
-    <mat-card class="mat-elevation-z1" fxFlex>
-      <div fxLayout="row" class="card-header">
-        <h2 fxFlex style="font-weight: 300; margin: 0px;">History</h2>
-      </div>
-      <mat-card-content>
-       this is another card
-      </mat-card-content>
-
-      <small>Last Modified: 01/01/2020 by Marcel Cruz</small>
-      <small> Modified: 01/01/2020 by Marcel Cruz</small>
-    </mat-card>
-  </div>
-</div> -->

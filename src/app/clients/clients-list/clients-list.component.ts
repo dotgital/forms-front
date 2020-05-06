@@ -1,4 +1,4 @@
-import { SettingsService } from './../../services/settings.service';
+import { CrudService } from './../../services/crud.service';
 import { Component, OnInit } from '@angular/core';
 
 
@@ -12,7 +12,7 @@ export class ClientsListComponent implements OnInit {
   usersPrefId: string;
 
   constructor(
-    private settings: SettingsService,
+    private crud: CrudService,
   ) {}
 
   ngOnInit(): void {
@@ -20,8 +20,7 @@ export class ClientsListComponent implements OnInit {
   }
 
   getFields() {
-    this.settings.getSettings('columns', 'clients').subscribe(res => {
-      console.log(res);
+    this.crud.getSettings('columns', 'clients').subscribe(res => {
       this.usersPrefId = res.usersPrefId;
       res.fields.sort((a, b) => (a.tablePosition > b.tablePosition) ? 1 : ((b.tablePosition > a.tablePosition) ? -1 : 0));
       // this.allColumns = res.fields.filter(col => col.fieldType !== 'dropdown-multiple');
@@ -31,6 +30,5 @@ export class ClientsListComponent implements OnInit {
 
   changeColumns(e){
     this.getFields();
-    // this.settings.setColumnsPreference(e);
   }
 }

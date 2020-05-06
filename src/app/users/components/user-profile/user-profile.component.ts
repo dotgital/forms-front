@@ -10,9 +10,11 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitte
 })
 export class UserProfileComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() recordData: any;
-  @Output() formChanged: EventEmitter<boolean> = new EventEmitter();
-  @Output() dataCreated: EventEmitter<any> = new EventEmitter();
+  // @Output() formChanged: EventEmitter<boolean> = new EventEmitter();
+  // @Output() dataCreated: EventEmitter<any> = new EventEmitter();
   @Output() dataUpdated: EventEmitter<any> = new EventEmitter();
+
+  @Output() profileChange: EventEmitter<any> = new EventEmitter();
 
   // public editing: boolean;
   public creating: boolean;
@@ -49,9 +51,11 @@ export class UserProfileComponent implements OnInit, OnChanges, AfterViewInit {
     this.profileForm.valueChanges.subscribe(res => {
       if (this.oriData) {
         if (JSON.stringify(this.oriData) !== JSON.stringify(this.profileForm.value)) {
-          this.formChanged.emit(true);
+          this.profileChange.emit({formChanged: true});
+          // this.formChanged.emit(true);
         } else {
-          this.formChanged.emit(false);
+          // this.formChanged.emit(false);
+          this.profileChange.emit({formChanged: false});
         }
       }
     });
@@ -66,12 +70,6 @@ export class UserProfileComponent implements OnInit, OnChanges, AfterViewInit {
     this.profileForm.controls['recordName'].enable();
     this.oriData = this.profileForm.value;
   }
-
-  // cancelForm() {
-  //   // this.editing = false;
-  //   this.profileForm.patchValue(this.recordData);
-  //   this.profileForm.disable();
-  // }
 
   generatePassword() {
     const pass = Math.random().toString(36).slice(-12);
@@ -90,11 +88,11 @@ export class UserProfileComponent implements OnInit, OnChanges, AfterViewInit {
 
     if (!this.profileForm.invalid) {
       // Emit to parent to start loading overlay
-      this.dataCreated.emit({ loading: true });
-      this.crud.createUser(this.profileForm.value).subscribe(res => {
-        this.dataCreated.emit( {dataCreated: true, recordId: res['id'], loading: false} );
+      // this.dataCreated.emit({ loading: true });
+      this.crud.createRecord('users', this.profileForm.value).subscribe(record => {
+        this.profileChange.emit( {dataCreated: true, recordId: record['id'] } );
       }, err => {
-        this.dataCreated.emit( {dataCreated: false, loading: false} );
+        this.profileChange.emit( {dataCreated: false, error: true} );
         if (err[0].messages[0].field.includes('username')) {
           this.errorMessageService.showError('This email address is already taken');
         }
@@ -108,48 +106,22 @@ export class UserProfileComponent implements OnInit, OnChanges, AfterViewInit {
 
     if (!this.profileForm.invalid) {
       // Emit to parent to start Loading overlay and disable save button
-      this.dataUpdated.emit({ loading: true });
-      this.formChanged.emit(false);
+      // this.formChanged.emit(false);
 
       // Updating the recorName
       const recordName = `${this.profileForm.value.firstName} ${this.profileForm.value.lastName}`;
       this.profileForm.patchValue({recordName});
 
-      this.crud.updateUser(this.recordData.id, this.profileForm.value).subscribe(res => {
-        this.recordData = res;
-        this.profileForm.patchValue(res);
+      this.crud.updateRecord('user-update', this.recordData.id, this.profileForm.value).subscribe(record => {
+        this.recordData = record;
+        this.profileForm.patchValue(record);
         this.oriData = this.profileForm.value;
-        this.dataUpdated.emit({ record: res, loading: false });
-        this.formChanged.emit(false);
+        this.profileChange.emit( {dataUpdated: true, record } );
+        // this.formChanged.emit(false);
       }, err => {
         console.log(err);
-        this.dataUpdated.emit({ err, loading: false });
+        this.profileChange.emit( {dataUpdated: false, error: true } );
       });
     }
   }
-
-  // submitData() {
-  //   this.formChanged = false;
-  //   const recordName = `${this.profileForm.value.firstName} ${this.profileForm.value.lastName}`;
-  //   this.profileForm.patchValue({username: this.profileForm.value.email});
-  //   this.profileForm.patchValue({recordName});
-  //   if (!this.profileForm.invalid) {
-  //     if (!this.creating) {
-  //       this.crud.updateUser(this.recordData.id, this.profileForm.value).subscribe(res => {
-  //         console.log(res);
-  //         this.editing = false;
-  //         this.recordData = res;
-  //         this.profileForm.patchValue(res);
-  //         this.oriData = this.profileForm.value;
-  //         this.profileForm.disable();
-  //       });
-  //     } else {
-  //       this.creating = false;
-  //       this.crud.createUser(this.profileForm.value).subscribe(res => {
-  //         this.oriData = {}
-  //         console.log(res);
-  //       });
-  //     }
-  //   }
-  // }
 }

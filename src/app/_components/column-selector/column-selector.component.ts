@@ -1,7 +1,6 @@
-import { SettingsService } from './../../services/settings.service';
+import { CrudService } from './../../services/crud.service';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, OnInit, ViewEncapsulation, Input, SimpleChanges, OnChanges, Output, EventEmitter } from '@angular/core';
-import { MatSelectionList } from '@angular/material/list';
 
 @Component({
   selector: 'app-column-selector',
@@ -22,7 +21,7 @@ export class ColumnSelectorComponent implements OnInit, OnChanges {
   loadingWidth: number;
 
   constructor(
-    private settings: SettingsService,
+    private crud: CrudService,
   ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -84,7 +83,7 @@ export class ColumnSelectorComponent implements OnInit, OnChanges {
     data['id'] = this.usersPrefId;
     data[listView] = this.initialValues;
     console.log(data);
-    this.settings.setUserSetting(data).subscribe(res => {
+    this.crud.setUserSetting(data).subscribe(res => {
       this.changeColumns.emit(this.selectedColumns);
     });
   }

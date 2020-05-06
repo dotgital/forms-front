@@ -1,3 +1,4 @@
+import { AuthService } from './auth.service';
 import { map } from 'rxjs/operators';
 import { environment } from './../../environments/environment';
 import { Injectable } from '@angular/core';
@@ -9,41 +10,18 @@ import gql from 'graphql-tag';
   providedIn: 'root'
 })
 export class CrudService {
+  private userId;
 
   constructor(
     private http: HttpClient,
     private apollo: Apollo,
-  ) { }
-
-  getMetadata(uid) {
-    return this.http.get<any>(`${environment.backendUrl}/content-manager/content-types/${uid}`)
-    .pipe(map(metaData => {
-      return metaData;
-    }));
+    private authSetvice: AuthService,
+  ) {
+    this.userId = this.authSetvice.currentUserValue.user.id;
   }
 
-  getUserPermissions() {
-    return this.http.get<any>(`${environment.backendUrl}/custom-permissions`)
-    .pipe(map(metaData => {
-      return metaData;
-    }));
-  }
-
-  setUserPermissions(data) {
-    return this.http.post(`${environment.backendUrl}/set-permissions/`, data)
-    .pipe(map(settings => {
-      return settings;
-    }));
-  }
-
-  getList(module: string, query, columns) {
-    return this.http.post(`${environment.backendUrl}/list/${module}?${query}`, {columns})
-    .pipe(map(settings => {
-      return settings;
-    }));
-  }
-
-  getDatalist(query) {
+  // Graphql query and motation
+  graphQl(query) {
     return this.apollo.query<any>({
       query: gql`${query}`,
       fetchPolicy: 'network-only',
@@ -51,62 +29,43 @@ export class CrudService {
     });
   }
 
-  getData(query) {
-    return this.apollo.query<any>({
-      query: gql`${query}`,
-      fetchPolicy: 'network-only',
-      errorPolicy: 'all',
-    });
-  }
-
-  createData(module: string, data) {
-    return this.http.post(`${environment.backendUrl}/${module}/`, data)
-    .pipe(map(settings => {
-      return settings;
-    }));
-  }
-
-  updateData(module: string, id: string, data) {
-    return this.http.put(`${environment.backendUrl}/${module}/${id}`, data)
-    .pipe(map(settings => {
-      return settings;
-    }));
-  }
-
-  createUser(userData) {
-    return this.http.post(`${environment.backendUrl}/users/`, userData)
-    .pipe(map(settings => {
-      return settings;
-    }));
-  }
-
-  updateUser(userId, userData) {
-    console.log(userId);
-    return this.http.put(`${environment.backendUrl}/user-update/${userId}`, userData)
-    .pipe(map(settings => {
-      return settings;
-    }));
-  }
-
-  // getRecordData(query){
-  //   return this.apollo.query<any>({
-  //     query: gql`${query}`,
-  //     fetchPolicy: 'network-only',
-  //     errorPolicy: 'all',
-  //   });
-  // }
-
-  getRecordData(record: string, id: string) {
-    return this.http.get<any>(`${environment.backendUrl}/${record}/${id}`)
+  // Get list of records passing the endpoint;
+  getRecordList(endpoint: string) {
+    return this.http.get<any>(`${environment.backendUrl}/${endpoint}`)
     .pipe(map(metaData => {
       return metaData;
     }));
   }
 
-  uploadAvatar(avatar) {
+  // Get Record Data passing the endpoint and ID
+  getRecordData(endpoint: string, id: string) {
+    return this.http.get<any>(`${environment.backendUrl}/${endpoint}/${id}`)
+    .pipe(map(metaData => {
+      return metaData;
+    }));
+  }
+
+  // Set the record data passing endpoint and Id
+  createRecord(endpoint: string, data) {
+    return this.http.post(`${environment.backendUrl}/${endpoint}`, data)
+    .pipe(map(settings => {
+      return settings;
+    }));
+  }
+
+  // Update Record Data
+  updateRecord(endpoint: string, id: string, data) {
+    return this.http.put(`${environment.backendUrl}/${endpoint}/${id}`, data)
+    .pipe(map(settings => {
+      return settings;
+    }));
+  }
+
+  // Upload Files to strapi
+  uploadFile(file) {
     let headers = new HttpHeaders();
-    headers = headers.set('Content-Type', 'application/x-www-form-urlencoded');
-    return this.http.post<any>(`${environment.backendUrl}/upload`, avatar, {
+    headers = headers.set('Content-Type', 'multipart/form-data');
+    return this.http.post<any>(`${environment.backendUrl}/upload`, file, {
       reportProgress: true, // These fields are required to receive HttpEvents
       observe: 'events',
     }).pipe(
@@ -122,5 +81,33 @@ export class CrudService {
           }
       })
     );
+  }
+
+  /*
+  Custom Requests
+  */
+
+  // Get table data
+  getTableData(module: string, query, columns) {
+    return this.http.post(`${environment.backendUrl}/list/${module}?${query}`, {columns})
+    .pipe(map(settings => {
+      return settings;
+    }));
+  }
+
+  // Set settings for individual user
+  setUserSetting(data) {
+    return this.http.put<any>(`${environment.backendUrl}/user-update/${this.userId}`, {userPreferences: data})
+    .pipe(map(settings => {
+      return settings;
+    }));
+  }
+
+  // Get custom settings
+  getSettings(type, module) {
+    return this.http.get<any>(`${environment.backendUrl}/global-preferences?type=${type}&module=${module}`)
+    .pipe(map(settings => {
+      return settings;
+    }));
   }
 }

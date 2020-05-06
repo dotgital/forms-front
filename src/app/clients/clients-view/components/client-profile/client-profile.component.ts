@@ -1,4 +1,3 @@
-import { SettingsService } from '../../../../services/settings.service';
 import { FormItem } from '../../../../_interfaces/form-item';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { CrudService } from '../../../../services/crud.service';
@@ -29,7 +28,6 @@ export class ClientProfileComponent implements OnInit, OnChanges {
   constructor(
     private crud: CrudService,
     private fb: FormBuilder,
-    private settingService: SettingsService,
   ) {
     this.profileForm = this.fb.group({});
   }
@@ -55,7 +53,7 @@ export class ClientProfileComponent implements OnInit, OnChanges {
   }
 
   async buildForm() {
-    this.emptyForm = this.settingService.getSettings('layout', 'clients').subscribe(async res => {
+    this.emptyForm = this.crud.getSettings('layout', 'clients').subscribe(async res => {
       for await (const control of res) {
         if (control.visible) {
           const formControl = control.required ? new FormControl(null, Validators.required) : new FormControl(null);
@@ -103,7 +101,7 @@ export class ClientProfileComponent implements OnInit, OnChanges {
       this.dataUpdated.emit({ loading: true });
       this.formChanged.emit(false);
 
-      this.crud.updateData('clients', this.recordData.id, this.profileForm.value).subscribe(res => {
+      this.crud.updateRecord('clients', this.recordData.id, this.profileForm.value).subscribe(res => {
         this.dataUpdated.emit({ record: res, loading: false });
         this.formChanged.emit(false);
         this.recordData = res;
@@ -123,7 +121,7 @@ export class ClientProfileComponent implements OnInit, OnChanges {
       // Emit to parent to start loading overlay
       this.dataCreated.emit({ loading: true });
       this.creating = false;
-      this.crud.createData('clients', this.profileForm.value).subscribe(res => {
+      this.crud.createRecord('clients', this.profileForm.value).subscribe(res => {
         this.dataCreated.emit( {dataCreated: true, recordId: res['id'], loading: false} );
         this.recordData = res;
         this.setData();
