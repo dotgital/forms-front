@@ -4,8 +4,8 @@
 <mat-sidenav-content class="content-outlet">
 <mat-toolbar class="component-header content-toolbar">
   <span fxFlex>User Permissions</span>
-  <a mat-button class="sidebar-toogle" (click)="toogleSideBar()" *ngIf="!sideBarOpened" >Show <mat-icon>double_arrow</mat-icon></a>
-  <a mat-button class="sidebar-toogle" (click)="toogleSideBar()" *ngIf="sideBarOpened" >Hide <mat-icon>double_arrow</mat-icon></a>
+  <!-- <a mat-button class="sidebar-toogle" (click)="toogleSideBar()" *ngIf="!sideBarOpened" >Show <mat-icon>double_arrow</mat-icon></a>
+  <a mat-button class="sidebar-toogle" (click)="toogleSideBar()" *ngIf="sideBarOpened" >Hide <mat-icon>double_arrow</mat-icon></a> -->
 </mat-toolbar>
 <div class="main-content" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="10px">
   <div fxFlex>
@@ -99,7 +99,7 @@ fixedInViewport
 autosize
 [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
 [mode]="(isHandset$ | async) ? 'over' : 'side'"
-[opened]="(isHandset$ | async) ? false : true">
+[opened]="false">
   <mat-toolbar color="primary" class="main-tool-bar">Menu</mat-toolbar>
   <mat-toolbar class="component-header content-toolbar">
     <span fxFlex>Field Settings</span>

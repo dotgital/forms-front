@@ -28,6 +28,7 @@ export class UsersPermissionsComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     this.creating = false;
     if ( this.recordData ) {
+      this.accessControl = [];
       this.recordData.userPermissions.permissions.map(perm => {
         this.accessControl.push({
           module: perm.module,

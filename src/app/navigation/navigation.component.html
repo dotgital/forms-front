@@ -84,7 +84,7 @@
           <img [src]="avatarUrl" class="navbar-avatar" [matMenuTriggerFor]="menu"/>
           <mat-menu #menu="matMenu"  class="mat-elevation-z2" style="margin-top: 10px;">
 
-            <button mat-menu-item routerLink="/users/{{userId}}" class="profile-menu" *ngIf="isAdmin" >
+            <button mat-menu-item routerLink="/users/{{userId}}" class="profile-menu">
               <mat-icon>person</mat-icon>
               <span>Profile</span>
             </button>

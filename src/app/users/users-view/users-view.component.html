@@ -33,14 +33,14 @@
               Edit</a>
             <a mat-button *ngIf="editing" (click)="cancelRecord()">
               Cancel</a>
-            <button mat-flat-button color="primary" *ngIf="editing" (click)="saveRecord()" [disabled]="submit == 'disabled'">
+            <button mat-flat-button color="primary" *ngIf="editing" (click)="saveRecord()">
               Save</button>
             <button  *ngIf="creating" mat-flat-button color="primary" (click)="createRecord()">
               Create</button>
           </div>
         </div>
 
-        <mat-tab-group color="primary" animationDuration="0ms" (selectedTabChange)="selectedTabChange($event)">
+        <mat-tab-group color="primary" animationDuration="0ms">
           <mat-tab #profile>
             <ng-template mat-tab-label>
               <div [class]="(isHandset$ | async) ? 'isHandset' : 'notHandset'">
@@ -54,7 +54,8 @@
             </app-user-profile>
           </mat-tab>
 
-          <mat-tab #permissions>
+          <mat-tab #permissions
+          *ngIf="isAdmin">
             <ng-template mat-tab-label>
               <div [class]="(isHandset$ | async) ? 'isHandset' : 'notHandset'">
                 <mat-icon>lock</mat-icon>
@@ -62,6 +63,7 @@
               </div>
             </ng-template>
             <app-users-permissions #userPemissions
+            *ngIf="isAdmin"
             [recordData]="record.data"
             (permissionsChange)="permissionsChange($event)"></app-users-permissions>
           </mat-tab>

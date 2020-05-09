@@ -97,7 +97,7 @@ export class CrudService {
 
   // Set settings for individual user
   setUserSetting(data) {
-    return this.http.put<any>(`${environment.backendUrl}/user-update/${this.userId}`, {userPreferences: data})
+    return this.http.put<any>(`${environment.backendUrl}/update-user/${this.userId}`, {userPreferences: data})
     .pipe(map(settings => {
       return settings;
     }));

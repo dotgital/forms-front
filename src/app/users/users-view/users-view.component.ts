@@ -1,3 +1,4 @@
+import { AuthService } from './../../services/auth.service';
 import { UsersPermissionsComponent } from './../users-permissions/users-permissions.component';
 import { environment } from './../../../environments/environment';
 import { AvatarComponent } from './../../_components/avatar/avatar.component';
@@ -25,6 +26,7 @@ export class UsersViewComponent implements OnInit {
 
   avatarUrl: any;
   isAvatarChanged: boolean;
+  isAdmin = false;
 
   loading = true;
   editing: boolean;
@@ -55,9 +57,11 @@ export class UsersViewComponent implements OnInit {
     private location: Location,
     private errorMessageService: ErrorMessagesService,
     private router: Router,
+    private authService: AuthService,
   ) { }
 
   ngOnInit(): void {
+    this.isAdmin = this.authService.currentUserValue.user.role.type === 'administrator';
     this.route.paramMap.subscribe(params => {
       if (params.get('id') === 'add') {
         this.creating = true;
@@ -84,10 +88,6 @@ export class UsersViewComponent implements OnInit {
     } else {
       this.sideBarOpened = false;
     }
-  }
-
-  selectedTabChange(e){
-    console.log(e);
   }
 
   goBack() {
@@ -197,6 +197,5 @@ export class UsersViewComponent implements OnInit {
   */
  permissionsChange(change){
   this.submit = change.formChanged || change.formValid === false ? 'enabled' : 'disabled';
-  console.log(change);
  }
 }
