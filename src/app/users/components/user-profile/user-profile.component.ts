@@ -10,22 +10,21 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitte
 })
 export class UserProfileComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() recordData: any;
-  // @Output() formChanged: EventEmitter<boolean> = new EventEmitter();
-  // @Output() dataCreated: EventEmitter<any> = new EventEmitter();
   @Output() dataUpdated: EventEmitter<any> = new EventEmitter();
-
   @Output() profileChange: EventEmitter<any> = new EventEmitter();
 
-  // public editing: boolean;
+  public hide = true;
   public creating: boolean;
   private oriData: any;
-  // public formChanged: boolean;
 
   profileForm = new FormGroup({
     firstName: new FormControl(null, Validators.required),
     lastName: new FormControl(null, Validators.required),
     username: new FormControl(null, Validators.required),
     password: new FormControl(null, Validators.required),
+    phoneNumber: new FormControl(null),
+    office: new FormControl(null),
+    jobPosition: new FormControl(null),
     email: new FormControl(null, [Validators.required, Validators.email]),
     recordName: new FormControl(null, Validators.required),
   });
@@ -52,9 +51,7 @@ export class UserProfileComponent implements OnInit, OnChanges, AfterViewInit {
       if (this.oriData) {
         if (JSON.stringify(this.oriData) !== JSON.stringify(this.profileForm.value)) {
           this.profileChange.emit({formChanged: true});
-          // this.formChanged.emit(true);
         } else {
-          // this.formChanged.emit(false);
           this.profileChange.emit({formChanged: false});
         }
       }
@@ -68,6 +65,9 @@ export class UserProfileComponent implements OnInit, OnChanges, AfterViewInit {
     this.profileForm.controls['firstName'].enable();
     this.profileForm.controls['lastName'].enable();
     this.profileForm.controls['recordName'].enable();
+    this.profileForm.controls['phoneNumber'].enable();
+    this.profileForm.controls['office'].enable();
+    this.profileForm.controls['jobPosition'].enable();
     this.oriData = this.profileForm.value;
   }
 
@@ -87,6 +87,7 @@ export class UserProfileComponent implements OnInit, OnChanges, AfterViewInit {
     this.profileForm.markAllAsTouched();
 
     if (!this.profileForm.invalid) {
+      this.profileChange.emit( {formValid: true} );
       // Emit to parent to start loading overlay
       // this.dataCreated.emit({ loading: true });
       this.crud.createRecord('users', this.profileForm.value).subscribe(record => {
@@ -97,6 +98,8 @@ export class UserProfileComponent implements OnInit, OnChanges, AfterViewInit {
           this.errorMessageService.showError('This email address is already taken');
         }
       });
+    } else {
+      this.profileChange.emit( {formValid: false} );
     }
   }
 
@@ -105,14 +108,14 @@ export class UserProfileComponent implements OnInit, OnChanges, AfterViewInit {
     this.profileForm.markAllAsTouched();
 
     if (!this.profileForm.invalid) {
+      this.profileChange.emit( {formValid: true} );
       // Emit to parent to start Loading overlay and disable save button
       // this.formChanged.emit(false);
-
       // Updating the recorName
       const recordName = `${this.profileForm.value.firstName} ${this.profileForm.value.lastName}`;
       this.profileForm.patchValue({recordName});
 
-      this.crud.updateRecord('user-update', this.recordData.id, this.profileForm.value).subscribe(record => {
+      this.crud.updateRecord('update-user', this.recordData.id, this.profileForm.value).subscribe(record => {
         this.recordData = record;
         this.profileForm.patchValue(record);
         this.oriData = this.profileForm.value;
@@ -122,6 +125,8 @@ export class UserProfileComponent implements OnInit, OnChanges, AfterViewInit {
         console.log(err);
         this.profileChange.emit( {dataUpdated: false, error: true } );
       });
+    } else {
+      this.profileChange.emit( {formValid: false} );
     }
   }
 }

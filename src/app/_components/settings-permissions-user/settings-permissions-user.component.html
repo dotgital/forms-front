@@ -1,0 +1,49 @@
+<form [formGroup]="permissionsForm" novalidate>
+
+<div fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="space-between center" style="padding: 8px 0px;">
+  <span fxFlex="18"
+  fxFlex.lt-md="100"
+  class="permission-user">{{recordName}}</span>
+
+  <mat-form-field floatLabel="always" class="full-width permission-type" appearance="outline" fxFlex="18" fxFlex.lt-md="100">
+    <mat-label>Create</mat-label>
+    <mat-select name="view" formControlName="create">
+      <mat-option value="All">All</mat-option>
+      <mat-option value="None">None</mat-option>
+      <mat-option value="onlyAssigned">Only Assigned</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field floatLabel="always" class="full-width permission-type" appearance="outline" fxFlex="18" fxFlex.lt-md="100">
+    <mat-label>View</mat-label>
+    <mat-select name="item" formControlName="view">
+      <mat-option value="All"> All</mat-option>
+      <mat-option value="None"> None</mat-option>
+      <mat-option value="onlyAssigned"> Only Assigned</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field floatLabel="always" class="full-width permission-type" appearance="outline" fxFlex="18" fxFlex.lt-md="100">
+    <mat-label>Edit</mat-label>
+    <mat-select name="item" formControlName="edit">
+      <mat-option value="All"> All</mat-option>
+      <mat-option value="None"> None</mat-option>
+      <mat-option value="onlyAssigned"> Only Assigned</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field floatLabel="always" class="full-width permission-type" appearance="outline" fxFlex="18" fxFlex.lt-md="100">
+    <mat-label>Delete</mat-label>
+    <mat-select name="item" formControlName="delete">
+      <mat-option value="All"> All</mat-option>
+      <mat-option value="None"> None</mat-option>
+      <mat-option value="onlyAssigned"> Only Assigned</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+</div>
+</form>
+
+<mat-divider
+  [inset]="true">
+</mat-divider>

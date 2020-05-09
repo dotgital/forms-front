@@ -63,6 +63,8 @@ import { SettingsPermissionsComponent } from './settings/settings-permissions/se
 import { ColumnSelectorComponent } from './_components/column-selector/column-selector.component';
 import { DataTableComponent } from './_components/data-table/data-table.component';
 import { AvatarComponent } from './_components/avatar/avatar.component';
+import { UsersPermissionsComponent } from './users/users-permissions/users-permissions.component';
+import { SettingsPermissionsUserComponent } from './_components/settings-permissions-user/settings-permissions-user.component';
 
 
 @NgModule({
@@ -90,7 +92,9 @@ import { AvatarComponent } from './_components/avatar/avatar.component';
     SettingsPermissionsComponent,
     ColumnSelectorComponent,
     DataTableComponent,
-    AvatarComponent
+    AvatarComponent,
+    UsersPermissionsComponent,
+    SettingsPermissionsUserComponent,
   ],
   imports: [
     BrowserModule,

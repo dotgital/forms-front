@@ -1,3 +1,5 @@
+import { SettingsPermissionsUserComponent } from './../../_components/settings-permissions-user/settings-permissions-user.component';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Permissions } from './../../_interfaces/permissions';
 import { CrudService } from './../../services/crud.service';
 import { MatSidenav } from '@angular/material/sidenav';
@@ -13,10 +15,13 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 })
 export class SettingsPermissionsComponent implements OnInit {
   @ViewChild('sidebar') rightSide: MatSidenav;
+  @ViewChild('settingsPermissionsUser') settingsPermissionsUser: SettingsPermissionsUserComponent;
   permissions: any[];
   newPermissions: any[];
   sideBarOpened: boolean;
+  editing = false;
   loading: boolean;
+  module: string;
   contentType: string;
   contentTypeView: string;
   contentTypeEdit: string;
@@ -29,6 +34,10 @@ export class SettingsPermissionsComponent implements OnInit {
 
   emptyPermissions = {users_view: 'All', users_edit: 'All', clients_view: 'All', clients_edit: 'All'};
 
+  permissionsForm = new FormGroup({
+    module: new FormControl(null, Validators.required)
+  });
+
   constructor(
     private breakpointObserver: BreakpointObserver,
     private crud: CrudService
@@ -36,7 +45,7 @@ export class SettingsPermissionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.isChanged = false;
-    this.contentType = 'clients';
+    this.module = 'clients';
     this.contentTypeView = 'clients_view';
     this.contentTypeEdit = 'clients_edit';
     this.getUsersPermissions();
@@ -44,38 +53,72 @@ export class SettingsPermissionsComponent implements OnInit {
 
   getUsersPermissions() {
     this.loading = true;
-    this.crud.getRecordList('custom-permissions').subscribe(res => {
+    this.crud.getRecordList('find-users-permissions').subscribe(res => {
       this.permissions = res;
       this.loading = false;
-      // this.newPermissions = res;
-      console.log(this.permissions);
+      console.log(res);
     });
+    // this.crud.getRecordList('custom-permissions').subscribe(res => {
+    //   this.permissions = res;
+    //   this.loading = false;
+    //   // this.newPermissions = res;
+    //   console.log(this.permissions);
+    // });
   }
 
-  changeUserPermission(e, type, item) {
-    this.permissions = this.permissions.map(el => {
-      if (el.id === item.id) {
-        el.custom_permission[type] = e.value;
-      }
-      return el;
-    });
+  // changeUserPermission(e, type, item) {
+  //   this.permissions = this.permissions.map(el => {
+  //     if (el.id === item.id) {
+  //       el.custom_permission[type] = e.value;
+  //     }
+  //     return el;
+  //   });
+  //   this.isChanged = true;
+  // }
+
+  editPermissions() {
+    this.editing = true;
+    // this.settingsPermissionsUser.editForm();
+  }
+
+  permissionsChanged(change) {
+    const {formChanged, id, permissions} = change;
     this.isChanged = true;
+    // If child permission component changed iterate through the original array and change the permission
+    if (this.isChanged === true) {
+      this.permissions = this.permissions.map(oriPerm => {
+        const { userPermissions } = oriPerm;
+        if (id === oriPerm.id) {
+          oriPerm.userPermissions = userPermissions.map(perm => {
+            if (perm.module === this.module) {
+              perm.create = permissions.create;
+              perm.view = permissions.view;
+              perm.edit = permissions.edit;
+              perm.delete = permissions.delete;
+            }
+            return perm;
+          });
+        }
+        return oriPerm;
+      });
+    }
+
   }
 
-  changeContentType(e) {
-    this.contentType = e.value;
-    this.contentTypeView = `${this.contentType}_view`;
-    this.contentTypeEdit = `${this.contentType}_edit`;
+  changeModule(e) {
+    this.module = e.value;
   }
 
   cancel() {
     this.isChanged = false;
+    this.editing = false;
     this.getUsersPermissions();
   }
 
   saveUserPermissions() {
+    this.isChanged = false;
     this.loading = true;
-    this.crud.createRecord('set-permissions', this.permissions).subscribe(res => {
+    this.crud.createRecord('set-users-permissions', this.permissions).subscribe(res => {
       console.log(res);
       this.loading = false;
       this.isChanged = false;

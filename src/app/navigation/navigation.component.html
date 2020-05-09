@@ -83,6 +83,12 @@
           <!-- <img src="../../assets/avatar.png" *ngIf="!avatarUrl"  class="navbar-avatar" [matMenuTriggerFor]="menu"/> -->
           <img [src]="avatarUrl" class="navbar-avatar" [matMenuTriggerFor]="menu"/>
           <mat-menu #menu="matMenu"  class="mat-elevation-z2" style="margin-top: 10px;">
+
+            <button mat-menu-item routerLink="/users/{{userId}}" class="profile-menu" *ngIf="isAdmin" >
+              <mat-icon>person</mat-icon>
+              <span>Profile</span>
+            </button>
+
             <button mat-menu-item routerLink="/settings" class="profile-menu" *ngIf="isAdmin" >
               <mat-icon>settings</mat-icon>
               <span>Settings</span>

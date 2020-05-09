@@ -1,0 +1,133 @@
+<form id="input-form" [formGroup]="usersPermissions" novalidate style.fontSize.px="26px">
+  <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutAlign="space-between center">
+
+    <mat-form-field appearance="outline" floatLabel="always" color="primary" class="full-width" fxFlex="49" fxFlex.lt-md="100">
+      <mat-label>User Type</mat-label>
+      <mat-select formControlName="userType" required value="authenticated">
+        <mat-option value="authenticated"> Regular User</mat-option>
+        <mat-option value="administrator"> System Administrator</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" floatLabel="always" color="primary" class="full-width" fxFlex="49" fxFlex.lt-md="100">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="active" required value="active">
+        <mat-option value="active"> Active</mat-option>
+        <mat-option value="inactive"> Inactive</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <h2>Access control</h2>
+    <mat-divider style="margin-bottom: 15px;"
+      [inset]="true">
+    </mat-divider>
+
+    <ng-container *ngFor="let permissions of accessControl" >
+
+      <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutAlign="space-between top">
+        <div fxFlex="100" fxFlex.lt-md="100" style="text-transform: capitalize;">
+          <span>{{permissions.module}}</span>
+         </div>
+       <mat-form-field appearance="outline" floatLabel="always" color="primary" class="full-width" fxFlex="23.5" fxFlex.lt-md="100">
+        <mat-label>Create</mat-label>
+        <mat-select formControlName="{{permissions.create}}">
+          <mat-option value="All">All</mat-option>
+          <mat-option value="None">None</mat-option>
+          <mat-option value="onlyAssigned">Only Assigned</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" floatLabel="always" color="primary" class="full-width" fxFlex="23.5" fxFlex.lt-md="100">
+        <mat-label>View</mat-label>
+        <mat-select formControlName="{{permissions.view}}">
+          <mat-option value="All">All</mat-option>
+          <mat-option value="None">None</mat-option>
+          <mat-option value="onlyAssigned">Only Assigned</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" floatLabel="always" color="primary" class="full-width" fxFlex="23.5" fxFlex.lt-md="100">
+        <mat-label>Edit</mat-label>
+        <mat-select formControlName="{{permissions.edit}}">
+          <mat-option value="All"> All</mat-option>
+          <mat-option value="None"> None</mat-option>
+          <mat-option value="onlyAssigned"> Only Assigned</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" floatLabel="always" color="primary" class="full-width" fxFlex="23.5" fxFlex.lt-md="100">
+        <mat-label>Delete</mat-label>
+        <mat-select formControlName="{{permissions.delete}}">
+          <mat-option value="All"> All</mat-option>
+          <mat-option value="None"> None</mat-option>
+          <mat-option value="onlyAssigned"> Only Assigned</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    </ng-container>
+
+
+    <!-- <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutAlign="space-between top">
+     <div fxFlex="23.5" fxFlex.lt-md="100" style="padding: 15px 0px;">
+      <span>Clients</span>
+     </div>
+      <mat-form-field appearance="outline" floatLabel="always" color="primary" class="full-width" fxFlex="23.5" fxFlex.lt-md="100">
+        <mat-label>View Clients</mat-label>
+        <mat-select formControlName="clientsViewPermission">
+          <mat-option value="All">All</mat-option>
+          <mat-option value="None">None</mat-option>
+          <mat-option value="onlyAssigned">Only Assigned</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" floatLabel="always" color="primary" class="full-width" fxFlex="23.5" fxFlex.lt-md="100">
+        <mat-label>Edit Clients</mat-label>
+        <mat-select formControlName="clientsEditPermission">
+          <mat-option value="All"> All</mat-option>
+          <mat-option value="None"> None</mat-option>
+          <mat-option value="onlyAssigned"> Only Assigned</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" floatLabel="always" color="primary" class="full-width" fxFlex="23.5" fxFlex.lt-md="100">
+        <mat-label>Delete Clients</mat-label>
+        <mat-select formControlName="clientsEditPermission">
+          <mat-option value="All"> All</mat-option>
+          <mat-option value="None"> None</mat-option>
+          <mat-option value="onlyAssigned"> Only Assigned</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutAlign="space-between top">
+      <div fxFlex="23.5" fxFlex.lt-md="100" style="padding: 15px 0px;">
+       <span>Users</span>
+      </div>
+       <mat-form-field appearance="outline" floatLabel="always" color="primary" class="full-width" fxFlex="23.5" fxFlex.lt-md="100">
+         <mat-label>View Users</mat-label>
+         <mat-select formControlName="usersViewPermission">
+           <mat-option value="All">All</mat-option>
+           <mat-option value="None">None</mat-option>
+           <mat-option value="onlyAssigned">Only Assigned</mat-option>
+         </mat-select>
+       </mat-form-field>
+
+       <mat-form-field appearance="outline" floatLabel="always" color="primary" class="full-width" fxFlex="23.5" fxFlex.lt-md="100">
+         <mat-label>Edit Users</mat-label>
+         <mat-select formControlName="usersEditPermission">
+           <mat-option value="All"> All</mat-option>
+           <mat-option value="None"> None</mat-option>
+           <mat-option value="onlyAssigned"> Only Assigned</mat-option>
+         </mat-select>
+       </mat-form-field>
+
+       <mat-form-field appearance="outline" floatLabel="always" color="primary" class="full-width" fxFlex="23.5" fxFlex.lt-md="100">
+         <mat-label>Delete Users</mat-label>
+         <mat-select formControlName="usersEditPermission">
+           <mat-option value="All"> All</mat-option>
+           <mat-option value="None"> None</mat-option>
+           <mat-option value="onlyAssigned"> Only Assigned</mat-option>
+         </mat-select>
+       </mat-form-field>
+     </div>-->
+</form>

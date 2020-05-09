@@ -1,3 +1,4 @@
+import { UsersPermissionsComponent } from './../users-permissions/users-permissions.component';
 import { environment } from './../../../environments/environment';
 import { AvatarComponent } from './../../_components/avatar/avatar.component';
 import { UserProfileComponent } from './../components/user-profile/user-profile.component';
@@ -19,6 +20,7 @@ import { Location } from '@angular/common';
 export class UsersViewComponent implements OnInit {
   @ViewChild('sidebar') rightSide: MatSidenav;
   @ViewChild('userProfile') userProfile: UserProfileComponent;
+  @ViewChild('userPemissions') userPermissions: UsersPermissionsComponent;
   @ViewChild('avatar') avatar: AvatarComponent;
 
   avatarUrl: any;
@@ -84,17 +86,24 @@ export class UsersViewComponent implements OnInit {
     }
   }
 
+  selectedTabChange(e){
+    console.log(e);
+  }
+
   goBack() {
     this.location.back();
   }
 
   getRecordData() {
     this.loading = true;
-    this.crud.getRecordData('users', this.record.id).subscribe(res => {
+    this.crud.getRecordData('find-one-user', this.record.id).subscribe(res => {
       this.record.title = res.recordName;
       this.record.data = res;
       this.creating = false;
       this.submit = 'disabled';
+
+      // Reset Avatar when cancel form
+      this.avatarUrl = '../../../assets/avatar.png';
       this.avatarUrl = res.avatar ? `${environment.backendUrl}${res.avatar.formats.thumbnail.url}` : '../../../assets/avatar.png';
       this.loading = false;
     },
@@ -105,34 +114,40 @@ export class UsersViewComponent implements OnInit {
   }
 
   /*
-  Buttons and chaild profile event listener
+  Listener to send event to the child components
   */
   editRecord() {
     this.submit  = 'disabled';
     this.editing = true;
     this.userProfile.editForm();
+    this.userPermissions.editForm();
   }
 
   cancelRecord() {
     this.editing = false;
+    this.avatarUrl = '';
     this.getRecordData();
   }
 
   saveRecord() {
-    this.submit  = 'disabled';
-    this.loading = true;
+    this.submit = 'disabled';
     this.userProfile.updateUser();
+    this.userPermissions.updateUser();
   }
 
   createRecord() {
-    this.loading = true;
-    // this.creating = false;
     this.userProfile.createUser();
+    this.userPermissions.createUser();
   }
 
+  /*
+  Listener for evenemiter from users profile child component
+  */
+
   profileChange(change){
-    console.log(change)
-    this.submit = change.formChanged ? 'enabled' : 'disabled';
+    this.submit = change.formChanged || change.formValid === false ? 'enabled' : 'disabled';
+
+    this.loading = change.formValid ? true : false;
 
     if (change.dataCreated && this.isAvatarChanged) {
       this.record.id = change.recordId;
@@ -147,7 +162,7 @@ export class UsersViewComponent implements OnInit {
     if (change.dataUpdated === true) {
       this.record.title = change.record.recordName;
       if (this.isAvatarChanged) {
-        this.avatar.uploadAvatar(change.record.id);
+        this.avatar.uploadAvatar(change.record);
       } else {
         this.loading = false;
       }
@@ -155,6 +170,10 @@ export class UsersViewComponent implements OnInit {
       this.getRecordData();
     }
   }
+
+  /*
+  Listeners for EventEmitter from Avatar child Comopoent
+  */
 
   avatarChanged(e){
     if (!this.creating) {
@@ -165,7 +184,6 @@ export class UsersViewComponent implements OnInit {
   }
 
   avatarUploaded(uploaded) {
-    console.log(uploaded);
     if (uploaded) {
       this.isAvatarChanged = false;
       this.getRecordData();
@@ -173,4 +191,12 @@ export class UsersViewComponent implements OnInit {
       this.loading = false;
     }
   }
+
+  /*
+  Listeners for EventEmmiter from UsersPermissionsComponent
+  */
+ permissionsChange(change){
+  this.submit = change.formChanged || change.formValid === false ? 'enabled' : 'disabled';
+  console.log(change);
+ }
 }

@@ -44,10 +44,29 @@
     <mat-form-field appearance="outline" floatLabel="always" color="primary" class="full-width" fxFlex="49" fxFlex.lt-md="100"
     *ngIf="creating">
       <mat-label>Password</mat-label>
-      <input matInput formControlName="password" required>
-      <a mat-button matSuffix style="top: -9px; margin-right: -8px;" (click)="generatePassword()" >Generate</a>
+      <input matInput formControlName="password" required  [type]="hide ? 'password' : 'text'">
+      <a mat-button matSuffix style="top: -9px; margin-right: -8px;" (click)="generatePassword()" class="generate-pass">Generate</a>
+      <a mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hide" class="show-hide-button">
+        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </a>
       <mat-error *ngIf="profileForm.controls['password'].hasError('required')">
       Password is <strong>required</strong></mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" floatLabel="always" color="primary" class="full-width" fxFlex="49" fxFlex.lt-md="100">
+      <mat-label>Phone Number</mat-label>
+      <input matInput formControlName="phoneNumber" type="tel">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" floatLabel="always" color="primary" class="full-width" fxFlex="49" fxFlex.lt-md="100">
+      <mat-label>Office</mat-label>
+      <input matInput formControlName="office">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" floatLabel="always" color="primary" class="full-width" fxFlex="49" fxFlex.lt-md="100">
+      <mat-label>Job Position</mat-label>
+      <input matInput formControlName="jobPosition">
     </mat-form-field>
 
   </div>

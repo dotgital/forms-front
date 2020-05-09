@@ -1,6 +1,6 @@
 import { ErrorMessagesService } from 'src/app/services/error-messages.service';
 import { CrudService } from './../../services/crud.service';
-import { Component, OnInit, ViewChild, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter, SimpleChanges, OnChanges, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'app-avatar',
@@ -8,7 +8,7 @@ import { Component, OnInit, ViewChild, Input, Output, EventEmitter, SimpleChange
   styleUrls: ['./avatar.component.scss']
 })
 export class AvatarComponent implements OnInit, OnChanges {
-  @ViewChild('avatarInput') avatarInput;
+  @ViewChild('avatarInput', {static: true}) avatarInput: ElementRef;
   @Input() size: number;
   @Input() avatarUrl: any;
   @Output() avatarChanged: EventEmitter<boolean> = new EventEmitter();
@@ -26,9 +26,10 @@ export class AvatarComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes);
     if (changes.avatarUrl.currentValue) {
       this.imageSrc = changes.avatarUrl.currentValue;
-    };
+    }
   }
 
   ngOnInit(): void {
@@ -37,7 +38,6 @@ export class AvatarComponent implements OnInit, OnChanges {
   preview(files: FileList): void {
     if (files) {
       this.avatar = files.item(0);
-
       const reader = new FileReader();
       reader.onload = e => {
         this.imageSrc = reader.result;
@@ -52,7 +52,7 @@ export class AvatarComponent implements OnInit, OnChanges {
     console.log(userData);
     const formData = new FormData();
     formData.append('files', this.avatar, this.avatar.name);
-    formData.append('refId', userData);
+    formData.append('refId', userData.id);
     formData.append('ref', 'user');
     formData.append('source', 'users-permissions');
     formData.append('field', 'avatar');

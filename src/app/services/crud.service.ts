@@ -89,7 +89,7 @@ export class CrudService {
 
   // Get table data
   getTableData(module: string, query, columns) {
-    return this.http.post(`${environment.backendUrl}/list/${module}?${query}`, {columns})
+    return this.http.post(`${environment.backendUrl}/table-data/${module}?${query}`, {columns})
     .pipe(map(settings => {
       return settings;
     }));
