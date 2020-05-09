@@ -35,7 +35,7 @@ export class SettingsPermissionsUserComponent implements OnInit, OnChanges {
     }
     if (this.editing === true) {
       this.permissionsForm.enable();
-    } else if (this.editing === false){
+    } else if (this.editing === false) {
       this.permissionsForm.disable();
     }
   }
