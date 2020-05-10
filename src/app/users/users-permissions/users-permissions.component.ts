@@ -32,26 +32,29 @@ export class UsersPermissionsComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     this.creating = false;
+    const defaultPerm = this.crud.getSettings('defaultPermissions', 'all').toPromise();
     console.log(this.recordData);
     if ( !this.defaultPermissionsLoaded ) {
-      this.defaultPermissionsLoaded = true;
-      this.crud.getSettings('defaultPermissions', 'all').subscribe(res => {
-        console.log(res)
+      defaultPerm.then(res => {
         this.defaultPermissions = res;
         this.roles = res.roles;
         const defaultRole = this.roles.filter(role => role.type === 'authenticated');
         if (!this.recordData) {
           this.createAccessControlForm(res.defaultPermissions.permissions, defaultRole['0'].id, 'active');
         }
+      }).catch(err => {
+        console.log(err);
       });
     }
 
     if ( this.recordData ) {
-      const {userPermissions, role, blocked} = this.recordData;
-      const userStatus = blocked ? 'inactive' : 'active';
-      this.createAccessControlForm( userPermissions.permissions, role.id, userStatus);
-      this.oriData = this.usersPermissions.value;
-      this.usersPermissions.disable();
+      defaultPerm.then(res => {
+        const {userPermissions, role, blocked} = this.recordData;
+        const userStatus = blocked ? 'inactive' : 'active';
+        this.createAccessControlForm( userPermissions.permissions, role.id, userStatus);
+        this.oriData = this.usersPermissions.value;
+        this.usersPermissions.disable();
+      });
     } else {
       this.creating = true;
     }
