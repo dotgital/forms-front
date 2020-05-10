@@ -147,7 +147,7 @@ export class UsersViewComponent implements OnInit {
     console.log(change)
     if (!change.error) {
       Object.keys(change.data).map(prop => {
-        if (change.data[prop]) {
+        if (change.data[prop] !== null && change.data[prop] !== 'undefined') {
           this.record.newData[prop] = change.data[prop];
         }
       });
