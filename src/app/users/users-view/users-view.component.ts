@@ -144,6 +144,7 @@ export class UsersViewComponent implements OnInit {
   */
 
   userChanges(change) {
+    console.log(change)
     if (!change.error) {
       Object.keys(change.data).map(prop => {
         if (change.data[prop]) {
@@ -166,6 +167,7 @@ export class UsersViewComponent implements OnInit {
   }
 
   avatarChanges(change) {
+    console.log(change)
     if (change.avatarChanged) {
       this.isAvatarChanged = true;
       if (this.record.id) {
@@ -181,7 +183,6 @@ export class UsersViewComponent implements OnInit {
   }
 
   createUserProfile() {
-    console.log(this.record.newData);
     this.crud.createRecord('users', this.record.newData).subscribe(record => {
       this.record.title = record.recordName;
       if (this.isAvatarChanged) {
@@ -203,7 +204,7 @@ export class UsersViewComponent implements OnInit {
     this.crud.updateRecord('update-user', this.record.id, this.record.newData).subscribe(record => {
       this.record.title = record.recordName;
       if (this.isAvatarChanged) {
-        this.avatar.uploadAvatar(record.id);
+        this.avatar.uploadAvatar(this.record.id);
       } else {
         this.loading = false;
         this.editing = false;

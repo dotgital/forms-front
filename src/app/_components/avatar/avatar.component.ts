@@ -11,6 +11,7 @@ export class AvatarComponent implements OnInit, OnChanges {
   @ViewChild('avatarInput', {static: true}) avatarInput: ElementRef;
   @Input() size: number;
   @Input() avatarUrl: any;
+  @Input() disabled: boolean;
   @Output() avatarChanged: EventEmitter<any> = new EventEmitter();
 
   public files: Set<File> = new Set();
@@ -25,7 +26,7 @@ export class AvatarComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.avatarUrl.currentValue) {
+    if (changes.avatarUrl && changes.avatarUrl.currentValue) {
       this.imageSrc = changes.avatarUrl.currentValue;
     }
   }

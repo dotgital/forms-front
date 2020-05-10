@@ -19,7 +19,8 @@
             <button mat-icon-button style="margin: -6px 10px 0px 0px;">
               <app-avatar #avatar size="40"
                 (avatarChanged)="avatarChanges($event)"
-                [avatarUrl]="avatarUrl">
+                [avatarUrl]="avatarUrl"
+                [disabled]="!creating && !editing">
               </app-avatar>
             </button>
             <h2 fxFlex style="font-weight: 300; margin: 0px;">{{record.title || 'New User'}}</h2>

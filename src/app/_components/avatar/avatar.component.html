@@ -15,7 +15,12 @@
               [style.width.px]="size"
               [style.height.px]="size"/>
           </label>
-          <input id="file-input" #avatarInput type='file' (change)="preview($event.target.files);" accept="image/*"/>
+          <mat-icon class="avatar-edit" *ngIf="!disabled" >edit</mat-icon>
+          <input id="file-input" #avatarInput
+            type='file'
+            (change)="preview($event.target.files);"
+            accept="image/*"
+            [disabled]="disabled"/>
           <!-- <input hidden id="file-input" type='file' (change)="preview($event);" formControlName="avatar" value=''/> -->
       </div>
   </div>
