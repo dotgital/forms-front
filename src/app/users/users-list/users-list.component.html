@@ -1,7 +1,7 @@
 <!-- <mat-progress-bar mode="indeterminate" color="primary" class="loading-top"></mat-progress-bar> -->
 <mat-toolbar class="component-header">
   <span fxFlex>Users</span>
-  <button mat-flat-button color="primary" routerLink="/users/add">Create</button>
+  <button mat-flat-button color="primary" routerLink="/users/add" *ngIf="isAdmin" >Create</button>
 </mat-toolbar>
 <div class="main-content">
   <div class="mat-elevation-z1">

@@ -1,3 +1,4 @@
+import { AuthService } from './../../services/auth.service';
 import { CrudService } from './../../services/crud.service';
 import { Component, OnInit } from '@angular/core';
 
@@ -9,12 +10,18 @@ import { Component, OnInit } from '@angular/core';
 export class UsersListComponent implements OnInit {
   allColumns: any[];
   usersPrefId: string;
+  isAdmin = false;
 
   constructor(
-    private crud: CrudService
+    private crud: CrudService,
+    private authService: AuthService,
   ) { }
 
   ngOnInit(): void {
+    this.authService.currentUser.subscribe(res => {
+      this.isAdmin = res.user.role.type === 'administrator';
+      console.log(this.isAdmin);
+    });
     this.getFields();
   }
 

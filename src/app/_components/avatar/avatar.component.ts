@@ -11,8 +11,7 @@ export class AvatarComponent implements OnInit, OnChanges {
   @ViewChild('avatarInput', {static: true}) avatarInput: ElementRef;
   @Input() size: number;
   @Input() avatarUrl: any;
-  @Output() avatarChanged: EventEmitter<boolean> = new EventEmitter();
-  @Output() avatarUploaded: EventEmitter<boolean> = new EventEmitter();
+  @Output() avatarChanged: EventEmitter<any> = new EventEmitter();
 
   public files: Set<File> = new Set();
   public avatar;
@@ -26,7 +25,6 @@ export class AvatarComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
     if (changes.avatarUrl.currentValue) {
       this.imageSrc = changes.avatarUrl.currentValue;
     }
@@ -44,15 +42,14 @@ export class AvatarComponent implements OnInit, OnChanges {
       };
       reader.readAsDataURL(this.avatar);
     }
-    this.avatarChanged.emit(true);
+    this.avatarChanged.emit({avatarChanged: true});
   }
 
-  uploadAvatar(userData) {
+  uploadAvatar(recordId) {
     this.uploadLoading = true;
-    console.log(userData);
     const formData = new FormData();
     formData.append('files', this.avatar, this.avatar.name);
-    formData.append('refId', userData.id);
+    formData.append('refId', recordId);
     formData.append('ref', 'user');
     formData.append('source', 'users-permissions');
     formData.append('field', 'avatar');
@@ -60,15 +57,13 @@ export class AvatarComponent implements OnInit, OnChanges {
       this.uploadProgress = data.progress === 100 ? 101 : data.progress;
       if (Array.isArray(data)) {
         this.uploadLoading = false;
-        this.avatarUploaded.emit(true);
+        this.avatarChanged.emit({avatarUpdated: true, avatarChanged: false});
       }
-      console.log(data);
     },
     error => {
-      this.avatarUploaded.emit(false);
+      this.avatarChanged.emit({error: true});
       this.errorMessageService.showError('Upload Failed');
       console.log(error);
     });
   }
-
 }

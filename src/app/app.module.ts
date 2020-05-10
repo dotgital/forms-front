@@ -65,6 +65,7 @@ import { DataTableComponent } from './_components/data-table/data-table.componen
 import { AvatarComponent } from './_components/avatar/avatar.component';
 import { UsersPermissionsComponent } from './users/users-permissions/users-permissions.component';
 import { SettingsPermissionsUserComponent } from './_components/settings-permissions-user/settings-permissions-user.component';
+import { AfterValueChangedDirective } from './_directives/after-value-changed.directive';
 
 
 @NgModule({
@@ -95,6 +96,7 @@ import { SettingsPermissionsUserComponent } from './_components/settings-permiss
     AvatarComponent,
     UsersPermissionsComponent,
     SettingsPermissionsUserComponent,
+    AfterValueChangedDirective,
   ],
   imports: [
     BrowserModule,

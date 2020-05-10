@@ -12,14 +12,13 @@
 
     <div #profile style="padding: 10px;">
       <mat-card class="mat-elevation-z1">
-        <app-overlay-loading *ngIf="loading"></app-overlay-loading>
+        <!-- <app-overlay-loading *ngIf="loading"></app-overlay-loading> -->
         <div fxLayout="row" fxLayout.lt-md="column" class="card-header" fxLayoutGap="10px">
 
           <div #profileTitle fxFlex>
             <button mat-icon-button style="margin: -6px 10px 0px 0px;">
               <app-avatar #avatar size="40"
-                (avatarChanged)="avatarChanged($event)"
-                (avatarUploaded)="avatarUploaded($event)"
+                (avatarChanged)="avatarChanges($event)"
                 [avatarUrl]="avatarUrl">
               </app-avatar>
             </button>
@@ -31,12 +30,24 @@
             <div fxFlex></div>
             <a mat-flat-button color="primary" *ngIf="!creating && !editing" (click)="editRecord()">
               Edit</a>
-            <a mat-button *ngIf="editing" (click)="cancelRecord()">
+            <a mat-button *ngIf="editing" (click)="cancelRecord()" [disabled]="loading">
               Cancel</a>
-            <button mat-flat-button color="primary" *ngIf="editing" (click)="saveRecord()">
-              Save</button>
-            <button  *ngIf="creating" mat-flat-button color="primary" (click)="createRecord()">
-              Create</button>
+            <button mat-flat-button color="primary" *ngIf="editing" (click)="saveRecord()" [disabled]="loading">
+              {{ loading ? 'Saving' : 'Save'}}
+              <mat-spinner *ngIf="loading"
+                style="position: absolute; top: 5px; left: 25px;"
+                diameter="25"
+                mode="indeterminate">
+              </mat-spinner>
+            </button>
+            <button  *ngIf="creating && isAdmin" mat-flat-button color="primary" (click)="createRecord()" [disabled]="loading">
+              {{ loading ? 'Creating' : 'Create'}}
+              <mat-spinner *ngIf="loading"
+                style="position: absolute; top: 5px; left: 30px;"
+                diameter="25"
+                mode="indeterminate">
+              </mat-spinner>
+            </button>
           </div>
         </div>
 
@@ -50,7 +61,7 @@
             </ng-template>
             <app-user-profile #userProfile
               [recordData]="record.data"
-              (profileChange)="profileChange($event)">
+              (userChanged)="userChanges($event)">
             </app-user-profile>
           </mat-tab>
 
@@ -65,7 +76,7 @@
             <app-users-permissions #userPemissions
             *ngIf="isAdmin"
             [recordData]="record.data"
-            (permissionsChange)="permissionsChange($event)"></app-users-permissions>
+            (permissionsChanged)="userChanges($event)"></app-users-permissions>
           </mat-tab>
 
         </mat-tab-group>

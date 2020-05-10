@@ -47,7 +47,7 @@ export class CrudService {
 
   // Set the record data passing endpoint and Id
   createRecord(endpoint: string, data) {
-    return this.http.post(`${environment.backendUrl}/${endpoint}`, data)
+    return this.http.post<any>(`${environment.backendUrl}/${endpoint}`, data)
     .pipe(map(settings => {
       return settings;
     }));
@@ -55,7 +55,7 @@ export class CrudService {
 
   // Update Record Data
   updateRecord(endpoint: string, id: string, data) {
-    return this.http.put(`${environment.backendUrl}/${endpoint}/${id}`, data)
+    return this.http.put<any>(`${environment.backendUrl}/${endpoint}/${id}`, data)
     .pipe(map(settings => {
       return settings;
     }));

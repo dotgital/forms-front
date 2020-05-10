@@ -4,14 +4,13 @@
     <mat-form-field appearance="outline" floatLabel="always" color="primary" class="full-width" fxFlex="49" fxFlex.lt-md="100">
       <mat-label>User Type</mat-label>
       <mat-select formControlName="userType" required value="authenticated">
-        <mat-option value="authenticated"> Regular User</mat-option>
-        <mat-option value="administrator"> System Administrator</mat-option>
+        <mat-option *ngFor="let role of roles" [value]="role.id">{{role.name}}</mat-option>
       </mat-select>
     </mat-form-field>
 
     <mat-form-field appearance="outline" floatLabel="always" color="primary" class="full-width" fxFlex="49" fxFlex.lt-md="100">
       <mat-label>Status</mat-label>
-      <mat-select formControlName="active" required value="active">
+      <mat-select formControlName="active" required>
         <mat-option value="active"> Active</mat-option>
         <mat-option value="inactive"> Inactive</mat-option>
       </mat-select>

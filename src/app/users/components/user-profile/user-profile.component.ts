@@ -1,21 +1,18 @@
-import { ErrorMessagesService } from 'src/app/services/error-messages.service';
-import { CrudService } from './../../../services/crud.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.scss']
 })
-export class UserProfileComponent implements OnInit, OnChanges, AfterViewInit {
+export class UserProfileComponent implements OnInit, OnChanges {
   @Input() recordData: any;
   @Output() dataUpdated: EventEmitter<any> = new EventEmitter();
-  @Output() profileChange: EventEmitter<any> = new EventEmitter();
+  @Output() userChanged: EventEmitter<any> = new EventEmitter();
 
   public hide = true;
   public creating: boolean;
-  private oriData: any;
 
   profileForm = new FormGroup({
     firstName: new FormControl(null, Validators.required),
@@ -29,10 +26,7 @@ export class UserProfileComponent implements OnInit, OnChanges, AfterViewInit {
     recordName: new FormControl(null, Validators.required),
   });
 
-  constructor(
-    private crud: CrudService,
-    private errorMessageService: ErrorMessagesService,
-  ) { }
+  constructor() { }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.creating = false;
@@ -46,18 +40,6 @@ export class UserProfileComponent implements OnInit, OnChanges, AfterViewInit {
     }
   }
 
-  ngAfterViewInit(): void {
-    this.profileForm.valueChanges.subscribe(res => {
-      if (this.oriData) {
-        if (JSON.stringify(this.oriData) !== JSON.stringify(this.profileForm.value)) {
-          this.profileChange.emit({formChanged: true});
-        } else {
-          this.profileChange.emit({formChanged: false});
-        }
-      }
-    });
-  }
-
   ngOnInit(): void {
   }
 
@@ -68,7 +50,6 @@ export class UserProfileComponent implements OnInit, OnChanges, AfterViewInit {
     this.profileForm.controls['phoneNumber'].enable();
     this.profileForm.controls['office'].enable();
     this.profileForm.controls['jobPosition'].enable();
-    this.oriData = this.profileForm.value;
   }
 
   generatePassword() {
@@ -76,57 +57,20 @@ export class UserProfileComponent implements OnInit, OnChanges, AfterViewInit {
     this.profileForm.patchValue({password: pass});
   }
 
-  createUser() {
+  checkIfValid() {
     // Generating User Name and Record Name
     const username = this.profileForm.value.email;
     const recordName = `${this.profileForm.value.firstName} ${this.profileForm.value.lastName}`;
     this.profileForm.patchValue({username});
     this.profileForm.patchValue({recordName});
 
-    // Touch all controls to show any error
+    // Check if form is valid and return data or error
     this.profileForm.markAllAsTouched();
-
     if (!this.profileForm.invalid) {
-      this.profileChange.emit( {formValid: true} );
-      // Emit to parent to start loading overlay
-      // this.dataCreated.emit({ loading: true });
-      this.crud.createRecord('users', this.profileForm.value).subscribe(record => {
-        this.profileChange.emit( {dataCreated: true, recordId: record['id'] } );
-      }, err => {
-        this.profileChange.emit( {dataCreated: false, error: true} );
-        if (err[0].messages[0].field.includes('username')) {
-          this.errorMessageService.showError('This email address is already taken');
-        }
-      });
+      this.userChanged.emit({error: false, data: this.profileForm.value, profileValid: true});
+      this.profileForm.disable();
     } else {
-      this.profileChange.emit( {formValid: false} );
-    }
-  }
-
-  updateUser() {
-    // Touch all controls to show any error
-    this.profileForm.markAllAsTouched();
-
-    if (!this.profileForm.invalid) {
-      this.profileChange.emit( {formValid: true} );
-      // Emit to parent to start Loading overlay and disable save button
-      // this.formChanged.emit(false);
-      // Updating the recorName
-      const recordName = `${this.profileForm.value.firstName} ${this.profileForm.value.lastName}`;
-      this.profileForm.patchValue({recordName});
-
-      this.crud.updateRecord('update-user', this.recordData.id, this.profileForm.value).subscribe(record => {
-        this.recordData = record;
-        this.profileForm.patchValue(record);
-        this.oriData = this.profileForm.value;
-        this.profileChange.emit( {dataUpdated: true, record } );
-        // this.formChanged.emit(false);
-      }, err => {
-        console.log(err);
-        this.profileChange.emit( {dataUpdated: false, error: true } );
-      });
-    } else {
-      this.profileChange.emit( {formValid: false} );
+      this.userChanged.emit({error: true, data: null});
     }
   }
 }

@@ -28,20 +28,20 @@ export class UsersViewComponent implements OnInit {
   isAvatarChanged: boolean;
   isAdmin = false;
 
+  profileValid: boolean;
+  permissionsValid: boolean;
+
   loading = true;
   editing: boolean;
   creating: boolean;
-  submit: string;
   disabledSubmit: boolean;
 
-  // recordTitle: string;
   record: any = {
     id: '',
     title: 'New User',
-    data: null
+    data: null,
+    newData: {},
   };
-
-  // recordData: any;
 
   sideBarOpened: boolean;
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
@@ -100,7 +100,6 @@ export class UsersViewComponent implements OnInit {
       this.record.title = res.recordName;
       this.record.data = res;
       this.creating = false;
-      this.submit = 'disabled';
 
       // Reset Avatar when cancel form
       this.avatarUrl = '../../../assets/avatar.png';
@@ -117,10 +116,9 @@ export class UsersViewComponent implements OnInit {
   Listener to send event to the child components
   */
   editRecord() {
-    this.submit  = 'disabled';
     this.editing = true;
     this.userProfile.editForm();
-    this.userPermissions.editForm();
+    if (this.isAdmin) { this.userPermissions.editForm(); }
   }
 
   cancelRecord() {
@@ -130,72 +128,89 @@ export class UsersViewComponent implements OnInit {
   }
 
   saveRecord() {
-    this.submit = 'disabled';
-    this.userProfile.updateUser();
-    this.userPermissions.updateUser();
+    this.loading = true;
+    this.userProfile.checkIfValid();
+    this.userPermissions.checkIfValid();
   }
 
   createRecord() {
-    this.userProfile.createUser();
-    this.userPermissions.createUser();
+    this.loading = true;
+    this.userProfile.checkIfValid();
+    this.userPermissions.checkIfValid();
   }
 
   /*
   Listener for evenemiter from users profile child component
   */
 
-  profileChange(change){
-    this.submit = change.formChanged || change.formValid === false ? 'enabled' : 'disabled';
+  userChanges(change) {
+    if (!change.error) {
+      Object.keys(change.data).map(prop => {
+        if (change.data[prop]) {
+          this.record.newData[prop] = change.data[prop];
+        }
+      });
 
-    this.loading = change.formValid ? true : false;
-
-    if (change.dataCreated && this.isAvatarChanged) {
-      this.record.id = change.recordId;
-      this.avatar.uploadAvatar({id: this.record.id});
-    } else if (change.dataCreated && !this.isAvatarChanged) {
-      this.getRecordData();
-    } else if (change.dataCreated === false) {
-      this.loading = false;
-      this.creating = true;
-    }
-
-    if (change.dataUpdated === true) {
-      this.record.title = change.record.recordName;
-      if (this.isAvatarChanged) {
-        this.avatar.uploadAvatar(change.record);
-      } else {
-        this.loading = false;
+      this.permissionsValid = change.permissionsValid ? change.permissionsValid : this.permissionsValid;
+      this.profileValid = change.profileValid ? change.profileValid : this.profileValid ;
+      if (this.profileValid && this.permissionsValid) {
+        if (this.record.id === '' && this.record.newData) {
+          this.createUserProfile();
+        } else {
+          this.updateUserProfile();
+        }
       }
-    } else if (change.dataUpdated === false){
-      this.getRecordData();
-    }
-  }
-
-  /*
-  Listeners for EventEmitter from Avatar child Comopoent
-  */
-
-  avatarChanged(e){
-    if (!this.creating) {
-      this.editRecord();
-      this.submit  = 'enabled';
-    }
-    this.isAvatarChanged = true;
-  }
-
-  avatarUploaded(uploaded) {
-    if (uploaded) {
-      this.isAvatarChanged = false;
-      this.getRecordData();
     } else {
       this.loading = false;
     }
   }
 
-  /*
-  Listeners for EventEmmiter from UsersPermissionsComponent
-  */
- permissionsChange(change){
-  this.submit = change.formChanged || change.formValid === false ? 'enabled' : 'disabled';
- }
+  avatarChanges(change) {
+    if (change.avatarChanged) {
+      this.isAvatarChanged = true;
+      if (this.record.id) {
+        this.editing = true;
+      }
+    }
+
+    if (change.avatarUpdated) {
+      this.loading = false;
+      this.creating = false;
+      this.editing = false;
+    }
+  }
+
+  createUserProfile() {
+    console.log(this.record.newData);
+    this.crud.createRecord('users', this.record.newData).subscribe(record => {
+      this.record.title = record.recordName;
+      if (this.isAvatarChanged) {
+        this.avatar.uploadAvatar(record.id);
+      } else {
+        this.loading = false;
+        this.creating = false;
+      }
+      this.location.go(`/users/${record.id}`);
+    }, err => {
+      if (err[0].messages[0].field.includes('username')) {
+        this.errorMessageService.showError('This email address is already taken');
+      }
+      console.log(err);
+    });
+  }
+
+  updateUserProfile() {
+    this.crud.updateRecord('update-user', this.record.id, this.record.newData).subscribe(record => {
+      this.record.title = record.recordName;
+      if (this.isAvatarChanged) {
+        this.avatar.uploadAvatar(record.id);
+      } else {
+        this.loading = false;
+        this.editing = false;
+      }
+    }, err => {
+      console.log(err);
+      this.errorMessageService.showError('Error updating this user profile');
+    });
+  }
 }
