@@ -167,7 +167,7 @@ export class UsersViewComponent implements OnInit {
   }
 
   avatarChanges(change) {
-    console.log(change)
+    console.log(change);
     if (change.avatarChanged) {
       this.isAvatarChanged = true;
       if (this.record.id) {
@@ -176,6 +176,7 @@ export class UsersViewComponent implements OnInit {
     }
 
     if (change.avatarUpdated) {
+      this.isAvatarChanged = false;
       this.loading = false;
       this.creating = false;
       this.editing = false;
