@@ -97,6 +97,7 @@ export class UsersViewComponent implements OnInit {
   getRecordData() {
     this.loading = true;
     this.crud.getRecordData('find-one-user', this.record.id).subscribe(res => {
+      console.log(res)
       this.record.title = res.recordName;
       this.record.data = res;
       this.creating = false;
