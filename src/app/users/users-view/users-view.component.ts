@@ -27,6 +27,7 @@ export class UsersViewComponent implements OnInit {
   avatarUrl: any;
   isAvatarChanged: boolean;
   isAdmin = false;
+  isMe = false;
 
   profileValid: boolean;
   permissionsValid: boolean;
@@ -62,12 +63,14 @@ export class UsersViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.isAdmin = this.authService.currentUserValue.user.role.type === 'administrator';
+    const uid = this.authService.currentUserValue.user.id;
     this.route.paramMap.subscribe(params => {
       if (params.get('id') === 'add') {
         this.creating = true;
         this.loading = false;
       } else {
         this.record.id = params.get('id');
+        this.isMe = uid === this.record.id;
         this.getRecordData();
       }
     });
@@ -97,7 +100,7 @@ export class UsersViewComponent implements OnInit {
   getRecordData() {
     this.loading = true;
     this.crud.getRecordData('find-one-user', this.record.id).subscribe(res => {
-      console.log(res)
+      console.log(res);
       this.record.title = res.recordName;
       this.record.data = res;
       this.creating = false;
@@ -131,7 +134,7 @@ export class UsersViewComponent implements OnInit {
   saveRecord() {
     this.loading = true;
     this.userProfile.checkIfValid();
-    this.userPermissions.checkIfValid();
+    if (this.isAdmin) { this.userPermissions.checkIfValid(); }
   }
 
   createRecord() {
@@ -155,7 +158,7 @@ export class UsersViewComponent implements OnInit {
 
       this.permissionsValid = change.permissionsValid ? change.permissionsValid : this.permissionsValid;
       this.profileValid = change.profileValid ? change.profileValid : this.profileValid ;
-      if (this.profileValid && this.permissionsValid) {
+      if (this.profileValid && (this.permissionsValid || this.isMe)) {
         if (this.record.id === '' && this.record.newData) {
           this.createUserProfile();
         } else {
@@ -198,6 +201,8 @@ export class UsersViewComponent implements OnInit {
       if (err[0].messages[0].field.includes('username')) {
         this.errorMessageService.showError('This email address is already taken');
       }
+      this.loading = false;
+      this.creating = false;
       console.log(err);
     });
   }
@@ -213,6 +218,8 @@ export class UsersViewComponent implements OnInit {
       }
     }, err => {
       console.log(err);
+      this.loading = false;
+      this.editing = false;
       this.errorMessageService.showError('Error updating this user profile');
     });
   }
