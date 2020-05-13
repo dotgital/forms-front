@@ -213,7 +213,6 @@ export class ClientsViewComponent implements OnInit, AfterViewInit {
     if (change.avatarUpdated) {
       this.isAvatarChanged = false;
       this.loading = false;
-      this.creating = false;
       this.editing = false;
     }
   }
@@ -223,11 +222,11 @@ export class ClientsViewComponent implements OnInit, AfterViewInit {
     this.crud.createRecord('clients', this.record.newData).subscribe(record => {
       this.record.title = record.recordName;
       this.record.data = record;
+      this.creating = false;
       if (this.isAvatarChanged) {
         this.avatar.uploadAvatar(record.id);
       } else {
         this.loading = false;
-        this.creating = false;
       }
       this.location.go(`/clients/${record.id}`);
     }, err => {
