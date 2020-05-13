@@ -1,3 +1,5 @@
+import { environment } from './../../../environments/environment';
+import { AvatarComponent } from './../../_components/avatar/avatar.component';
 import { ClientProfileComponent } from './components/client-profile/client-profile.component';
 import { UiService } from './../../services/ui.service';
 import { MatSidenav } from '@angular/material/sidenav';
@@ -18,6 +20,13 @@ import { ErrorMessagesService } from 'src/app/services/error-messages.service';
 export class ClientsViewComponent implements OnInit, AfterViewInit {
   @ViewChild('sidebar') rightSide: MatSidenav;
   @ViewChild('clientProfile') clientProfile: ClientProfileComponent;
+  @ViewChild('avatar') avatar: AvatarComponent;
+
+  avatarUrl: any;
+  isAvatarChanged: boolean;
+  isAdmin = false;
+  profileValid: any;
+
   loading = true;
   editing: boolean;
   creating: boolean;
@@ -29,10 +38,14 @@ export class ClientsViewComponent implements OnInit, AfterViewInit {
   createdBy: any;
   modifiedBy: any;
   sideBarOpened: boolean;
-  record = {
+
+  record: any = {
     id: '',
-    type: 'clients'
+    title: 'New Client',
+    data: null,
+    newData: {},
   };
+
   recordData: {};
   items = ['Immigration', 'Family'];
 
@@ -60,14 +73,11 @@ export class ClientsViewComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
-      this.record.id = params.get('id');
-      if (this.record.id === 'add') {
-        this.create = true;
+      if (params.get('id') === 'add') {
         this.creating = true;
-        this.recordData = '';
-        this.recordTitle = 'New Client';
         this.loading = false;
       } else {
+        this.record.id = params.get('id');
         this.getRecordData();
       }
     });
@@ -82,14 +92,19 @@ export class ClientsViewComponent implements OnInit, AfterViewInit {
 
   getRecordData() {
     this.loading = true;
-    this.crud.getRecordData(this.record.type, this.record.id).subscribe(res => {
-      this.recordTitle = `${res.firstName} ${res.lastName}`;
+    this.crud.getRecordData('clients', this.record.id).subscribe(res => {
+      this.record.title = `${res.firstName} ${res.lastName}`;
+
+      // Reset Avatar when cancel form
+      this.avatarUrl = '../../../assets/avatar.png';
+      this.avatarUrl = res.avatar ? `${environment.backendUrl}${res.avatar.formats.thumbnail.url}` : '../../../assets/avatar.png';
+
       const dateOptions = {hour: '2-digit', minute: '2-digit', year: 'numeric', month: 'numeric', day: 'numeric' };
       this.dateModified = new Date(res.updatedAt).toLocaleString([], dateOptions);
       this.dateCreated = new Date(res.createdAt).toLocaleString([], dateOptions);
       this.createdBy = res.createdBy;
       this.modifiedBy = res.modifiedBy;
-      this.recordData = res;
+      this.record.data = res;
       this.loading = false;
     },
     err => {
@@ -111,39 +126,40 @@ export class ClientsViewComponent implements OnInit, AfterViewInit {
     this.location.back();
   }
 
-  dataChanged(e) {
-    this.disableSubmit = e;
-  }
+  // dataChanged(e) {
+  //   this.disableSubmit = e;
+  // }
 
-  dataUpdated(e) {
-    if (e.record && e.record.recordName) {
-      this.recordTitle = e.record.recordName;
-    }
-    if ( e.err ) {
-      this.getRecordData();
-    }
+  // dataUpdated(e) {
+  //   if (e.record && e.record.recordName) {
+  //     this.recordTitle = e.record.recordName;
+  //   }
+  //   if ( e.err ) {
+  //     this.getRecordData();
+  //   }
 
-    this.loading = e.loading;
-  }
+  //   this.loading = e.loading;
+  // }
 
-  dataCreated(e) {
-    this.loading = e.loading;
-    console.log(e);
-    if ( e.dataCreated ) {
-      this.loading = true;
-      this.creating = false;
-      this.create = false;
-      this.record.id = e.recordId;
-      this.location.go(`/clients/${this.record.id}`);
-      this.getRecordData();
-    } else {
-      this.creating = true;
-    }
-  }
+  // dataCreated(e) {
+  //   this.loading = e.loading;
+  //   console.log(e);
+  //   if ( e.dataCreated ) {
+  //     this.loading = true;
+  //     this.creating = false;
+  //     this.create = false;
+  //     this.record.id = e.recordId;
+  //     this.location.go(`/clients/${this.record.id}`);
+  //     this.getRecordData();
+  //   } else {
+  //     this.creating = true;
+  //   }
+  // }
 
   editRecord() {
-    this.editing = !this.editing;
-    this.clientProfile.enableForm();
+    this.editing = true;
+    this.clientProfile.editForm();
+    // this.clientProfile.enableForm();
   }
 
   cancelRecord() {
@@ -153,12 +169,88 @@ export class ClientsViewComponent implements OnInit, AfterViewInit {
   }
 
   saveRecord() {
-    this.clientProfile.updateClient();
+    this.loading = true;
+    this.clientProfile.checkIfValid();
   }
 
   createRecord() {
-    this.creating = !this.creating;
-    this.clientProfile.createClient();
+    this.loading = true;
+    this.clientProfile.checkIfValid();
+    // this.clientProfile.createClient();
   }
 
+  clientChanges(change) {
+    console.log(change)
+    if (!change.error) {
+      Object.keys(change.data).map(prop => {
+        if (change.data[prop] !== null && change.data[prop] !== 'undefined') {
+          this.record.newData[prop] = change.data[prop];
+        }
+      });
+
+      this.profileValid = change.profileValid ? change.profileValid : this.profileValid ;
+      if (this.profileValid) {
+        if (this.record.id === '' && this.record.newData) {
+          this.createClientProfile();
+        } else {
+          this.updateClientProfile();
+        }
+      }
+    } else {
+      this.loading = false;
+    }
+  }
+
+  avatarChanges(change) {
+    console.log(change);
+    if (change.avatarChanged) {
+      this.isAvatarChanged = true;
+      if (this.record.id) {
+        this.editing = true;
+      }
+    }
+
+    if (change.avatarUpdated) {
+      this.isAvatarChanged = false;
+      this.loading = false;
+      this.creating = false;
+      this.editing = false;
+    }
+  }
+
+  createClientProfile() {
+    console.log(this.record.newData);
+    this.crud.createRecord('clients', this.record.newData).subscribe(record => {
+      this.record.title = record.recordName;
+      this.record.data = record;
+      if (this.isAvatarChanged) {
+        this.avatar.uploadAvatar(record.id);
+      } else {
+        this.loading = false;
+        this.creating = false;
+      }
+      this.location.go(`/clients/${record.id}`);
+    }, err => {
+      this.loading = false;
+      this.creating = false;
+      console.log(err);
+    });
+  }
+
+  updateClientProfile() {
+    this.crud.updateRecord('clients', this.record.id, this.record.newData).subscribe(record => {
+      this.record.title = record.recordName;
+      if (this.isAvatarChanged) {
+        this.avatar.uploadAvatar(this.record.id);
+      } else {
+        this.loading = false;
+        this.editing = false;
+      }
+    }, err => {
+      console.log(err);
+      this.loading = false;
+      this.editing = false;
+      this.errorMessageService.showError('Error updating this client profile');
+    });
+  }
 }

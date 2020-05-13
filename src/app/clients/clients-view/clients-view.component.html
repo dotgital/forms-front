@@ -12,39 +12,46 @@
   <div style="padding: 10px;">
     <mat-card class="mat-elevation-z1">
 
-      <app-overlay-loading *ngIf="loading"></app-overlay-loading>
+      <!-- <app-overlay-loading *ngIf="loading"></app-overlay-loading> -->
       <div fxLayout="row" fxLayout.lt-md="column" class="card-header" fxLayoutGap="10px">
-        <div fxFlex>
+        <div #profileTitle fxFlex>
           <button mat-icon-button style="margin: -6px 10px 0px 0px;">
-            <img src="../../assets/avatar.png" class="user-avatar"/>
+            <app-avatar #avatar size="40"
+              (avatarChanged)="avatarChanges($event)"
+              [avatarUrl]="avatarUrl"
+              module="clients"
+              [disabled]="!creating && !editing">
+            </app-avatar>
           </button>
-          <h2 fxFlex style="font-weight: 300; margin: 0px;">{{recordTitle || 'New Client'}}</h2>
+          <h2 fxFlex style="font-weight: 300; margin: 0px;">{{record.title || 'New User'}}</h2>
         </div>
+        <mat-divider *ngIf="(isHandset$ | async) ? true : false" [inset]="true"></mat-divider>
 
-        <mat-divider
-          *ngIf="(isHandset$ | async) ? true : false"
-          [inset]="true">
-        </mat-divider>
-        <div>
+        <div #profileActions>
           <div fxFlex></div>
-          <ng-container *ngIf="!creating">
-            <a mat-flat-button color="primary" *ngIf="!editing" (click)="editRecord()" >Edit</a>
-            <a mat-button *ngIf="editing" (click)="cancelRecord()">Cancel</a>
-            <button mat-flat-button
-              color="primary"
-              *ngIf="editing"
-              (click)="saveRecord()"
-              [disabled]="!disableSubmit">
-              Save
-            </button>
-          </ng-container>
-          <ng-container *ngIf="creating">
-            <button mat-flat-button color="primary" (click)="createRecord()">
-              Create
-            </button>
-          </ng-container>
+          <a mat-flat-button color="primary" *ngIf="!creating && !editing" (click)="editRecord()">
+            Edit</a>
+          <a mat-button *ngIf="editing" (click)="cancelRecord()" [disabled]="loading">
+            Cancel</a>
+          <button mat-flat-button color="primary" *ngIf="editing" (click)="saveRecord()" [disabled]="loading">
+            {{ loading ? 'Saving' : 'Save'}}
+            <mat-spinner *ngIf="loading"
+              style="position: absolute; top: 5px; left: 25px;"
+              diameter="25"
+              mode="indeterminate">
+            </mat-spinner>
+          </button>
+          <button  *ngIf="creating" mat-flat-button color="primary" (click)="createRecord()" [disabled]="loading">
+            {{ loading ? 'Creating' : 'Create'}}
+            <mat-spinner *ngIf="loading"
+              style="position: absolute; top: 5px; left: 30px;"
+              diameter="25"
+              mode="indeterminate">
+            </mat-spinner>
+          </button>
         </div>
       </div>
+
       <mat-tab-group color="primary" animationDuration="0ms">
         <mat-tab>
           <ng-template mat-tab-label>
@@ -54,11 +61,9 @@
             </div>
           </ng-template>
           <app-client-profile #clientProfile
-            [recordData]="recordData"
-            [create]="create"
-            (formChanged)="dataChanged($event)"
-            (dataCreated)="dataCreated($event)"
-            (dataUpdated)="dataUpdated($event)">
+          [recordData]="record.data"
+          [creating]="creating"
+          (clientChanged)="clientChanges($event)">
           </app-client-profile>
         </mat-tab>
         <mat-tab>

@@ -10,14 +10,13 @@ import { Component, OnInit, Input, SimpleChanges, OnChanges, Output, EventEmitte
 })
 export class ClientProfileComponent implements OnInit, OnChanges {
   @Input() recordData: any;
-  @Input() create: boolean;
-  @Output() formChanged: EventEmitter<boolean> = new EventEmitter();
-  @Output() dataCreated: EventEmitter<any> = new EventEmitter();
+  @Input() creating: boolean;
   @Output() dataUpdated: EventEmitter<any> = new EventEmitter();
+  @Output() clientChanged: EventEmitter<any> = new EventEmitter();
+
   public input: FormItem;
   public inputList: FormItem[] = [];
   public editing: boolean;
-  public creating: boolean;
   public defaultValue: object = {};
   public dataChanged: boolean;
 
@@ -33,23 +32,24 @@ export class ClientProfileComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes);
     this.creating = this.recordData ? false : true;
-    if (this.recordData || this.create === true) {
+    if (this.recordData || this.creating === true) {
       this.inputList = [];
       this.buildForm();
     }
   }
 
   ngOnInit(): void {
-    this.profileForm.valueChanges.subscribe(res => {
-      if (this.oriData) {
-        if (JSON.stringify(this.oriData) !== JSON.stringify(this.profileForm.value)) {
-          this.formChanged.emit(true);
-        } else {
-          this.formChanged.emit(false);
-        }
-      }
-    });
+    // this.profileForm.valueChanges.subscribe(res => {
+    //   if (this.oriData) {
+    //     if (JSON.stringify(this.oriData) !== JSON.stringify(this.profileForm.value)) {
+    //       this.formChanged.emit(true);
+    //     } else {
+    //       this.formChanged.emit(false);
+    //     }
+    //   }
+    // });
   }
 
   async buildForm() {
@@ -62,7 +62,7 @@ export class ClientProfileComponent implements OnInit, OnChanges {
           this.defaultValue[control.fieldName] = control.default;
         }
       }
-      if (!this.create) {
+      if (!this.creating) {
         this.setData();
       } else {
         this.profileForm.patchValue(this.defaultValue);
@@ -81,56 +81,75 @@ export class ClientProfileComponent implements OnInit, OnChanges {
     this.profileForm.disable();
   }
 
-  enableForm() {
-    this.editing = true;
+
+  checkIfValid() {
+    // Generating User Name and Record Name
+    const username = this.profileForm.value.email;
+    const recordName = `${this.profileForm.value.firstName} ${this.profileForm.value.lastName}`;
+    this.profileForm.patchValue({username});
+    this.profileForm.patchValue({recordName});
+
+    // Check if form is valid and return data or error
+    this.profileForm.markAllAsTouched();
+    if (!this.profileForm.invalid) {
+      this.clientChanged.emit({error: false, data: this.profileForm.value, profileValid: true});
+      this.profileForm.disable();
+    } else {
+      this.clientChanged.emit({error: true, data: null});
+    }
+  }
+
+
+  editForm() {
+    // this.editing = true;
     this.profileForm.enable();
   }
 
-  cancelForm() {
-    this.editing = false;
-    this.profileForm.reset();
-    this.setData();
-  }
+  // cancelForm() {
+  //   this.editing = false;
+  //   this.profileForm.reset();
+  //   this.setData();
+  // }
 
-  updateClient() {
-    // Touch all controls to show any error
-    this.profileForm.markAllAsTouched();
+  // updateClient() {
+  //   // Touch all controls to show any error
+  //   this.profileForm.markAllAsTouched();
 
-    if (!this.profileForm.invalid) {
-      // Emit to parent to start Loading overlay and disable save button
-      this.dataUpdated.emit({ loading: true });
-      this.formChanged.emit(false);
+  //   if (!this.profileForm.invalid) {
+  //     // Emit to parent to start Loading overlay and disable save button
+  //     this.dataUpdated.emit({ loading: true });
+  //     this.formChanged.emit(false);
 
-      this.crud.updateRecord('clients', this.recordData.id, this.profileForm.value).subscribe(res => {
-        this.dataUpdated.emit({ record: res, loading: false });
-        this.formChanged.emit(false);
-        this.recordData = res;
-        this.setData();
-      }, err => {
-        console.log(err);
-        this.dataUpdated.emit({ err, loading: false });
-      });
-    }
-  }
+  //     this.crud.updateRecord('clients', this.recordData.id, this.profileForm.value).subscribe(res => {
+  //       this.dataUpdated.emit({ record: res, loading: false });
+  //       this.formChanged.emit(false);
+  //       this.recordData = res;
+  //       this.setData();
+  //     }, err => {
+  //       console.log(err);
+  //       this.dataUpdated.emit({ err, loading: false });
+  //     });
+  //   }
+  // }
 
-  createClient() {
-    // Touch all controls to show any error
-    this.profileForm.markAllAsTouched();
+  // createClient() {
+  //   // Touch all controls to show any error
+  //   this.profileForm.markAllAsTouched();
 
-    if (!this.profileForm.invalid) {
-      // Emit to parent to start loading overlay
-      this.dataCreated.emit({ loading: true });
-      this.creating = false;
-      this.crud.createRecord('clients', this.profileForm.value).subscribe(res => {
-        this.dataCreated.emit( {dataCreated: true, recordId: res['id'], loading: false} );
-        this.recordData = res;
-        this.setData();
-      }, err => {
-        console.log(err);
-        this.dataCreated.emit( {dataCreated: false, loading: false} );
-      });
-    }
-  }
+  //   if (!this.profileForm.invalid) {
+  //     // Emit to parent to start loading overlay
+  //     this.dataCreated.emit({ loading: true });
+  //     this.creating = false;
+  //     this.crud.createRecord('clients', this.profileForm.value).subscribe(res => {
+  //       this.dataCreated.emit( {dataCreated: true, recordId: res['id'], loading: false} );
+  //       this.recordData = res;
+  //       this.setData();
+  //     }, err => {
+  //       console.log(err);
+  //       this.dataCreated.emit( {dataCreated: false, loading: false} );
+  //     });
+  //   }
+  // }
 
   // submitData() {
   //   this.dataChanged = false;

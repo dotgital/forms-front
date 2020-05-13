@@ -10,6 +10,7 @@ import { Component, OnInit, ViewChild, Input, Output, EventEmitter, SimpleChange
 export class AvatarComponent implements OnInit, OnChanges {
   @ViewChild('avatarInput', {static: true}) avatarInput: ElementRef;
   @Input() size: number;
+  @Input() module: string;
   @Input() avatarUrl: any;
   @Input() disabled: boolean;
   @Output() avatarChanged: EventEmitter<any> = new EventEmitter();
@@ -51,9 +52,13 @@ export class AvatarComponent implements OnInit, OnChanges {
     const formData = new FormData();
     formData.append('files', this.avatar, this.avatar.name);
     formData.append('refId', recordId);
-    formData.append('ref', 'user');
-    formData.append('source', 'users-permissions');
     formData.append('field', 'avatar');
+    if (this.module === 'users') {
+      formData.append('ref', 'user');
+      formData.append('source', 'users-permissions');
+    } else if (this.module === 'clients') {
+      formData.append('ref', 'clients');
+    }
     this.crud.uploadFile(formData).subscribe( data => {
       this.uploadProgress = data.progress === 100 ? 101 : data.progress;
       if (Array.isArray(data)) {

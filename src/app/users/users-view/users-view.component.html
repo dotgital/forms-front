@@ -20,6 +20,7 @@
               <app-avatar #avatar size="40"
                 (avatarChanged)="avatarChanges($event)"
                 [avatarUrl]="avatarUrl"
+                module="users"
                 [disabled]="!creating && !editing">
               </app-avatar>
             </button>
