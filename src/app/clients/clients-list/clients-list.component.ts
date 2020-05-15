@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { CrudService } from './../../services/crud.service';
 import { Component, OnInit } from '@angular/core';
 
@@ -8,27 +9,34 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./clients-list.component.scss']
 })
 export class ClientsListComponent implements OnInit {
-  allColumns = [];
-  usersPrefId: string;
+  columnsChanged: boolean;
+  // allColumns = [];
+  // usersPrefId: string;
 
   constructor(
     private crud: CrudService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
-    this.getFields();
+    // this.getFields();
   }
 
-  getFields() {
-    this.crud.getSettings('columns', 'clients').subscribe(res => {
-      this.usersPrefId = res.usersPrefId;
-      res.fields.sort((a, b) => (a.tablePosition > b.tablePosition) ? 1 : ((b.tablePosition > a.tablePosition) ? -1 : 0));
-      // this.allColumns = res.fields.filter(col => col.fieldType !== 'dropdown-multiple');
-      this.allColumns = res.fields;
-    });
+  // getFields() {
+  //   this.crud.getSettings('columns', 'clients').subscribe(res => {
+  //     console.log(res)
+  //     this.usersPrefId = res.usersPrefId;
+  //     res.fields.sort((a, b) => (a.tablePosition > b.tablePosition) ? 1 : ((b.tablePosition > a.tablePosition) ? -1 : 0));
+  //     // this.allColumns = res.fields.filter(col => col.fieldType !== 'dropdown-multiple');
+  //     this.allColumns = res.fields;
+  //   });
+  // }
+
+  openRecord(event) {
+    this.router.navigate([`/clients/${event.id}`]);
   }
 
   changeColumns(e){
-    this.getFields();
+    this.columnsChanged = !this.columnsChanged;
   }
 }

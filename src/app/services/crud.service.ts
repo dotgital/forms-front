@@ -87,9 +87,16 @@ export class CrudService {
   Custom Requests
   */
 
+ getTableDataColumns(contentType: string) {
+  return this.http.get<any>(`${environment.backendUrl}/table-data-columns/${contentType}`)
+  .pipe(map(settings => {
+    return settings;
+  }));
+}
+
   // Get table data
-  getTableData(module: string, query, columns) {
-    return this.http.post(`${environment.backendUrl}/table-data/${module}?${query}`, {columns})
+  getTableData(contentType: string, model: string, query) {
+    return this.http.get<any>(`${environment.backendUrl}/table-data/${contentType}/${model}?${query}`)
     .pipe(map(settings => {
       return settings;
     }));

@@ -1,0 +1,68 @@
+<div fxLayout="row" fxLayoutAlign="start center" class="modal-header">
+  <span fxFlex>Create a new Filter</span>
+  <button mat-icon-button color="primary" (click)="onNoClick()"><mat-icon>close</mat-icon></button>
+</div>
+
+<form id="input-form" [formGroup]="filterForm" novalidate style.fontSize.px="26px">
+<div class="modal-content">
+  <mat-sidenav-container>
+    <mat-sidenav mode="side" opened>
+      <mat-nav-list style="padding-top: 0px">
+        <a mat-list-item class="filter-menu-link" (click)="changeStep(1)">
+          <mat-icon>font_download</mat-icon>Filter Name
+        </a>
+        <a mat-list-item class="filter-menu-link" (click)="changeStep(2)" [disabled]="!(disableSteps > 1)">
+          <mat-icon>square_foot</mat-icon>Content Type
+        </a>
+
+        <a mat-list-item class="filter-menu-link" (click)="changeStep(3)" [disabled]="!(disableSteps > 2)">
+          <mat-icon>vertical_split</mat-icon>Status
+        </a>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content class="modal-sidenav-content">
+        <ng-container *ngIf="activeStep == 1">
+          <mat-form-field appearance="outline" floatLabel="always" color="primary" class="full-width">
+            <mat-label>Filter Name</mat-label>
+            <input matInput formControlName="filterName" required>
+            <mat-error *ngIf="filterForm.controls['filterName'].hasError('required')">
+            Filter Name is <strong>required</strong>
+          </mat-error>
+          </mat-form-field>
+        </ng-container>
+
+        <ng-container *ngIf="activeStep == 2">
+          <mat-form-field appearance="outline" floatLabel="always" color="primary" class="full-width">
+            <mat-label>Filter Type</mat-label>
+            <mat-select formControlName="filterType" name="item" required>
+              <mat-option value="prospect">Prospects</mat-option>
+              <mat-option value="clients">Clients</mat-option>
+            </mat-select>
+            <mat-error *ngIf="filterForm.controls['filterType'].hasError('required')">
+            Filter Type is <strong>required</strong>
+          </mat-error>
+          </mat-form-field>
+        </ng-container>
+
+        <ng-container *ngIf="activeStep == 3">
+          <mat-form-field appearance="outline" floatLabel="always" color="primary" class="full-width">
+            <mat-label>Status</mat-label>
+            <mat-select formControlName="filterType" name="item">
+              <mat-option value="prospect">Prospects</mat-option>
+              <mat-option value="clients">Clients</mat-option>
+            </mat-select>
+            <mat-error *ngIf="filterForm.controls['filterType'].hasError('required')">
+            Filter Type is <strong>required</strong>
+          </mat-error>
+          </mat-form-field>
+        </ng-container>
+
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
+<div fxLayout="row" fxLayoutAlign="end center" class="modal-footer">
+  <a mat-button (click)="onNoClick()">Cancel</a>
+  <button mat-flat-button color="primary" [disabled]="!(disableSteps > 2)">Save</button>
+</div>
+
+</form>

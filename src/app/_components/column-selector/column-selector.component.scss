@@ -2,7 +2,7 @@
   width: 500px;
   max-width: 100%;
   // border: solid 1px #ccc;
-  min-height: 60px;
+  // min-height: 60px;
   display: block;
   background: white;
   border-radius: 4px;
@@ -21,6 +21,15 @@
   cursor: move;
   background: white;
   font-size: 14px;
+}
+
+.mat-menu-panel{
+  min-height: 48px !important;
+}
+
+.mat-menu-content:not(:empty) {
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
 }
 
 .cdk-drag-preview {

@@ -1,21 +1,14 @@
 <!-- <mat-progress-bar mode="indeterminate" color="primary" class="loading-top"></mat-progress-bar> -->
 <mat-toolbar class="component-header">
   <span fxFlex>Users</span>
-  <button mat-flat-button color="primary" routerLink="/users/add" *ngIf="isAdmin" >Create</button>
+  <button mat-flat-button color="primary" routerLink="/users/add" *ngIf="isAdmin">Create</button>
 </mat-toolbar>
 <div class="main-content">
   <div class="mat-elevation-z1">
-    <div fxLayout="row" fxLayoutAlign="end center" style="background-color: #fff; padding: 10px; border-bottom: 1px solid #e0e0e0;">
-      <app-column-selector
-      [columns]="allColumns"
-      module="users"
-      [usersPrefId]="usersPrefId"
-      (changeColumns)="changeColumns($event)"></app-column-selector>
+    <div fxLayout="row" fxLayoutAlign="end center"
+      style="background-color: #fff; padding: 10px; border-bottom: 1px solid #e0e0e0;">
+      <app-column-selector contentType="users" (changeColumns)="changeColumns($event)"></app-column-selector>
     </div>
-    <app-data-table
-      [columns]="allColumns"
-      module="users">
-    </app-data-table>
+    <app-data-table [columns]="columnsChanged" model="users" contentType="users" (openRecord)="openRecord($event)"></app-data-table>
   </div>
 </div>
-

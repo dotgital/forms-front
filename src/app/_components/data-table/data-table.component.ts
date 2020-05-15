@@ -1,7 +1,7 @@
 import { Router } from '@angular/router';
 import { CrudService } from './../../services/crud.service';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
-import { Component, OnInit, ViewChild, Input, SimpleChanges, OnChanges } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, SimpleChanges, OnChanges, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-data-table',
@@ -9,8 +9,10 @@ import { Component, OnInit, ViewChild, Input, SimpleChanges, OnChanges } from '@
   styleUrls: ['./data-table.component.scss']
 })
 export class DataTableComponent implements OnInit, OnChanges {
-  @Input() module: string;
+  @Input() model: string;
+  @Input() contentType: string;
   @Input() columns: any[];
+  @Output() openRecord: EventEmitter<any> = new EventEmitter();
 
   /* Table Sorting Properties */
   public startPage = 0;
@@ -33,12 +35,15 @@ export class DataTableComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (Array.isArray(this.columns) && this.columns.length) {
-      this.getFields();
+    console.log(changes);
+    if (this.contentType) {
+      // this.getFields();
+       this.getData();
     }
   }
 
   ngOnInit(): void {
+    // this.getData();
   }
 
   getFields() {
@@ -48,13 +53,16 @@ export class DataTableComponent implements OnInit, OnChanges {
   }
 
   getData() {
-    const module = this.module;
+    const contentType = this.contentType;
+    const model = this.model;
     const query = `_sort=${this.sortBy}:${this.sortDirection}&_start=${this.startPage}&_limit=${this.pageSize}`;
-    const columns = ['id', 'recordName'].concat(this.dataColumns);
-    this.crud.getTableData(module, query, columns).subscribe(res => {
-      this.tableColumns = [].concat('recordName', this.dataColumns, 'settings');
-      this.dataSource = new MatTableDataSource(res['entities']);
-      this.totalPages = res['count'];
+    // const columns = ['id', 'recordName'].concat(this.dataColumns);
+    this.crud.getTableData(contentType, model, query).subscribe(res => {
+      const dataColumns = res.dataColumns.filter(col => col !== 'id' && col !== 'recordName');
+      this.tableColumns = [].concat('recordName', dataColumns, 'settings');
+      this.visibleColumns = res.columns;
+      this.dataSource = new MatTableDataSource(res.entities);
+      this.totalPages = res.count;
       this.table.dataSource = this.dataSource;
     });
   }
@@ -74,7 +82,7 @@ export class DataTableComponent implements OnInit, OnChanges {
   }
 
   goTo(row) {
-    this.router.navigate([`/clients/${row.id}`]);
+    this.openRecord.emit(row);
   }
 
   isString(val): boolean {

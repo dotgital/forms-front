@@ -1,0 +1,19 @@
+<mat-toolbar class="component-header">
+  <span fxFlex>Filters</span>
+  <button mat-flat-button (click)="openFilterConfig()" color="primary">Create</button>
+</mat-toolbar>
+<div class="main-content">
+  <div class="mat-elevation-z1">
+    <div class="mat-elevation-z1">
+      <div fxLayout="row" fxLayoutAlign="end center" style="background-color: #fff; padding: 10px; border-bottom: 1px solid #e0e0e0;">
+        <app-column-selector
+        module="filters"
+        (changeColumns)="changeColumns($event)"></app-column-selector>
+      </div>
+      <app-data-table
+        [columns]="allColumns"
+        module="filters">
+      </app-data-table>
+    </div>
+  </div>
+</div>

@@ -9,45 +9,64 @@ import { Component, OnInit, ViewEncapsulation, Input, SimpleChanges, OnChanges, 
   encapsulation : ViewEncapsulation.None,
 })
 export class ColumnSelectorComponent implements OnInit, OnChanges {
-  @Input() columns: any[];
-  @Input() module: string;
-  @Input() usersPrefId: string;
+  // @Input() columns: any[];
+  @Input() contentType: string;
+  // @Input() usersPrefId: string;
   @Output() changeColumns = new EventEmitter<any>();
 
+  columns: any[];
   selectedColumns: any[];
   initialValues: any[];
+  usersPrefId: string;
   loading: boolean;
   loadingHeight: number;
   loadingWidth: number;
 
   constructor(
     private crud: CrudService,
-  ) { }
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    // this.selectedColumns = [this.columns[1]];
-    if (Array.isArray(this.columns) && this.columns.length) {
-      // this.initialValues = this.columns.map(col => {
-      //   const val = {
-      //     id: col.id,
-      //     module: this.module,
-      //     tableVisible: col.tableVisible ? true : false,
-      //     tablePosition: col.tablePosition,
-      //     fieldName: col.fieldName
-      //   };
-      //   return val;
-      // });
-      this.initialValues = this.columns;
-      this.loadingWidth = 280;
-      this.loadingHeight = (this.columns.length * 48) + 16;
-      this.selectedColumns = this.initialValues.map((res, key) => res.tableVisible === true ? this.columns[key] : null );
-      setTimeout(() => {
-        this.loading = false;
-      }, 100);
+    if (this.contentType) {
+      this.getColumnsPreferences();
     }
+    // this.selectedColumns = [this.columns[1]];
+    // if (Array.isArray(this.columns) && this.columns.length) {
+    //   // this.initialValues = this.columns.map(col => {
+    //   //   const val = {
+    //   //     id: col.id,
+    //   //     module: this.module,
+    //   //     tableVisible: col.tableVisible ? true : false,
+    //   //     tablePosition: col.tablePosition,
+    //   //     fieldName: col.fieldName
+    //   //   };
+    //   //   return val;
+    //   // });
+    //   this.initialValues = this.columns;
+    //   this.loadingWidth = 280;
+    //   this.loadingHeight = (this.columns.length * 48) + 16;
+    //   this.selectedColumns = this.initialValues.map((res, key) => res.tableVisible === true ? this.columns[key] : null );
+    //   setTimeout(() => {
+    //     this.loading = false;
+    //   }, 100);
+    // }
   }
 
   ngOnInit(): void {
+  }
+
+  getColumnsPreferences() {
+    this.crud.getTableDataColumns(this.contentType).subscribe(res => {
+      this.columns = res.columns.sort((a, b) => (a.tablePosition > b.tablePosition) ? 1 : ((b.tablePosition > a.tablePosition) ? -1 : 0));
+      this.usersPrefId = res.usersPrefId;
+      this.initialValues = res.columns;
+      this.loadingWidth = 280;
+      this.loadingHeight = (res.columns.length * 48) + 16;
+      this.selectedColumns = this.initialValues.map((col, key) => col.tableVisible === true ? this.columns[key] : null );
+      setTimeout(() => {
+        this.loading = false;
+      }, 100);
+    });
   }
 
   drop(event: CdkDragDrop<string[]>) {
@@ -61,6 +80,7 @@ export class ColumnSelectorComponent implements OnInit, OnChanges {
       field.tablePosition = key;
       return field;
     });
+    this.columns = this.initialValues;
     this.savePref();
   }
 
@@ -73,17 +93,18 @@ export class ColumnSelectorComponent implements OnInit, OnChanges {
       }
       return field;
     });
-
     this.savePref();
   }
 
   savePref() {
     const data: {} = {};
-    const listView = `${this.module}ListView`;
+    const listView = `${this.contentType}ListView`;
     data['id'] = this.usersPrefId;
     data[listView] = this.initialValues;
     console.log(data);
     this.crud.setUserSetting(data).subscribe(res => {
+      // console.log(res);
+      this.loading = false;
       this.changeColumns.emit(this.selectedColumns);
     });
   }

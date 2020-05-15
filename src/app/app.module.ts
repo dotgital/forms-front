@@ -30,6 +30,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatSortModule } from '@angular/material/sort';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -66,6 +67,10 @@ import { AvatarComponent } from './_components/avatar/avatar.component';
 import { UsersPermissionsComponent } from './users/users-permissions/users-permissions.component';
 import { SettingsPermissionsUserComponent } from './_components/settings-permissions-user/settings-permissions-user.component';
 import { AfterValueChangedDirective } from './_directives/after-value-changed.directive';
+import { SettingsFiltersComponent } from './settings/settings-filters/settings-filters.component';
+import { FilterConfigComponent } from './settings/settings-filters/filter-config/filter-config.component';
+import { SettingsServicesTypeComponent } from './settings/settings-services-type/settings-services-type.component';
+import { ServicesTypeConfigComponent } from './settings/settings-services-type/services-type-config/services-type-config.component';
 
 
 @NgModule({
@@ -97,6 +102,10 @@ import { AfterValueChangedDirective } from './_directives/after-value-changed.di
     UsersPermissionsComponent,
     SettingsPermissionsUserComponent,
     AfterValueChangedDirective,
+    SettingsFiltersComponent,
+    FilterConfigComponent,
+    SettingsServicesTypeComponent,
+    ServicesTypeConfigComponent,
   ],
   imports: [
     BrowserModule,
@@ -121,6 +130,7 @@ import { AfterValueChangedDirective } from './_directives/after-value-changed.di
     MatFormFieldModule,
     MatInputModule,
     MatMenuModule,
+    MatDialogModule,
     MatSnackBarModule,
     MatAutocompleteModule,
     MatTableModule,

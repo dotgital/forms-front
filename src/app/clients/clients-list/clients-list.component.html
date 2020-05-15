@@ -5,19 +5,10 @@
 </mat-toolbar>
 <div class="main-content">
   <div class="mat-elevation-z1">
-    <div class="mat-elevation-z1">
-      <div fxLayout="row" fxLayoutAlign="end center" style="background-color: #fff; padding: 10px; border-bottom: 1px solid #e0e0e0;">
-        <app-column-selector
-        [columns]="allColumns"
-        module="clients"
-        [usersPrefId]="usersPrefId"
-        (changeColumns)="changeColumns($event)"></app-column-selector>
-      </div>
-      <app-data-table
-        [columns]="allColumns"
-        module="clients">
-      </app-data-table>
+    <div fxLayout="row" fxLayoutAlign="end center"
+      style="background-color: #fff; padding: 10px; border-bottom: 1px solid #e0e0e0;">
+      <app-column-selector contentType="clients" (changeColumns)="changeColumns($event)"></app-column-selector>
     </div>
+    <app-data-table [columns]="columnsChanged" model="clients" contentType="clients" (openRecord)="openRecord($event)"></app-data-table>
   </div>
 </div>
-
