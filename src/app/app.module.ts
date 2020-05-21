@@ -1,3 +1,4 @@
+import { ServicesTypeConfigComponent } from './_components/services-type-config/services-type-config.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
@@ -70,7 +71,7 @@ import { AfterValueChangedDirective } from './_directives/after-value-changed.di
 import { SettingsFiltersComponent } from './settings/settings-filters/settings-filters.component';
 import { FilterConfigComponent } from './settings/settings-filters/filter-config/filter-config.component';
 import { SettingsServicesTypeComponent } from './settings/settings-services-type/settings-services-type.component';
-import { ServicesTypeConfigComponent } from './settings/settings-services-type/services-type-config/services-type-config.component';
+import { AutocompleteCreateComponent } from './_components/autocomplete-create/autocomplete-create.component';
 
 
 @NgModule({
@@ -106,6 +107,7 @@ import { ServicesTypeConfigComponent } from './settings/settings-services-type/s
     FilterConfigComponent,
     SettingsServicesTypeComponent,
     ServicesTypeConfigComponent,
+    AutocompleteCreateComponent,
   ],
   imports: [
     BrowserModule,

@@ -10,7 +10,7 @@
 }
 
 .options-list{
-  height: 120px;
+  max-height: 200px;
   width: calc( 100% - 4px );
   overflow: scroll;
   margin: 2px;

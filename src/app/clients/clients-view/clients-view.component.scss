@@ -12,7 +12,7 @@
   height: 100%;
 }
 
-mat-sidenav{
+mat-sidenav.record-sidenav{
   top: 130px;
   bottom: 10px;
   width: 300px;
@@ -50,4 +50,15 @@ mat-sidenav{
 .user-avatar{
   width: 40px;
   border-radius: 50%;
+}
+
+
+.case-selector {
+  margin: -6px 0px -1.8em;
+  .mat-form-field-infix {
+    padding: 2px 0 6px;
+  }
+  .mat-select-arrow-wrapper {
+    vertical-align: initial;
+  }
 }

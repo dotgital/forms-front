@@ -14,7 +14,7 @@
 
       <!-- <app-overlay-loading *ngIf="loading"></app-overlay-loading> -->
       <div fxLayout="row" fxLayout.lt-md="column" class="card-header" fxLayoutGap="10px">
-        <div #profileTitle fxFlex>
+        <div #profileTitle>
           <button mat-icon-button style="margin: -6px 10px 0px 0px;">
             <app-avatar #avatar size="40"
               (avatarChanged)="avatarChanges($event)"
@@ -23,8 +23,25 @@
               [disabled]="!creating && !editing">
             </app-avatar>
           </button>
-          <h2 fxFlex style="font-weight: 300; margin: 0px;">{{record.title || 'New User'}}</h2>
+          <h2 fxFlex style="font-weight: 300; margin: 0px; margin-right: 10px;">{{record.title || 'New User'}}</h2>
         </div>
+
+        <!-- <mat-divider *ngIf="(isHandset$ | async) ? true : false" [inset]="true"></mat-divider> -->
+
+        <div #caseSelector>
+          <mat-form-field floatLabel="always" appearance="outline" class="case-selector" fxFlex fxFlex.lt-md="100">
+            <mat-label>Service</mat-label>
+            <mat-select placeholder="Service Type" name="item">
+              <mat-option *ngFor="let item of items" value="item.value">
+                Select
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <button mat-flat-button color="primary" style="position: relative; top: -2px;"
+          (click)="addService()" ><mat-icon>add</mat-icon></button>
+        </div>
+
+        <div fxFlex></div>
         <mat-divider *ngIf="(isHandset$ | async) ? true : false" [inset]="true"></mat-divider>
 
         <div #profileActions>
@@ -80,7 +97,7 @@
   </div>
   </mat-sidenav-content>
 
-  <mat-sidenav #sidebar position="end" fullscreen
+  <mat-sidenav #sidebar position="end" fullscreen class="record-sidenav"
   fixedInViewport
   autosize
   [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"

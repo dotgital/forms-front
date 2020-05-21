@@ -1,0 +1,27 @@
+<mat-form-field appearance="outline" floatLabel="always" color="primary" class="full-width" fxFlex>
+  <mat-label>{{label}}</mat-label>
+  <input type="text"
+    aria-label="Number"
+    matInput
+    [placeholder]="placeholder"
+    [formControl]="myControl"
+    [matAutocomplete]="auto"
+    [required]="isRequired">
+
+    <mat-hint *ngIf="isACNew">
+      No found, click on create to add new {{label}}
+    </mat-hint>
+
+  <mat-autocomplete #ac #auto="matAutocomplete"
+    autoActiveFirstOption
+    (opened)="autoCompleteOpened()"
+    (closed)="autoCompleteClosed()"
+    (optionSelected)="onSelectionChange($event)">
+    <mat-option *ngFor="let option of filteredOptions | async" [value]="option.label">
+      {{option.label}}
+    </mat-option>
+  </mat-autocomplete>
+  <button mat-button matSuffix *ngIf="isACNew" class="create-btn" color="primary" (click)="addNewOption()">Create</button>
+  <button mat-icon-button matSuffix class="clear-input" *ngIf="!isACEmpty && !isACNew" color="primary" (click)="clearAC()" ><mat-icon>close</mat-icon></button>
+  <mat-icon matSuffix *ngIf="!isACNew && isACEmpty">{{ isACOpened ? 'arrow_drop_up' : 'arrow_drop_down' }}</mat-icon>
+</mat-form-field>

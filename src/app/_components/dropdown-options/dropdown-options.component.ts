@@ -23,6 +23,7 @@ export class DropdownOptionsComponent implements OnInit {
   isDisabled: boolean;
 
   @Input() data: string[];
+  @Input() label: string;
 
   onChange = (_: string[]) => { };
   constructor() { }

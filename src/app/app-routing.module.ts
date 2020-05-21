@@ -27,6 +27,7 @@ const routes: Routes = [
   { path: '', component: NavigationComponent, canActivate: [AuthGuard], children: [
     { path: 'clients', component: ClientsListComponent },
     { path: 'clients/:id', component: ClientsViewComponent },
+    { path: 'clients/:id/case/:caseId', component: ClientsViewComponent },
     { path: 'users', component: UsersListComponent },
     { path: 'users/:id', component: UsersViewComponent },
     { path: 'forms', component: FillComponent },

@@ -1,3 +1,5 @@
+import { ServicesTypeConfigComponent } from '../../_components/services-type-config/services-type-config.component';
+import { MatDialog } from '@angular/material/dialog';
 import { environment } from './../../../environments/environment';
 import { AvatarComponent } from './../../_components/avatar/avatar.component';
 import { ClientProfileComponent } from './components/client-profile/client-profile.component';
@@ -7,7 +9,7 @@ import { map, shareReplay } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { CrudService } from './../../services/crud.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, ViewEncapsulation } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Location } from '@angular/common';
 import { ErrorMessagesService } from 'src/app/services/error-messages.service';
@@ -15,7 +17,8 @@ import { ErrorMessagesService } from 'src/app/services/error-messages.service';
 @Component({
   selector: 'app-clients-view',
   templateUrl: './clients-view.component.html',
-  styleUrls: ['./clients-view.component.scss']
+  styleUrls: ['./clients-view.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ClientsViewComponent implements OnInit, AfterViewInit {
   @ViewChild('sidebar') rightSide: MatSidenav;
@@ -63,6 +66,7 @@ export class ClientsViewComponent implements OnInit, AfterViewInit {
     private ui: UiService,
     private location: Location,
     private errorMessageService: ErrorMessagesService,
+    public dialog: MatDialog,
   ) { }
 
   ngAfterViewInit(): void {
@@ -125,36 +129,6 @@ export class ClientsViewComponent implements OnInit, AfterViewInit {
   goBack() {
     this.location.back();
   }
-
-  // dataChanged(e) {
-  //   this.disableSubmit = e;
-  // }
-
-  // dataUpdated(e) {
-  //   if (e.record && e.record.recordName) {
-  //     this.recordTitle = e.record.recordName;
-  //   }
-  //   if ( e.err ) {
-  //     this.getRecordData();
-  //   }
-
-  //   this.loading = e.loading;
-  // }
-
-  // dataCreated(e) {
-  //   this.loading = e.loading;
-  //   console.log(e);
-  //   if ( e.dataCreated ) {
-  //     this.loading = true;
-  //     this.creating = false;
-  //     this.create = false;
-  //     this.record.id = e.recordId;
-  //     this.location.go(`/clients/${this.record.id}`);
-  //     this.getRecordData();
-  //   } else {
-  //     this.creating = true;
-  //   }
-  // }
 
   editRecord() {
     this.editing = true;
@@ -250,6 +224,20 @@ export class ClientsViewComponent implements OnInit, AfterViewInit {
       this.loading = false;
       this.editing = false;
       this.errorMessageService.showError('Error updating this client profile');
+    });
+  }
+
+
+  addService() {
+    console.log('ser');
+    const dialogRef = this.dialog.open(ServicesTypeConfigComponent, {
+      width: '250px',
+      panelClass: 'filter-config',
+      data: {record: 'data'}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
     });
   }
 }

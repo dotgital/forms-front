@@ -1,4 +1,4 @@
-import { ServicesTypeConfigComponent } from './services-type-config/services-type-config.component';
+import { ServicesTypeConfigComponent } from '../../_components/services-type-config/services-type-config.component';
 import { MatDialog } from '@angular/material/dialog';
 import { CrudService } from './../../services/crud.service';
 import { Component, OnInit } from '@angular/core';
