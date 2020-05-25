@@ -1,5 +1,5 @@
 <div fxLayout="row" fxLayoutAlign="start center" class="modal-header">
-  <span fxFlex>Create a new service type</span>
+  <span fxFlex>{{ data ? 'Update this service template' : 'Create a new service template'}}</span>
   <button mat-icon-button color="primary" (click)="onNoClick()">
     <mat-icon>close</mat-icon>
   </button>
@@ -41,56 +41,38 @@
 
 
         <ng-container *ngIf="activeStep == 2">
-                <!-- Dropdown Options -->
+        <!-- Dropdown Options -->
           <app-dropdown-options
             [data]="statuses"
-            label="Status"
+            label="Status *"
+            [color]="servicesTypeForm.controls['serviceStatuses'].hasError('required') && statusError ? 'warn' : 'primary'"
             formControlName="serviceStatuses">
           </app-dropdown-options>
+          <mat-error style="position: relative; bottom: 2.3em; font-size: 12px; margin-left: 10px; font-weight: 200;"
+          *ngIf="servicesTypeForm.controls['serviceStatuses'].hasError('required') && statusError">
+          Status is <strong>required</strong></mat-error>
         </ng-container>
-
-        <!-- <ng-container *ngIf="activeStep == 3">
-          <mat-form-field appearance="outline" floatLabel="always" color="primary" class="full-width">
-            <mat-label>Status</mat-label>
-            <mat-select formControlName="filterType" name="item">
-              <mat-option value="prospect">Prospects</mat-option>
-              <mat-option value="clients">Clients</mat-option>
-            </mat-select>
-            <mat-error *ngIf="servicesTypeForm.controls['filterType'].hasError('required')">
-            Filter Type is <strong>required</strong>
-          </mat-error>
-          </mat-form-field>
-        </ng-container> -->
 
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>
 <div fxLayout="row" fxLayoutAlign="end center" class="modal-footer">
   <a mat-button (click)="onNoClick()">Cancel</a>
-  <button mat-flat-button color="primary" [disabled]="servicesTypeForm.invalid">Save</button>
+  <button mat-flat-button color="primary" [disabled]="servicesTypeForm.invalid || loading" *ngIf="data" >{{ loading ? 'Saving' : 'Save'}}
+    <mat-spinner *ngIf="loading"
+    style="position: absolute; top: 6px; left: 25px;"
+    diameter="25"
+    mode="indeterminate">
+  </mat-spinner>
+  </button>
+
+  <button mat-flat-button color="primary" [disabled]="servicesTypeForm.invalid || loading" *ngIf="!data" >{{ loading ? 'Creating' : 'Create'}}
+    <mat-spinner *ngIf="loading"
+    style="position: absolute; top: 6px; left: 30px;"
+    diameter="25"
+    mode="indeterminate">
+  </mat-spinner>
+  </button>
 </div>
 
 </form>
-
-<!-- <form id="input-form" [formGroup]="servicesTypeForm" novalidate style.fontSize.px="26px" (ngSubmit)="onSubmit()" >
-  <div class="modal-content">
-    <mat-form-field appearance="outline" floatLabel="always" color="primary" class="full-width">
-      <mat-label>Service Type</mat-label>
-      <input matInput formControlName="label" required>
-      <mat-error *ngIf="servicesTypeForm.controls['label'].hasError('required')">
-        Service Type is <strong>required</strong>
-      </mat-error>
-    </mat-form-field>
-  </div>
-  <div fxLayout="row" fxLayoutAlign="end center" class="modal-footer">
-    <a mat-button (click)="onNoClick()">Cancel</a>
-    <button mat-flat-button color="primary"  [disabled]="loading">
-      {{ loading ? 'Saving' : 'Save'}}
-      <mat-spinner *ngIf="loading"
-        style="position: absolute; top: 5px; left: 25px;"
-        diameter="25"
-        mode="indeterminate">
-      </mat-spinner>
-    </button>
-  </div>
-</form> -->

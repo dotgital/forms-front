@@ -37,8 +37,8 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
-          <button mat-flat-button color="primary" style="position: relative; top: -2px;"
-          (click)="addService()" ><mat-icon>add</mat-icon></button>
+          <!-- <button mat-flat-button color="primary" style="position: relative; top: -2px;"
+          (click)="addService()" ><mat-icon>add</mat-icon></button> -->
         </div>
 
         <div fxFlex></div>
@@ -86,8 +86,8 @@
         <mat-tab>
           <ng-template mat-tab-label>
             <div [class]="(isHandset$ | async) ? 'isHandset' : 'notHandset'">
-              <mat-icon>picture_as_pdf</mat-icon>
-              <div class="label-text">Forms</div>
+              <mat-icon>gavel</mat-icon>
+              <div class="label-text">Service Info</div>
             </div>
           </ng-template>
           Forms Page

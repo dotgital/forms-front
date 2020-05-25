@@ -1,0 +1,47 @@
+.mat-expansion-panel.mat-elevation-z1 {
+  border-radius: 0px !important;
+  border-bottom: 1px solid #d6d9d9 !important;
+  margin: 0px;
+}
+
+.mat-expansion-panel-header{
+  padding: 0px 15px 0px 10px;
+}
+
+
+.activity-line{
+  font-size: 12px;
+  line-height: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.activity-icon{
+  margin-right: 2px;
+  .mat-icon{
+    color: #737373;
+    display: inline-flex;
+    vertical-align: text-top;
+  }
+}
+.activities-panel table .table-header td{
+  background: #efefef;
+}
+
+.activities-panel table{
+  font-size: 11px;
+  font-weight: 400;
+  color: #000;
+  border-collapse: collapse;
+  width: 100%;
+  td {
+    padding: 2px 5px;
+    border: 1px solid #dad8d8;
+    line-height: 16px;
+    background: #f5f8f9;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+

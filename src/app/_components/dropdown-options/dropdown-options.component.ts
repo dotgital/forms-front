@@ -1,4 +1,4 @@
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NG_VALUE_ACCESSOR, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { ENTER } from '@angular/cdk/keycodes';
 import { Component, OnInit, Input, forwardRef } from '@angular/core';
@@ -21,9 +21,13 @@ export class DropdownOptionsComponent implements OnInit {
   readonly separatorKeysCodes: number[] = [ENTER];
   options: string[] = [];
   isDisabled: boolean;
+  optionsForm = new FormGroup({
+    dropdownOptions: new FormControl(null)
+  });
 
   @Input() data: string[];
   @Input() label: string;
+  @Input() color: string;
 
   onChange = (_: string[]) => { };
   constructor() { }

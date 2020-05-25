@@ -9,6 +9,6 @@
       style="background-color: #fff; padding: 10px; border-bottom: 1px solid #e0e0e0;">
       <app-column-selector contentType="clients" (changeColumns)="changeColumns($event)"></app-column-selector>
     </div>
-    <app-data-table [columns]="columnsChanged" model="clients" contentType="clients" (openRecord)="openRecord($event)"></app-data-table>
+    <app-data-table [columns]="columnsChanged" settingsColumn="true" model="clients" contentType="clients" (openRecord)="openRecord($event)"></app-data-table>
   </div>
 </div>

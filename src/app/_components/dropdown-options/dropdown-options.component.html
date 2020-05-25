@@ -1,16 +1,18 @@
-<mat-form-field class="full-width status custom-options" floatLabel="always" appearance="outline" >
-  <mat-label>{{label}}</mat-label>
-  <input placeholder="Add New Option"
-  [matChipInputFor]="chipList"
-  [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-  (matChipInputTokenEnd)="addOption($event)">
-  <mat-chip-list #chipList class="mat-chip-list-stacked">
-    <div class="options-list">
-      <mat-chip *ngFor="let option of options" [selectable]="selectable"
-               [removable]="removable" (removed)="removeOption(option)">
-        {{option}}
-        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-      </mat-chip>
-    </div>
-  </mat-chip-list>
-</mat-form-field>
+<form [formGroup]="optionsForm">
+  <mat-form-field class="full-width status custom-options" ngClass="{{color === 'warn' ? 'mat-form-field-invalid' : ''}}" floatLabel="always" appearance="outline" [color]="color">
+    <mat-label>{{label}}</mat-label>
+    <input placeholder="Add New Option"
+    [matChipInputFor]="chipList"
+    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+    (matChipInputTokenEnd)="addOption($event)"
+    formControlName="dropdownOptions">
+    <mat-chip-list #chipList class="mat-chip-list-stacked">
+      <div class="options-list">
+        <mat-chip *ngFor="let option of options" [selectable]="selectable" [removable]="removable" (removed)="removeOption(option)">
+          <span style="vertical-align: middle;">{{option}}</span>
+          <mat-icon matChipRemove *ngIf="removable" color="warn">cancel</mat-icon>
+        </mat-chip>
+      </div>
+    </mat-chip-list>
+  </mat-form-field>
+</form>

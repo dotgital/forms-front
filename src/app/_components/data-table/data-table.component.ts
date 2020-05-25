@@ -12,7 +12,9 @@ export class DataTableComponent implements OnInit, OnChanges {
   @Input() model: string;
   @Input() contentType: string;
   @Input() columns: any[];
+  @Input() settingsColumn: boolean;
   @Output() openRecord: EventEmitter<any> = new EventEmitter();
+  @Output() openPreview: EventEmitter<any> = new EventEmitter();
 
   /* Table Sorting Properties */
   public startPage = 0;
@@ -20,6 +22,7 @@ export class DataTableComponent implements OnInit, OnChanges {
   public totalPages: number;
   public sortBy = 'createdAt';
   public sortDirection = 'desc';
+  public custToolTip: string;
 
   /* Columns Properties */
   visibleColumns = [];
@@ -35,7 +38,6 @@ export class DataTableComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
     if (this.contentType) {
       // this.getFields();
        this.getData();
@@ -59,7 +61,11 @@ export class DataTableComponent implements OnInit, OnChanges {
     // const columns = ['id', 'recordName'].concat(this.dataColumns);
     this.crud.getTableData(contentType, model, query).subscribe(res => {
       const dataColumns = res.dataColumns.filter(col => col !== 'id' && col !== 'recordName');
-      this.tableColumns = [].concat('recordName', dataColumns, 'settings');
+      if (this.settingsColumn) {
+        this.tableColumns = [].concat('recordName', dataColumns, 'settings');
+      } else {
+        this.tableColumns = [].concat('recordName', dataColumns);
+      }
       this.visibleColumns = res.columns;
       this.dataSource = new MatTableDataSource(res.entities);
       this.totalPages = res.count;
@@ -85,7 +91,16 @@ export class DataTableComponent implements OnInit, OnChanges {
     this.openRecord.emit(row);
   }
 
+  openRightPanel(row) {
+    this.openPreview.emit(row);
+  }
+
   isString(val): boolean {
     return typeof val === 'string';
+  }
+
+  showToolTip(e) {
+    console.log(e);
+    return 'returned &#13; toll tip';
   }
 }

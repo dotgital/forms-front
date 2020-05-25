@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpEventType } from '@angular/common/http';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
+import { getDiff, applyDiff, rdiffResult } from 'recursive-diff';
 
 @Injectable({
   providedIn: 'root'
@@ -30,8 +31,8 @@ export class CrudService {
   }
 
   // Get list of records passing the endpoint;
-  getRecordList(endpoint: string) {
-    return this.http.get<any>(`${environment.backendUrl}/${endpoint}`)
+  getRecordList(endpoint: string, query: string) {
+    return this.http.get<any>(`${environment.backendUrl}/${endpoint}?${query}`)
     .pipe(map(metaData => {
       return metaData;
     }));
@@ -82,6 +83,92 @@ export class CrudService {
       })
     );
   }
+
+
+  createActivityRecord(servicesTemplates, newData, oriData) {
+    const props = ['id', '_id', '__v', 'createdAt', 'updatedAt'];
+    this.removeKeys(newData, props);
+    this.removeKeys(oriData, props);
+
+    console.log(oriData);
+    console.log(newData);
+    const recordChanges: any[] = [];
+
+    Object.keys(oriData).forEach(key => {
+      const newVal = newData[key];
+      const oriVal = oriData[key];
+      if (JSON.stringify(oriVal) !== JSON.stringify(newVal)) {
+        if (Array.isArray(oriVal) || Array.isArray(newVal)) {
+
+          oriVal.forEach(element => {
+            if (!JSON.stringify(newVal).includes(JSON.stringify(element))) {
+              recordChanges.push({key, oriVal: element.label, newVal: null});
+            }
+          });
+
+          newVal.forEach(element => {
+            if (!JSON.stringify(oriVal).includes(JSON.stringify(element))) {
+              recordChanges.push({key, oriVal: null, newVal: element.label});
+            }
+          });
+
+        } else {
+          if (key !== '__v') { recordChanges.push({key, oriVal, newVal}); }
+        }
+      }
+    });
+    console.log(recordChanges);
+
+    // const diff: rdiffResult[] = getDiff( oriData, newData, true);
+    // console.log('diff', diff);
+    // const final = applyDiff(newData, diff);
+    // console.log('applydiff', final);
+
+    this.http.post<any>(`${environment.backendUrl}/activities`, {
+      subject: oriData ? 'Updated' : 'Created',
+      body: 'body',
+      user: this.userId,
+      recordChanges,
+      servicesTemplates,
+    }).subscribe(res => console.log(res));
+  }
+
+  /**
+   * Remove all specified keys from an object, no matter how deep they are.
+   * The removal is done in place, so run it on a copy if you don't want to modify the original object.
+   * This function has no limit so circular objects will probably crash the browser
+   *
+   * @param obj The object from where you want to remove the keys
+   * @param keys An array of property names (strings) to remove
+   */
+
+
+  removeKeys(obj, keys) {
+    let index;
+    for (const prop in obj) {
+        // important check that this is objects own property
+        // not from prototype prop inherited
+        if (obj.hasOwnProperty(prop)) {
+            switch (typeof(obj[prop])) {
+                case 'string':
+                    index = keys.indexOf(prop);
+                    if (index > -1) {
+                        delete obj[prop];
+                    }
+                    break;
+                case 'object':
+                    index = keys.indexOf(prop);
+                    if (index > -1) {
+                        delete obj[prop];
+                    } else {
+                        this.removeKeys(obj[prop], keys);
+                    }
+                    break;
+            }
+        }
+    }
+  }
+
 
   /*
   Custom Requests

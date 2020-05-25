@@ -1,0 +1,27 @@
+<div fxFlex style="border: 1px solid #d6d9d9; background: #fff; height: calc( 100vh - 140px );">
+  <mat-accordion class="example-headers-align" multi>
+    <mat-expansion-panel class="mat-elevation-z1 activities-panel" *ngFor="let item of activities" >
+      <mat-expansion-panel-header [collapsedHeight]="'70px'" [expandedHeight]="'70px'">
+        <div gdAreas="header | content | footer" gdGap="3px" gdRows="auto">
+          <div gdArea="header" class="activity-line">{{item.subject}}</div>
+          <div gdArea="content" class="activity-line">{{item.body}}</div>
+          <div gdArea="footer" class="activity-line" matTooltip="{{item.createdAt | date:'short'}}">
+            By <strong>{{item.user.recordName}}</strong> on {{item.createdAt | date:'short'}}
+          </div>
+        </div>
+      </mat-expansion-panel-header>
+      <table>
+        <tr class="table-header">
+          <td>Field</td>
+          <td>Previous Value</td>
+          <td>Current Value</td>
+        </tr>
+        <tr *ngFor="let change of item.recordChanges" >
+          <td>{{change.key}}</td>
+          <td>{{change.oriVal || 'none' }}</td>
+          <td>{{change.newVal || 'none' }}</td>
+        </tr>
+      </table>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

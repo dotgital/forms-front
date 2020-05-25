@@ -236,6 +236,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   color: #00000096;
 }
 
+.custom-options.mat-form-field-appearance-outline .mat-form-field-infix {
+  padding: 0.3em 0 0;
+}
+
 tr.mat-header-row {
   height: 44px !important;
 }
@@ -244,3 +248,10 @@ tr.mat-row, tr.mat-footer-row {
   height: 44px !important;
 }
 
+.mat-warn.mat-form-field-appearance-outline .mat-form-field-outline-thick{
+  color: red;
+}
+
+.activities-panel .mat-expansion-panel-content > .mat-expansion-panel-body {
+  padding: 0px 8px 8px !important;
+}

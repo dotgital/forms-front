@@ -40,10 +40,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatMenuModule } from '@angular/material/menu';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { OverlayModule } from '@angular/cdk/overlay'
+import { OverlayModule } from '@angular/cdk/overlay';
 import { GraphQLModule } from './graphql.module';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { DisableFormDirective } from './_directives/disable-form.directive';
 import { FillComponent } from './forms/fill/fill.component';
 import { SettingsComponent } from './settings/settings.component';
@@ -70,8 +71,9 @@ import { SettingsPermissionsUserComponent } from './_components/settings-permiss
 import { AfterValueChangedDirective } from './_directives/after-value-changed.directive';
 import { SettingsFiltersComponent } from './settings/settings-filters/settings-filters.component';
 import { FilterConfigComponent } from './settings/settings-filters/filter-config/filter-config.component';
-import { SettingsServicesTypeComponent } from './settings/settings-services-type/settings-services-type.component';
 import { AutocompleteCreateComponent } from './_components/autocomplete-create/autocomplete-create.component';
+import { SettingsServicesTemplatesComponent } from './settings/settings-services-templates/settings-services-templates.component';
+import { ActivitiesComponent } from './_components/activities/activities.component';
 
 
 @NgModule({
@@ -105,9 +107,10 @@ import { AutocompleteCreateComponent } from './_components/autocomplete-create/a
     AfterValueChangedDirective,
     SettingsFiltersComponent,
     FilterConfigComponent,
-    SettingsServicesTypeComponent,
     ServicesTypeConfigComponent,
     AutocompleteCreateComponent,
+    SettingsServicesTemplatesComponent,
+    ActivitiesComponent,
   ],
   imports: [
     BrowserModule,
@@ -137,6 +140,7 @@ import { AutocompleteCreateComponent } from './_components/autocomplete-create/a
     MatAutocompleteModule,
     MatTableModule,
     MatTabsModule,
+    MatExpansionModule,
     MatPaginatorModule,
     MatSlideToggleModule,
     MatSortModule,

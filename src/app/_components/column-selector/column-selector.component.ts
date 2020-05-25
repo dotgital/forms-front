@@ -28,41 +28,21 @@ export class ColumnSelectorComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.contentType) {
-      this.getColumnsPreferences();
+      this.getUserSettingColumns();
     }
-    // this.selectedColumns = [this.columns[1]];
-    // if (Array.isArray(this.columns) && this.columns.length) {
-    //   // this.initialValues = this.columns.map(col => {
-    //   //   const val = {
-    //   //     id: col.id,
-    //   //     module: this.module,
-    //   //     tableVisible: col.tableVisible ? true : false,
-    //   //     tablePosition: col.tablePosition,
-    //   //     fieldName: col.fieldName
-    //   //   };
-    //   //   return val;
-    //   // });
-    //   this.initialValues = this.columns;
-    //   this.loadingWidth = 280;
-    //   this.loadingHeight = (this.columns.length * 48) + 16;
-    //   this.selectedColumns = this.initialValues.map((res, key) => res.tableVisible === true ? this.columns[key] : null );
-    //   setTimeout(() => {
-    //     this.loading = false;
-    //   }, 100);
-    // }
   }
 
   ngOnInit(): void {
   }
 
-  getColumnsPreferences() {
-    this.crud.getTableDataColumns(this.contentType).subscribe(res => {
-      this.columns = res.columns.sort((a, b) => (a.tablePosition > b.tablePosition) ? 1 : ((b.tablePosition > a.tablePosition) ? -1 : 0));
-      this.usersPrefId = res.usersPrefId;
-      this.initialValues = res.columns;
+  getUserSettingColumns() {
+    const query = `contentType=${this.contentType}`;
+    this.crud.getRecordList('settings-columns', query).subscribe(res => {
+      this.columns = res.sort((a, b) => (a.tablePosition > b.tablePosition) ? 1 : ((b.tablePosition > a.tablePosition) ? -1 : 0))
       this.loadingWidth = 280;
-      this.loadingHeight = (res.columns.length * 48) + 16;
-      this.selectedColumns = this.initialValues.map((col, key) => col.tableVisible === true ? this.columns[key] : null );
+      this.loadingHeight = (res.length * 48) + 16;
+      this.initialValues = res;
+      this.selectedColumns = this.initialValues.map((col, key) => col.tableVisible === true ? res[key] : null );
       setTimeout(() => {
         this.loading = false;
       }, 100);
@@ -97,13 +77,7 @@ export class ColumnSelectorComponent implements OnInit, OnChanges {
   }
 
   savePref() {
-    const data: {} = {};
-    const listView = `${this.contentType}ListView`;
-    data['id'] = this.usersPrefId;
-    data[listView] = this.initialValues;
-    console.log(data);
-    this.crud.setUserSetting(data).subscribe(res => {
-      // console.log(res);
+    this.crud.createRecord('settings-columns', this.initialValues).subscribe(res => {
       this.loading = false;
       this.changeColumns.emit(this.selectedColumns);
     });

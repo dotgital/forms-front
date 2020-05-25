@@ -53,7 +53,7 @@ export class SettingsPermissionsComponent implements OnInit {
 
   getUsersPermissions() {
     this.loading = true;
-    this.crud.getRecordList('find-users-permissions').subscribe(res => {
+    this.crud.getRecordList('find-users-permissions', null).subscribe(res => {
       this.permissions = res;
       this.loading = false;
       console.log(res);
