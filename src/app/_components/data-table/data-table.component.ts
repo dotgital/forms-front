@@ -95,8 +95,12 @@ export class DataTableComponent implements OnInit, OnChanges {
     this.openPreview.emit(row);
   }
 
-  isString(val): boolean {
-    return typeof val === 'string';
+  isObject(val): boolean {
+    if (typeof val === 'object' && val) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   showToolTip(e) {

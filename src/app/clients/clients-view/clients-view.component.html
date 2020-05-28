@@ -29,16 +29,15 @@
         <!-- <mat-divider *ngIf="(isHandset$ | async) ? true : false" [inset]="true"></mat-divider> -->
 
         <div #caseSelector>
-          <mat-form-field floatLabel="always" appearance="outline" class="case-selector" fxFlex fxFlex.lt-md="100">
+          <mat-form-field floatLabel="always" appearance="outline" class="case-selector" fxFlex fxFlex.lt-md="100"*ngIf="!creating && !editing" >
             <mat-label>Service</mat-label>
-            <mat-select placeholder="Service Type" name="item">
-              <mat-option *ngFor="let item of items" value="item.value">
-                Select
-              </mat-option>
+            <mat-select placeholder="Service Type" name="item" (selectionChange)="changeService($event)">
+              <mat-option *ngFor="let item of services" [value]="item">{{item.recordName}}</mat-option>
             </mat-select>
           </mat-form-field>
-          <!-- <button mat-flat-button color="primary" style="position: relative; top: -2px;"
-          (click)="addService()" ><mat-icon>add</mat-icon></button> -->
+          <button mat-flat-button color="primary" style="position: relative; top: -2px;" (click)="addService()"><mat-icon>add</mat-icon></button>
+          <!-- <button mat-flat-button color="primary" style="position: relative; top: -2px; min-width: 220px !important;" *ngIf="creating || editing"
+          (click)="addService()" fxFlex="100">Add new Service</button> -->
         </div>
 
         <div fxFlex></div>

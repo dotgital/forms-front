@@ -74,6 +74,7 @@ import { FilterConfigComponent } from './settings/settings-filters/filter-config
 import { AutocompleteCreateComponent } from './_components/autocomplete-create/autocomplete-create.component';
 import { SettingsServicesTemplatesComponent } from './settings/settings-services-templates/settings-services-templates.component';
 import { ActivitiesComponent } from './_components/activities/activities.component';
+import { ServicesTypeSelectorComponent } from './_components/services-type-selector/services-type-selector.component';
 
 
 @NgModule({
@@ -111,6 +112,7 @@ import { ActivitiesComponent } from './_components/activities/activities.compone
     AutocompleteCreateComponent,
     SettingsServicesTemplatesComponent,
     ActivitiesComponent,
+    ServicesTypeSelectorComponent,
   ],
   imports: [
     BrowserModule,

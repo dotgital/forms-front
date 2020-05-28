@@ -18,6 +18,9 @@ export class SettingsLayoutComponent implements OnInit {
   loading = true;
   left = [];
   right = [];
+  hidden = [];
+  sidebarOpened: boolean = true;
+  contentType: string;
   // fields: FormItem[] = [];
   fieldsNew: FormItem[];
   showHidden: boolean;
@@ -63,6 +66,7 @@ export class SettingsLayoutComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.contentType = 'clients';
     this.editFieldForm.disable();
     this.layoutChanged = false;
     this.fieldChanged = false;
@@ -71,16 +75,44 @@ export class SettingsLayoutComponent implements OnInit {
   }
 
   getFieldSettings() {
-    this.crud.getSettings('layout', 'clients').subscribe(res => {
-      // this.fields = res;
+    // const contentType = 'clients';
+    const query = `contentType=${this.contentType}`;
+    this.crud.getRecordList('settings-fields', query).subscribe(res => {
+      console.log(res);
       this.fieldsNew = res;
       this.displayLayout();
     });
   }
 
+  chageVisibility(field) {
+    field.column = 'hidden';
+    field.visible = !field.visible;
+    return field;
+  }
+
+  switchContentType(item) {
+    this.contentType = item.value;
+    this.getFieldSettings();
+    console.log(item);
+  }
+  // getFieldSettings() {
+  //   this.crud.getSettings('layout', 'clients').subscribe(res => {
+  //     // this.fields = res;
+  //     this.fieldsNew = res;
+  //     this.displayLayout();
+  //   });
+  // }
+
+  sidebarToogle(op){
+    this.rightSide.toggle();
+    this.sidebarOpened = op === 'open' ? true : false;
+  }
+
   displayLayout() {
-    this.left = this.fieldsNew.filter(obj => obj.column === 'left');
+    this.left = this.fieldsNew.filter(obj => (obj.column === 'left' || obj.column === null));
     this.right = this.fieldsNew.filter(obj => obj.column === 'right');
+    this.hidden = this.fieldsNew.filter(obj => obj.visible !== true );
+    console.log(this.hidden);
     this.loading = false;
   }
 
@@ -100,14 +132,25 @@ export class SettingsLayoutComponent implements OnInit {
     this.fieldsNew = [];
     this.left.forEach((el, key) => {
       el.column = 'left';
+      el.visible = true;
       el.position = key;
       this.fieldsNew.push(el);
     });
+
     this.right.forEach((el, key) => {
       el.column = 'right';
+      el.visible = true;
       el.position = key;
       this.fieldsNew.push(el);
     });
+
+    this.hidden.forEach((el, key) => {
+      el.column = 'hidden';
+      el.visible = false;
+      el.position = key;
+      this.fieldsNew.push(el);
+    });
+
     this.fieldsNew.sort((a, b) => {
       return a.position - b.position;
     });
@@ -121,10 +164,14 @@ export class SettingsLayoutComponent implements OnInit {
 
   saveLayout() {
     this.loading = true;
-    this.crud.updateRecord('global-preferences', '', {clients: this.fieldsNew}).subscribe(res => {
+    this.crud.updateRecordCustom('settings-fields/multiple', this.fieldsNew).subscribe(res => {
       this.layoutChanged = false;
       this.loading = false;
     });
+    // this.crud.updateRecord('global-preferences', '', {clients: this.fieldsNew}).subscribe(res => {
+    //   this.layoutChanged = false;
+    //   this.loading = false;
+    // });
   }
 
   editField(field) {

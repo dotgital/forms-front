@@ -1,3 +1,6 @@
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { switchMap, map, shareReplay } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { FormItem } from '../../../../_interfaces/form-item';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { CrudService } from '../../../../services/crud.service';
@@ -21,39 +24,64 @@ export class ClientProfileComponent implements OnInit, OnChanges {
   public dataChanged: boolean;
 
   public profileForm: FormGroup;
-  public emptyForm: any;
-  private oriData: any;
+  // private oriData: any;
+  private emptyForm: Observable<any>;
+
+  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
+  .pipe(
+    map(result => result.matches),
+    shareReplay()
+  );
 
   constructor(
+    private breakpointObserver: BreakpointObserver,
     private crud: CrudService,
     private fb: FormBuilder,
   ) {
     this.profileForm = this.fb.group({});
+    this.buildEmptyForm();
   }
 
+  /*
+  * OnChanges livecycle loop from all the prop @input and check which one changed
+  * if creating is true build a empty form
+  * if recordData exist and recordData dont have previuos value build and empty form and patch the recordData values
+  * if recordData exist and recordData have previous values only path the form with new values
+  */
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
-    this.creating = this.recordData ? false : true;
-    if (this.recordData || this.creating === true) {
-      this.inputList = [];
-      this.buildForm();
+    for (const propName in changes) {
+      if (changes.hasOwnProperty(propName)) {
+        switch (propName) {
+          case 'creating': {
+            if (changes[propName].currentValue === true) {
+              this.emptyForm.subscribe()
+            }
+            break;
+          }
+          case 'recordData': {
+            if (changes[propName].currentValue && !changes[propName].previousValue) {
+              this.emptyForm.subscribe(res => {
+                this.setData();
+              });
+            } else if (changes[propName].currentValue && changes[propName].previousValue) {
+              this.setData();
+            }
+            break;
+          }
+        }
+      }
     }
   }
 
-  ngOnInit(): void {
-    // this.profileForm.valueChanges.subscribe(res => {
-    //   if (this.oriData) {
-    //     if (JSON.stringify(this.oriData) !== JSON.stringify(this.profileForm.value)) {
-    //       this.formChanged.emit(true);
-    //     } else {
-    //       this.formChanged.emit(false);
-    //     }
-    //   }
-    // });
-  }
+  ngOnInit(): void {}
 
-  async buildForm() {
-    this.emptyForm = this.crud.getSettings('layout', 'clients').subscribe(async res => {
+  /*
+  * Get forms fields from the API loops through all fields and create a formControl for each field
+  * @return observable to subcribe and display the forms in the template
+  */
+  buildEmptyForm() {
+    const query = `contentType=clients`;
+    this.emptyForm = this.crud.getRecordList('settings-fields', query).pipe(switchMap(async (res) => {
       for await (const control of res) {
         if (control.visible) {
           const formControl = control.required ? new FormControl(null, Validators.required) : new FormControl(null);
@@ -62,34 +90,21 @@ export class ClientProfileComponent implements OnInit, OnChanges {
           this.defaultValue[control.fieldName] = control.default;
         }
       }
-      if (!this.creating) {
-        this.setData();
-      } else {
-        this.profileForm.patchValue(this.defaultValue);
-      }
-
-    });
+      return res;
+    }));
   }
 
   setData() {
-    this.recordData.createdAt = new Date(this.recordData.createdAt).toLocaleString();
-    this.recordData.updatedAt = new Date(this.recordData.updatedAt).toLocaleString();
-    // console.log(this.recordData)
     this.profileForm.patchValue(this.recordData);
-    this.oriData = this.profileForm.value;
+    // this.oriData = this.profileForm.value;
     this.editing = false;
     this.profileForm.disable();
   }
 
-
+  /*
+  * Mark all forms controls as touched and emit any errors (if exist) to parent component
+  */
   checkIfValid() {
-    // Generating User Name and Record Name
-    const username = this.profileForm.value.email;
-    const recordName = `${this.profileForm.value.firstName} ${this.profileForm.value.lastName}`;
-    this.profileForm.patchValue({username});
-    this.profileForm.patchValue({recordName});
-
-    // Check if form is valid and return data or error
     this.profileForm.markAllAsTouched();
     if (!this.profileForm.invalid) {
       this.clientChanged.emit({error: false, data: this.profileForm.value, profileValid: true});
@@ -99,74 +114,7 @@ export class ClientProfileComponent implements OnInit, OnChanges {
     }
   }
 
-
   editForm() {
-    // this.editing = true;
     this.profileForm.enable();
   }
-
-  // cancelForm() {
-  //   this.editing = false;
-  //   this.profileForm.reset();
-  //   this.setData();
-  // }
-
-  // updateClient() {
-  //   // Touch all controls to show any error
-  //   this.profileForm.markAllAsTouched();
-
-  //   if (!this.profileForm.invalid) {
-  //     // Emit to parent to start Loading overlay and disable save button
-  //     this.dataUpdated.emit({ loading: true });
-  //     this.formChanged.emit(false);
-
-  //     this.crud.updateRecord('clients', this.recordData.id, this.profileForm.value).subscribe(res => {
-  //       this.dataUpdated.emit({ record: res, loading: false });
-  //       this.formChanged.emit(false);
-  //       this.recordData = res;
-  //       this.setData();
-  //     }, err => {
-  //       console.log(err);
-  //       this.dataUpdated.emit({ err, loading: false });
-  //     });
-  //   }
-  // }
-
-  // createClient() {
-  //   // Touch all controls to show any error
-  //   this.profileForm.markAllAsTouched();
-
-  //   if (!this.profileForm.invalid) {
-  //     // Emit to parent to start loading overlay
-  //     this.dataCreated.emit({ loading: true });
-  //     this.creating = false;
-  //     this.crud.createRecord('clients', this.profileForm.value).subscribe(res => {
-  //       this.dataCreated.emit( {dataCreated: true, recordId: res['id'], loading: false} );
-  //       this.recordData = res;
-  //       this.setData();
-  //     }, err => {
-  //       console.log(err);
-  //       this.dataCreated.emit( {dataCreated: false, loading: false} );
-  //     });
-  //   }
-  // }
-
-  // submitData() {
-  //   this.dataChanged = false;
-  //   if (!this.profileForm.invalid) {
-  //     if (!this.creating) {
-  //       this.crud.updateData('clients', this.recordData.id, this.profileForm.value).subscribe(res => {
-  //         console.log(res);
-  //         this.recordData = res;
-  //         this.setData();
-  //       });
-  //     } else {
-  //       this.creating = false;
-  //       this.crud.createData('clients', this.profileForm.value).subscribe(res => {
-  //         this.recordData = res;
-  //         this.setData();
-  //       });
-  //     }
-  //   }
-  // }
 }

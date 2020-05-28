@@ -1,22 +1,86 @@
 <form id="input-form" [formGroup]="profileForm" novalidate style.fontSize.px="26px">
-  <!-- <div fxLayout="row" fxLayoutAlign="end center" class="action-row" style="margin: 10px 0px;">
-    <ng-container *ngIf="!creating" >
-      <a mat-flat-button (click)="enableForm()" *ngIf="!editing" color="primary">Edit</a>
-      <a mat-button (click)="cancelForm()" *ngIf="editing">Cancel</a>
-      <button mat-flat-button color="primary" *ngIf="editing" [disabled]="!dataChanged">
-        Save
-      </button>
-    </ng-container>
-    <ng-container *ngIf="creating">
-      <button mat-flat-button color="primary">
-        Create
-      </button>
-    </ng-container>
 
-  </div> -->
+  <!-- Two column template for desktop devices -->
+  <div fxLayout="row" fxLayoutAlign="space-between start" *ngIf="(isHandset$ | async) ? false : true">
+    <div fxFlex="49" #left fxLayout="column">
+      <ng-container *ngFor="let input of inputList" [ngSwitch]="input.fieldType">
+        <ng-container *ngIf="input.column == 'left'" >
 
-  <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutAlign="space-between start">
-    <ng-container *ngFor="let input of inputList" [ngSwitch]="input.fieldType" >
+          <ng-container *ngSwitchCase="'dropdown'">
+            <app-searchable-select
+              fxFlex="98"
+              fxFlex.lt-md="100"
+              class="full-width"
+              [options]="input.options"
+              [label]="input.label"
+              [isRequired]="input.required"
+              [formControlName]="input.fieldName"
+              [defaultOption]="input.default">
+            </app-searchable-select>
+          </ng-container>
+
+          <ng-container *ngSwitchCase="'dropdown-multiple'">
+            <app-searchable-select-multiple
+              fxFlex="98"
+              fxFlex.lt-md="100"
+              class="full-width"
+              [formControlName]="input.fieldName">
+            </app-searchable-select-multiple>
+          </ng-container>
+
+          <mat-form-field class="full-width" floatLabel="always" appearance="outline"  *ngSwitchDefault fxFlex="98" fxFlex.lt-md="100">
+            <mat-label>{{input.label}}</mat-label>
+            <input matInput [formControlName]="input.fieldName" [required]="input.required">
+            <mat-error *ngIf="profileForm.controls[input.fieldName].hasError('required')">
+              {{input.label}} is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+
+        </ng-container>
+      </ng-container>
+    </div>
+
+    <div fxFlex="49" #right fxLayout="column">
+      <ng-container *ngFor="let input of inputList" [ngSwitch]="input.fieldType">
+        <ng-container *ngIf="input.column == 'right'" >
+
+          <ng-container *ngSwitchCase="'dropdown'">
+            <app-searchable-select
+              fxFlex="100"
+              class="full-width"
+              [options]="input.options"
+              [label]="input.label"
+              [isRequired]="input.required"
+              [formControlName]="input.fieldName"
+              [defaultOption]="input.default">
+            </app-searchable-select>
+          </ng-container>
+
+          <ng-container *ngSwitchCase="'dropdown-multiple'">
+            <app-searchable-select-multiple
+              fxFlex="100"
+              fxFlex.lt-md="100"
+              class="full-width"
+              [formControlName]="input.fieldName">
+            </app-searchable-select-multiple>
+          </ng-container>
+
+          <mat-form-field class="full-width" floatLabel="always" appearance="outline"  *ngSwitchDefault fxFlex="100" fxFlex.lt-md="100">
+            <mat-label>{{input.label}}</mat-label>
+            <input matInput [formControlName]="input.fieldName" [required]="input.required">
+            <mat-error *ngIf="profileForm.controls[input.fieldName].hasError('required')">
+              {{input.label}} is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+
+        </ng-container>
+      </ng-container>
+    </div>
+  </div>
+
+  <!-- One column template for mobile devices -->
+  <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutAlign="space-between start" *ngIf="(isHandset$ | async) ? true : false">
+    <ng-container *ngFor="let input of inputList" [ngSwitch]="input.fieldType">
       <ng-container *ngSwitchCase="'dropdown'">
         <app-searchable-select
           fxFlex="49"

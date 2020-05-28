@@ -3,9 +3,10 @@
 
 <mat-sidenav-content class="content-outlet">
 <mat-toolbar class="component-header content-toolbar">
+  <button mat-icon-button routerLink="/settings" style="margin-left: -10px;">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
   <span fxFlex>User Permissions</span>
-  <!-- <a mat-button class="sidebar-toogle" (click)="toogleSideBar()" *ngIf="!sideBarOpened" >Show <mat-icon>double_arrow</mat-icon></a>
-  <a mat-button class="sidebar-toogle" (click)="toogleSideBar()" *ngIf="sideBarOpened" >Hide <mat-icon>double_arrow</mat-icon></a> -->
 </mat-toolbar>
 <div class="main-content" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="10px">
   <div fxFlex>

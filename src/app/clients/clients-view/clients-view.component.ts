@@ -1,3 +1,4 @@
+import { ServicesTypeSelectorComponent } from './../../_components/services-type-selector/services-type-selector.component';
 import { ServicesTypeConfigComponent } from '../../_components/services-type-config/services-type-config.component';
 import { MatDialog } from '@angular/material/dialog';
 import { environment } from './../../../environments/environment';
@@ -29,6 +30,8 @@ export class ClientsViewComponent implements OnInit, AfterViewInit {
   isAvatarChanged: boolean;
   isAdmin = false;
   profileValid: any;
+  services: any[] = [];
+  serviceId: string;
 
   loading = true;
   editing: boolean;
@@ -50,7 +53,6 @@ export class ClientsViewComponent implements OnInit, AfterViewInit {
   };
 
   recordData: {};
-  items = ['Immigration', 'Family'];
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
   .pipe(
@@ -77,6 +79,8 @@ export class ClientsViewComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
+      this.serviceId = params.get('caseId');
+      console.log(this.serviceId);
       if (params.get('id') === 'add') {
         this.creating = true;
         this.loading = false;
@@ -97,6 +101,8 @@ export class ClientsViewComponent implements OnInit, AfterViewInit {
   getRecordData() {
     this.loading = true;
     this.crud.getRecordData('clients', this.record.id).subscribe(res => {
+      this.services = res.services;
+      console.log(res);
       this.record.title = `${res.firstName} ${res.lastName}`;
 
       // Reset Avatar when cancel form
@@ -151,6 +157,11 @@ export class ClientsViewComponent implements OnInit, AfterViewInit {
     this.loading = true;
     this.clientProfile.checkIfValid();
     // this.clientProfile.createClient();
+  }
+
+  changeService(service) {
+    console.log(service.value);
+    this.router.navigate([`/clients/${this.record.id}/case/${service.value.id}`]);
   }
 
   clientChanges(change) {
@@ -230,10 +241,10 @@ export class ClientsViewComponent implements OnInit, AfterViewInit {
 
   addService() {
     console.log('ser');
-    const dialogRef = this.dialog.open(ServicesTypeConfigComponent, {
-      width: '250px',
-      panelClass: 'filter-config',
-      data: {record: 'data'}
+    const dialogRef = this.dialog.open(ServicesTypeSelectorComponent, {
+      // width: '250px',
+      panelClass: 'service-type-selector',
+      data: this.record.id
     });
 
     dialogRef.afterClosed().subscribe(result => {

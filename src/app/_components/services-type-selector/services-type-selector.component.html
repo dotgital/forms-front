@@ -1,0 +1,32 @@
+
+  <form id="input-form" [formGroup]="servicesTypeSelectorForm" novalidate style.fontSize.px="26px" (ngSubmit)="onSubmit()">
+<div fxLayout="column">
+
+  <mat-form-field floatLabel="always" appearance="outline" fxFlex>
+    <mat-label>Service Type</mat-label>
+    <mat-select placeholder="Service Type" name="item" formControlName="serviceType" (selectionChange)="getServiceName($event)">
+      <mat-option *ngFor="let item of types" [value]="item">{{item}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field floatLabel="always" appearance="outline" fxFlex>
+    <mat-label>Service Name</mat-label>
+    <mat-select placeholder="Service Name" name="item" formControlName="serviceName">
+      <mat-option *ngFor="let item of names" [value]="item">{{item.recordName}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
+<div fxLayout="row" fxLayoutAlign="end center" class="modal-footer">
+  <a mat-button (click)="onNoClick()">Cancel</a>
+
+  <button mat-flat-button color="primary" [disabled]="servicesTypeSelectorForm.invalid || loading">{{ loading ? 'Creating' : 'Create'}}
+    <mat-spinner *ngIf="loading"
+    style="position: absolute; top: 6px; left: 30px;"
+    diameter="25"
+    mode="indeterminate">
+  </mat-spinner>
+  </button>
+</div>
+
+</form>

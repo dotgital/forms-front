@@ -3,41 +3,63 @@
 
   <mat-sidenav-content class="content-outlet">
 <mat-toolbar class="component-header content-toolbar">
-  <span>Layout Settings</span>
+ <button mat-icon-button routerLink="/settings" style="margin-left: -10px;">
+  <mat-icon>arrow_back</mat-icon>
+</button>
+  <span fxFlex>Layout Settings</span>
+
+  <a mat-button class="settings-toogle" (click)="sidebarToogle('open')" *ngIf="!sidebarOpened" ><mat-icon>keyboard_arrow_left</mat-icon> Hidden Fields</a>
 </mat-toolbar>
 <div class="main-content" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="10px">
   <div fxFlex>
     <mat-card class="mat-elevation-z1" style="margin-top: 0;" >
         <div fxLayout="row" fxLayoutAlign="end center">
+          <mat-form-field appearance="outline" floatLabel="always" color="primary" style="margin-bottom: -1.5em;">
+            <mat-label>Content Type</mat-label>
+            <mat-select name="item" [(ngModel)]="contentType" (selectionChange)="switchContentType($event)">
+              <mat-option value="clients">Clients </mat-option>
+              <mat-option value="users">Users </mat-option>
+            </mat-select>
+          </mat-form-field>
           <div fxFlex>
-            <mat-slide-toggle
+            <!-- <mat-slide-toggle
                 color="primary"
                 [checked]="showHidden"
                 (change)="toggleHidden()">
                 Display Hidden Fields
-            </mat-slide-toggle>
+            </mat-slide-toggle> -->
           </div>
           <!-- <button mat-button *ngIf="!layoutChanged" style="margin-right: 10px;">Add</button> -->
           <a mat-button (click)="cancelLayout()" *ngIf="layoutChanged" >Cancel</a>
           <button mat-flat-button (click)="saveLayout()" [disabled]="!layoutChanged" color="primary">Save</button>
         </div>
+        <mat-divider
+          style="margin: 15px 0px;"
+          [inset]="true">
+        </mat-divider>
         <div cdkDropListGroup fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="space-between start" fxLayoutGap="20px">
           <div fxFlex="50" fxFlex.lt-md="100" style="width: 100%">
-            <span style="font-weight: 300;">Left</span>
-
-            <div
-              cdkDropList
-              [cdkDropListData]="left"
-              class="example-list"
-              (cdkDropListDropped)="drop($event)">
+            <div>
+              <span style="font-weight: 300;" fxFlex>Left</span>
+              <!-- <span style="font-weight: 300;">Visible</span> -->
+            </div>
+            <div cdkDropList #leftList="cdkDropList" [cdkDropListData]="left" [cdkDropListConnectedTo]="[rightList,hiddenList]"
+              class="field-list" (cdkDropListDropped)="drop($event)">
               <ng-container *ngFor="let item of left">
-                <div class="example-box" cdkDrag *ngIf="item.visible || showHidden" >
+                <div class="field-box" cdkDrag *ngIf="item.visible || showHidden" >
                   <div style="height: 20px;">
                     <mat-icon>drag_indicator</mat-icon>
-                    <mat-icon *ngIf="!item.visible" color="primary" style="position: absolute;" >visibility_off</mat-icon>
+                    <!-- <mat-icon *ngIf="!item.visible" color="primary" style="position: absolute;" >visibility_off</mat-icon> -->
                   </div>
                   {{item.label}}
-                  <button mat-icon-button (click)="editField(item)"><mat-icon>edit</mat-icon></button>
+                  <!-- <mat-slide-toggle
+                    color="primary"
+                    labelPosition="before"
+                    [checked]="true"
+                    (change)="chageVisibility(item)">
+                  </mat-slide-toggle> -->
+                  <div></div>
+                  <!-- <button mat-icon-button (click)="editField(item)"><mat-icon>edit</mat-icon></button> -->
                 </div>
               </ng-container>
 
@@ -45,21 +67,27 @@
           </div>
 
           <div fxFlex="50" fxFlex.lt-md="100" style="width: 100%">
-            <span style="font-weight: 300;">Right</span>
+            <div>
+              <span style="font-weight: 300;" fxFlex>Right</span>
+              <!-- <span style="font-weight: 300;">Visible</span> -->
+            </div>
 
-            <div
-              cdkDropList
-              [cdkDropListData]="right"
-              class="example-list"
-              (cdkDropListDropped)="drop($event)">
+            <div cdkDropList #rightList="cdkDropList" [cdkDropListData]="right" [cdkDropListConnectedTo]="[leftList,hiddenList]"
+              class="field-list" (cdkDropListDropped)="drop($event)">
               <ng-container *ngFor="let item of right">
-              <div class="example-box" cdkDrag *ngIf="item.visible || showHidden">
+              <div class="field-box" cdkDrag *ngIf="item.visible || showHidden">
                 <div style="height: 20px;">
                   <mat-icon>drag_indicator</mat-icon>
-                  <mat-icon *ngIf="!item.visible" color="primary" style="position: absolute;" >visibility_off</mat-icon>
+                  <!-- <mat-icon *ngIf="!item.visible" color="primary" style="position: absolute;">visibility_off</mat-icon> -->
                 </div>
                 {{item.label}}
-                <button mat-icon-button (click)="editField(item)"><mat-icon>edit</mat-icon></button>
+                <!-- <mat-slide-toggle
+                  color="primary"
+                  labelPosition="before"
+                  [checked]="true"
+                  (change)="chageVisibility(item)">
+                </mat-slide-toggle> -->
+                <div></div>
               </div>
               </ng-container>
             </div>
@@ -67,90 +95,130 @@
         </div>
     </mat-card>
   </div>
-  <!-- <div fxFlex="25" fxFlex.md="30">
-      <mat-card  class="mat-elevation-z1">
-        <div fxLayout="row" fxLayoutAlign="end center" class="card-header">
-          <h2 fxFlex  style="font-weight: 300; margin: 0px;">Field Settings</h2>
-        </div>
-          <mat-card-content style="font-size: 14px">
-            <form id="input-form" [formGroup]="editFieldForm" novalidate>
-
-              <mat-form-field class="full-width" floatLabel="always" appearance="outline">
-                <mat-label>Field Type</mat-label>
-                <mat-select formControlName="fieldType" [(value)]="fieldType">
-                  <mat-option value="text">Text</mat-option>
-                  <mat-option value="dropdown">Dropdown</mat-option>
-                </mat-select>
-              </mat-form-field>
-
-              <mat-form-field class="full-width" floatLabel="always" appearance="outline" >
-                <mat-label>Label</mat-label>
-                <input matInput formControlName="label">
-              </mat-form-field>
-
-              <mat-form-field class="full-width" floatLabel="always" appearance="outline" *ngIf="fieldType == 'text'">
-                <mat-label>Default Value</mat-label>
-                <input matInput formControlName="default">
-              </mat-form-field>
-
-              <app-searchable-select
-                [options]="options"
-                label="Default Value"
-                [defaultOption]="defaultValue"
-                formControlName="default"
-                *ngIf="fieldType == 'dropdown'">
-              </app-searchable-select>
-
-              <div fxLayout="row" style="padding-bottom: 1.34375em;">
-                <span fxFlex>Visible</span>
-                <mat-slide-toggle
-                    color="primary"
-                    formControlName="visible">
-                </mat-slide-toggle>
-              </div>
-
-              <div fxLayout="row" style="padding-bottom: 1.34375em;">
-                <span fxFlex>Required</span>
-                <mat-slide-toggle
-                    color="primary"
-                    formControlName="required">
-                </mat-slide-toggle>
-              </div>
-
-              <app-dropdown-options
-                *ngIf="fieldType == 'dropdown'"
-                [data]="options"
-                formControlName="options">
-              </app-dropdown-options>
-
-              <div fxLayout="row" fxLayoutAlign="end center">
-                <a mat-button (click)="cancelField()" *ngIf="fieldChanged">Cancel</a>
-                <button mat-flat-button color="primary" [disabled]="!fieldChanged" (click)="saveField()" >
-                  Save
-                </button>
-              </div>
-            </form>
-        </mat-card-content>
-      </mat-card>
-  </div> -->
 </div>
+
+
+
+
+
+
+
+<!--
+<div class="container">
+  <div class="row">
+    <div class="col-md-4">
+        <div class="drag-container">
+            <div class="section-heading">Still Doing</div>
+
+            <div cdkDropList #leftList="cdkDropList" [cdkDropListData]="left" [cdkDropListConnectedTo]="[rightList,hiddenList]"
+              class="item-list" (cdkDropListDropped)="drop($event)">
+              <div class="item-box" *ngFor="let item of left" cdkDrag>{{item}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="drag-container">
+            <div class="section-heading">Done</div>
+
+            <div cdkDropList #rightList="cdkDropList" [cdkDropListData]="right" [cdkDropListConnectedTo]="[leftList,hiddenList]"
+              class="item-list" (cdkDropListDropped)="drop($event)">
+              <div class="item-box" *ngFor="let item of right" cdkDrag>{{item}}</div>
+            </div>
+          </div>
+    </div>
+    <div class="col-md-4">
+        <div class="drag-container">
+            <div class="section-heading">Nevermind</div>
+
+
+          </div>
+    </div>
+  </div>
+</div> -->
+
+
+
+
+
+
+
+
 </mat-sidenav-content>
 
-<mat-sidenav #sidebar position="end" fullscreen
-fixedInViewport
-autosize
-[attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-[mode]="(isHandset$ | async) ? 'over' : 'side'"
-[opened]="(isHandset$ | async) ? false : true">
+<mat-sidenav #sidebar position="end" fullscreen fixedInViewport autosize
+  [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+  [mode]="(isHandset$ | async) ? 'over' : 'side'"
+  [opened]="(isHandset$ | async) ? false : true">
+
   <mat-toolbar color="primary" class="main-tool-bar">Menu</mat-toolbar>
   <mat-toolbar class="component-header content-toolbar">
-    <span fxFlex>Field Settings</span>
-    <a mat-button class="settings-toogle" (click)="sidebar.close()"> Hide Settings<mat-icon>double_arrow</mat-icon></a>
+    <span fxFlex>Hidden Fields</span>
+    <a mat-button class="settings-toogle" (click)="sidebarToogle('close')"> Hide<mat-icon>keyboard_arrow_right</mat-icon></a>
   </mat-toolbar>
-  <div fxLayout="column" fxLayoutAlign="space-between stretch" fxLayoutGap="10px" style="padding: 10px; height: calc( 100vh - 120px );">
-    <form id="input-form" [formGroup]="editFieldForm" novalidate>
 
-      <!-- Field Type -->
+  <div fxLayout="column" fxLayoutAlign="space-between stretch" style="padding: 10px; height: calc( 100vh - 120px );">
+    <!-- <div style="margin: 0px;">
+      <span style="font-weight: 300;" fxFlex>Hide</span>
+    </div> -->
+    <div cdkDropList #hiddenList="cdkDropList" [cdkDropListData]="hidden" [cdkDropListConnectedTo]="[rightList,leftList]"
+      style="border: 1px solid #d6d9d9; min-height: 50px;"
+      class="item-list hidden-items" (cdkDropListDropped)="drop($event)">
+      <div class="hide-icon">
+        <mat-icon>delete_outline</mat-icon> Drop here to hide
+      </div>
+      <ng-container *ngFor="let item of hidden">
+        <div class="field-box" cdkDrag>
+          <div style="height: 20px;">
+            <mat-icon>drag_indicator</mat-icon>
+            <!-- <mat-icon *ngIf="!item.visible" color="primary" style="position: absolute;" >visibility_off</mat-icon> -->
+          </div>
+          {{item.label}}
+          <!-- <mat-slide-toggle
+            color="primary"
+            labelPosition="before"
+            [checked]="true"
+            (change)="chageVisibility(item)">
+          </mat-slide-toggle> -->
+          <div></div>
+          <!-- <button mat-icon-button (click)="editField(item)"><mat-icon>edit</mat-icon></button> -->
+        </div>
+      </ng-container>
+    </div>
+    <!-- <div cdkDropList #hidden="cdkDropList" [cdkDropListData]="hidden"
+      class="item-list" (cdkDropListDropped)="drop($event)">
+      <ng-container *ngFor="let item of hidden">
+        <div class="field-box" cdkDrag *ngIf="!item.visible">
+          <div style="height: 20px;">
+            <mat-icon>drag_indicator</mat-icon>
+            <mat-icon *ngIf="!item.visible" color="primary" style="position: absolute;" >visibility_off</mat-icon>
+          </div>
+          {{item.label}}
+          <mat-slide-toggle
+            color="primary"
+            labelPosition="before"
+            [checked]="true"
+            (change)="chageVisibility(item)">
+          </mat-slide-toggle>
+        </div>
+        </ng-container>
+    </div> -->
+    <!-- <mat-list style="margin: 0px; padding: 0px;">
+      <ng-container  *ngFor="let item of fieldsNew">
+        <mat-list-item *ngIf="!item.visible" >
+          <span fxFlex>{{ item.label }}</span>
+          <mat-slide-toggle
+            color="primary"
+            labelPosition="before"
+            [checked]="false"
+            (change)="chageVisibility(item)">
+        </mat-slide-toggle>
+        </mat-list-item>
+      </ng-container>
+    </mat-list> -->
+    <div fxFlex></div>
+    <!-- <form id="input-form" [formGroup]="editFieldForm" novalidate>
+
+
       <mat-form-field class="full-width" floatLabel="always" appearance="outline">
         <mat-label>Field Type</mat-label>
         <mat-select formControlName="fieldType" [(value)]="fieldType">
@@ -159,13 +227,13 @@ autosize
         </mat-select>
       </mat-form-field>
 
-      <!-- Field Label -->
+
       <mat-form-field class="full-width" floatLabel="always" appearance="outline" >
         <mat-label>Label</mat-label>
         <input matInput formControlName="label">
       </mat-form-field>
 
-      <!-- Field Default -->
+
       <mat-form-field class="full-width" floatLabel="always" appearance="outline" *ngIf="fieldType == 'text'">
         <mat-label>Default Value</mat-label>
         <input matInput formControlName="default">
@@ -179,7 +247,6 @@ autosize
         *ngIf="fieldType == 'dropdown'">
       </app-searchable-select>
 
-      <!-- Field visibility -->
       <div fxLayout="row" style="padding-bottom: 1.34375em;">
         <span fxFlex>Visible</span>
         <mat-slide-toggle
@@ -188,7 +255,6 @@ autosize
         </mat-slide-toggle>
       </div>
 
-      <!-- Field required -->
       <div fxLayout="row" style="padding-bottom: 1.34375em;">
         <span fxFlex>Required</span>
         <mat-slide-toggle
@@ -197,7 +263,6 @@ autosize
         </mat-slide-toggle>
       </div>
 
-      <!-- Dropdown Options -->
       <app-dropdown-options
         *ngIf="fieldType == 'dropdown'"
         [data]="options"
@@ -210,10 +275,8 @@ autosize
           Save
         </button>
       </div>
-    </form>
+    </form> -->
   </div>
-    <!-- <small>Last Modified: 01/01/2020 by Marcel Cruz</small>
-    <small> Modified: 01/01/2020 by Marcel Cruz</small> -->
 </mat-sidenav>
 
 </mat-sidenav-container>

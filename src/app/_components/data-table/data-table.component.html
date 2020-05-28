@@ -25,12 +25,12 @@
               <th mat-header-cell *matHeaderCellDef mat-sort-header>{{item.label}}</th>
               <td mat-cell *matCellDef="let row">
 
-                <ng-container *ngIf="isString(row[item.fieldName])" >
+                <ng-container *ngIf="!isObject(row[item.fieldName])" >
                   <span>
                     {{row[item.fieldName]}}
                   </span>
                 </ng-container>
-                <ng-container *ngIf="!isString(row[item.fieldName])">
+                <ng-container *ngIf="isObject(row[item.fieldName])">
                   <div>
                     <ul class="cust-tooltip" *ngIf="custToolTip === row" >
                       <li *ngFor="let item of row[item.fieldName]" style="margin: -5px 0px;">{{item.label}}</li>
