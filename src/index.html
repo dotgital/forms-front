@@ -8,8 +8,37 @@
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    @keyframes loading {
+      0%   {color: grey}
+      50%  {color: #1d88e5;}
+    }
+
+    .loading-splash{
+      background: #f0f3f4;
+      color: #1d88e5;
+      /* height: 100vh; */
+      width: 100%;
+      position: absolute;
+      text-align: center;
+      padding-top: calc( 50vh - 20px );
+      padding-bottom: calc( 50vh - 20px );
+    }
+    .loading-splash > div{
+      font-size: 18px;
+      margin: auto;
+      height: 40px;
+      /* border: 1px solid #fff; */
+      line-height: 40px;
+      width: 100px;
+      animation-name: loading;
+      animation-duration: 1s;
+    }
+  </style>
 </head>
 <body class="mat-typography">
-  <app-root></app-root>
+  <app-root>
+    <Loading class="loading-splash"><div>Loading...</div></Loading>
+  </app-root>
 </body>
 </html>
