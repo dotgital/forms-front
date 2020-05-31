@@ -7,11 +7,11 @@ import { CrudService } from '../../../../services/crud.service';
 import { Component, OnInit, Input, SimpleChanges, OnChanges, Output, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'app-client-profile',
-  templateUrl: './client-profile.component.html',
-  styleUrls: ['./client-profile.component.scss']
+  selector: 'app-service-info',
+  templateUrl: './service-info.component.html',
+  styleUrls: ['./service-info.component.scss']
 })
-export class ClientProfileComponent implements OnInit, OnChanges {
+export class ServiceInfoComponent implements OnInit, OnChanges {
   @Input() recordData: any;
   @Input() creating: boolean;
   @Output() dataUpdated: EventEmitter<any> = new EventEmitter();
@@ -80,7 +80,7 @@ export class ClientProfileComponent implements OnInit, OnChanges {
   * @return observable to subcribe and display the forms in the template
   */
   buildEmptyForm() {
-    const query = `contentType=clients`;
+    const query = `contentType=services`;
     this.emptyForm = this.crud.getRecordList('settings-fields', query).pipe(switchMap(async (res) => {
       for await (const control of res) {
         if (control.visible) {

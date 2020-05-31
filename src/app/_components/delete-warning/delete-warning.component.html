@@ -1,0 +1,11 @@
+<div mat-dialog-content>
+  <p>Are you sure you want to delete this {{data.label}}?</p>
+</div>
+<div mat-dialog-actions fxLayout="row" fxLayoutGap="10px">
+  <div fxFlex></div>
+  <button mat-button (click)="onNoClick()" cdkFocusInitial >Cancel</button>
+  <button mat-flat-button color="warn" (click)="deleteRecord()" [disabled]="loading">{{ loading ? 'Deleting' : 'Delete'}}
+    <mat-spinner *ngIf="loading" style="position: absolute; top: 6px; left: 30px;" diameter="25" mode="indeterminate">
+    </mat-spinner>
+  </button>
+</div>

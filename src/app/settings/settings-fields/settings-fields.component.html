@@ -1,0 +1,51 @@
+<mat-sidenav-container>
+
+  <mat-sidenav-content class="content-outlet" style="height: calc( 100vh - 55px );">
+    <mat-toolbar class="component-header">
+      <button mat-icon-button routerLink="/settings" style="margin-left: -10px;">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <span fxFlex>Fields</span>
+      <button mat-flat-button (click)="openStatusConfig({})" color="primary">Create</button>
+    </mat-toolbar>
+    <div class="main-content">
+      <div class="mat-elevation-z1">
+        <div class="mat-elevation-z1">
+          <div fxLayout="row" fxLayoutAlign="end center"
+            style="background-color: #fff; padding: 10px; border-bottom: 1px solid #e0e0e0;">
+            <mat-form-field appearance="outline" floatLabel="always" color="primary" style="margin-bottom: -1.5em;">
+              <mat-label>Content Type</mat-label>
+              <mat-select name="item" placeholder="All" (selectionChange)="switchContentType($event)">
+                <mat-option *ngFor="let item of contentTypes" [value]="item.key">{{item.label}} </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div fxFlex></div>
+            <app-column-selector contentType="settings-fields" (changeColumns)="changeColumns($event)"></app-column-selector>
+          </div>
+          <app-data-table [columns]="columnsChanged"
+            [filter]="filter"
+            model="settings-fields"
+            contentType="settings-fields"
+            (openRecord)="openStatusConfig($event)">
+          </app-data-table>
+        </div>
+      </div>
+    </div>
+  </mat-sidenav-content>
+
+<mat-sidenav #sidebar position="end" fullscreen class="record-sidenav"
+  fixedInViewport
+  autosize
+  [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+  [mode]="(isHandset$ | async) ? 'over' : 'side'"
+  opened="false">
+  <mat-toolbar color="primary" class="main-tool-bar">Menu</mat-toolbar>
+  <mat-toolbar class="component-header">
+    <span fxFlex>History</span>
+    <a mat-button class="history-toogle" (click)="toogleSideBar()"> History<mat-icon>keyboard_arrow_right</mat-icon></a>
+  </mat-toolbar>
+  <div fxLayout="column" fxLayoutAlign="space-between stretch" fxLayoutGap="10px" style="padding: 10px; height: calc( 100vh - 120px );">
+    <app-activities [recordId]="recordId" contentType="servicesTemplates"></app-activities>
+  </div>
+</mat-sidenav>
+</mat-sidenav-container>

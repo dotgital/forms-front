@@ -1,3 +1,4 @@
+import { SettingsFieldsComponent } from './settings/settings-fields/settings-fields.component';
 import { SettingsServicesTemplatesComponent } from './settings/settings-services-templates/settings-services-templates.component';
 import { SettingsFiltersComponent } from './settings/settings-filters/settings-filters.component';
 import { RoleGuard } from './services/role.guard';
@@ -35,6 +36,7 @@ const routes: Routes = [
     { path: 'settings/layout', component: SettingsLayoutComponent, canActivate: [RoleGuard] },
     { path: 'settings/permissions', component: SettingsPermissionsComponent, canActivate: [RoleGuard] },
     { path: 'settings/filters', component: SettingsFiltersComponent, canActivate: [RoleGuard] },
+    { path: 'settings/fields', component: SettingsFieldsComponent, canActivate: [RoleGuard] },
     { path: 'settings/services-templates', component: SettingsServicesTemplatesComponent, canActivate: [RoleGuard] },
   ]},
 ];

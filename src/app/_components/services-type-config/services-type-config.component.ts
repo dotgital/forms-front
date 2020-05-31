@@ -1,10 +1,8 @@
 import { ErrorMessagesService } from './../../services/error-messages.service';
-import { Observable } from 'rxjs';
 import { CrudService } from '../../services/crud.service';
-import { FormGroup, FormControl, Validators, FormControlName } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, OnInit, Inject, ViewEncapsulation } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { startWith, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-services-type-config',
@@ -85,14 +83,6 @@ export class ServicesTypeConfigComponent implements OnInit {
         this.activeStep = e;
       }
     }
-
-    // console.log(this.servicesTypeForm.controls['serviceName'].hasError('required'));
-    // // this.servicesTypeForm.markAllAsTouched();
-    // if (this.servicesTypeForm.pristine) {
-    //   this.activeStep = e;
-    // } else {
-    //   this.errorMessageService.showError('Please check for any error before leave this tab');
-    // }
   }
 
   onSubmit() {

@@ -33,6 +33,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSortModule } from '@angular/material/sort';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -49,6 +51,7 @@ import { DisableFormDirective } from './_directives/disable-form.directive';
 import { FillComponent } from './forms/fill/fill.component';
 import { SettingsComponent } from './settings/settings.component';
 import { SettingsLayoutComponent } from './settings/settings-layout/settings-layout.component';
+import { Moment } from 'moment';
 
 
 import { ClientsListComponent } from './clients/clients-list/clients-list.component';
@@ -75,7 +78,10 @@ import { AutocompleteCreateComponent } from './_components/autocomplete-create/a
 import { SettingsServicesTemplatesComponent } from './settings/settings-services-templates/settings-services-templates.component';
 import { ActivitiesComponent } from './_components/activities/activities.component';
 import { ServicesTypeSelectorComponent } from './_components/services-type-selector/services-type-selector.component';
-
+import { ServiceInfoComponent } from './clients/clients-view/components/service-info/service-info.component';
+import { SettingsFieldsComponent } from './settings/settings-fields/settings-fields.component';
+import { SettingsFieldsModalComponent } from './_components/settings-fields-modal/settings-fields-modal.component';
+import { DeleteWarningComponent } from './_components/delete-warning/delete-warning.component';
 
 @NgModule({
   declarations: [
@@ -113,6 +119,10 @@ import { ServicesTypeSelectorComponent } from './_components/services-type-selec
     SettingsServicesTemplatesComponent,
     ActivitiesComponent,
     ServicesTypeSelectorComponent,
+    ServiceInfoComponent,
+    SettingsFieldsComponent,
+    SettingsFieldsModalComponent,
+    DeleteWarningComponent,
   ],
   imports: [
     BrowserModule,
@@ -133,6 +143,8 @@ import { ServicesTypeSelectorComponent } from './_components/services-type-selec
     MatTooltipModule,
     MatChipsModule,
     MatCardModule,
+    MatDatepickerModule,
+    MatMomentDateModule,
     MatProgressSpinnerModule,
     MatFormFieldModule,
     MatInputModule,

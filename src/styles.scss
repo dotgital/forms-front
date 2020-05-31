@@ -89,6 +89,18 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   z-index: 10 !important;
 }
 
+.history-toogle{
+  font-size: 10px;
+  padding: 0px 5px;
+  margin-right: -10px;
+  font-weight: 400;
+  .mat-icon {
+    font-size: 20px;
+    height: 20px;
+    width: 20px;
+  }
+}
+
 .search{
   .mat-form-field-wrapper {
     padding-bottom: 0px;
@@ -168,7 +180,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   }
 }
 
-.mat-flat-button.mat-primary, .mat-raised-button.mat-primary, .mat-fab.mat-primary, .mat-mini-fab.mat-primary {
+.mat-flat-button.mat-warn, .mat-flat-button.mat-primary, .mat-raised-button.mat-primary, .mat-fab.mat-primary, .mat-mini-fab.mat-primary {
   border-radius: 0px !important;
 }
 
@@ -237,7 +249,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 .custom-options.mat-form-field-appearance-outline .mat-form-field-infix {
-  padding: 0.3em 0 0;
+  padding: 0.5em 0 0;
+}
+.custom-options input.mat-chip-input{
+  border-bottom: none !important;
 }
 
 tr.mat-header-row {

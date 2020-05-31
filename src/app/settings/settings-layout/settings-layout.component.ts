@@ -21,6 +21,7 @@ export class SettingsLayoutComponent implements OnInit {
   hidden = [];
   sidebarOpened: boolean = true;
   contentType: string;
+  contentTypes: any[] = [{key: 'clients', label: 'Clients'}, {key: 'services', label: 'Service Info'}];
   // fields: FormItem[] = [];
   fieldsNew: FormItem[];
   showHidden: boolean;

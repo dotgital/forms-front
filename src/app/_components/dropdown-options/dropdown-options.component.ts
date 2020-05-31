@@ -1,7 +1,7 @@
 import { NG_VALUE_ACCESSOR, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { ENTER } from '@angular/cdk/keycodes';
-import { Component, OnInit, Input, forwardRef } from '@angular/core';
+import { Component, OnInit, Input, forwardRef, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-dropdown-options',
@@ -21,6 +21,7 @@ export class DropdownOptionsComponent implements OnInit {
   readonly separatorKeysCodes: number[] = [ENTER];
   options: string[] = [];
   isDisabled: boolean;
+
   optionsForm = new FormGroup({
     dropdownOptions: new FormControl(null)
   });
@@ -28,6 +29,7 @@ export class DropdownOptionsComponent implements OnInit {
   @Input() data: string[];
   @Input() label: string;
   @Input() color: string;
+  @Output() optionChanged: EventEmitter<string[]> = new EventEmitter()
 
   onChange = (_: string[]) => { };
   constructor() { }
@@ -58,6 +60,7 @@ export class DropdownOptionsComponent implements OnInit {
     }
 
     this.options.sort();
+    this.optionChanged.emit(this.options);
 
     if (input) {
       input.value = '';
@@ -71,6 +74,7 @@ export class DropdownOptionsComponent implements OnInit {
     if (index >= 0) {
       this.options.splice(index, 1);
     }
+    this.optionChanged.emit(this.options);
     this.onChange(this.options);
   }
 }

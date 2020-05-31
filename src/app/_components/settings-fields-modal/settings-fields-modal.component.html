@@ -1,0 +1,95 @@
+<div fxLayout="row" fxLayoutAlign="start center" class="modal-header">
+  <span fxFlex>{{ data ? 'Update this field' : 'Create a new field'}}</span>
+  <button mat-icon-button color="primary" (click)="onNoClick()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<form id="input-form" [formGroup]="fieldForm" novalidate style.fontSize.px="26px" (ngSubmit)="onSubmit()">
+  <div class="modal-content" style="padding: 20px;">
+
+    <mat-form-field appearance="outline" floatLabel="always" color="primary" class="full-width">
+      <mat-label>Content Type</mat-label>
+      <mat-select formControlName="contentType" name="item" required>
+        <mat-option *ngFor="let item of contentTypes" [value]="item.key">
+          {{item.label}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="fieldForm.controls['contentType'].hasError('required')">Content Type is <strong>required</strong></mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" floatLabel="always" color="primary" class="full-width">
+      <mat-label>Field Type</mat-label>
+      <mat-select formControlName="type" name="item" required (selectionChange)="changeFieldOptions($event)">
+        <mat-option *ngFor="let item of types" [value]="item">
+          {{item}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="fieldForm.controls['type'].hasError('required')">Category is <strong>required</strong></mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" floatLabel="always" color="primary" class="full-width">
+      <mat-label>Label</mat-label>
+      <input matInput formControlName="label" required>
+      <mat-error *ngIf="fieldForm.controls['label'].hasError('required')"> Service Name is <strong>required</strong></mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" floatLabel="always" color="primary" class="full-width" *ngIf="fieldType == 'Text'" >
+      <mat-label>Default Value</mat-label>
+      <input matInput formControlName="defaultValue">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" floatLabel="always" color="primary" class="full-width" *ngIf="fieldType == 'Number'" >
+      <mat-label>Default Value</mat-label>
+      <input matInput type="number" formControlName="defaultValue">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" floatLabel="always" color="primary" class="full-width"  *ngIf="fieldType == 'Dropdown'">
+      <mat-label>Default Option</mat-label>
+      <mat-select formControlName="defaultValue" name="item">
+        <mat-option *ngFor="let item of options" [value]="item">
+          {{item}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" floatLabel="always" color="primary" class="full-width" *ngIf="fieldType == 'Date'" >
+      <mat-label>Default date</mat-label>
+      <input matInput [matDatepicker]="picker">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <div fxLayout="row" style="margin: -5px 0 1.3em;">
+      <mat-slide-toggle fxFlex="50" color="primary" formControlName="visible">Visible</mat-slide-toggle>
+      <mat-slide-toggle fxFlex="50" color="primary" formControlName="required">Required</mat-slide-toggle>
+    </div>
+
+    <!-- Dropdown Options -->
+    <app-dropdown-options [data]="options" label="Options *"
+      [color]="fieldForm.controls['dropdownOptions'].hasError('required') && statusError ? 'warn' : 'primary'"
+      formControlName="dropdownOptions" *ngIf="fieldType == 'Dropdown'"
+      (optionChanged)="changeDefaultValues($event)">
+    </app-dropdown-options>
+    <mat-error style="position: relative; bottom: 2.3em; font-size: 12px; margin-left: 10px; font-weight: 200;"
+      *ngIf="fieldForm.controls['dropdownOptions'].hasError('required') && statusError">Status is <strong>required</strong></mat-error>
+
+  </div>
+  <div fxLayout="row" fxLayoutAlign="end center" class="modal-footer">
+    <button mat-flat-button color="warn" (click)="deleteField()" *ngIf="data" >Delete</button>
+    <div fxFlex></div>
+    <a mat-button (click)="onNoClick()">Cancel</a>
+    <button mat-flat-button color="primary" [disabled]="fieldForm.invalid || loading"
+      *ngIf="data">{{ loading ? 'Saving' : 'Save'}}
+      <mat-spinner *ngIf="loading" style="position: absolute; top: 6px; left: 25px;" diameter="25" mode="indeterminate">
+      </mat-spinner>
+    </button>
+
+    <button mat-flat-button color="primary" [disabled]="fieldForm.invalid || loading"
+      *ngIf="!data">{{ loading ? 'Creating' : 'Create'}}
+      <mat-spinner *ngIf="loading" style="position: absolute; top: 6px; left: 30px;" diameter="25" mode="indeterminate">
+      </mat-spinner>
+    </button>
+  </div>
+
+</form>

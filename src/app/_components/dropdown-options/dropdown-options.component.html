@@ -6,6 +6,7 @@
     [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
     (matChipInputTokenEnd)="addOption($event)"
     formControlName="dropdownOptions">
+    <mat-divider style="margin: 0px -10px; opacity: 0.5;"></mat-divider>
     <mat-chip-list #chipList class="mat-chip-list-stacked">
       <div class="options-list">
         <mat-chip *ngFor="let option of options" [selectable]="selectable" [removable]="removable" (removed)="removeOption(option)">

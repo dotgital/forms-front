@@ -12,6 +12,7 @@ export class DataTableComponent implements OnInit, OnChanges {
   @Input() model: string;
   @Input() contentType: string;
   @Input() columns: any[];
+  @Input() filter: string;
   @Input() settingsColumn: boolean;
   @Output() openRecord: EventEmitter<any> = new EventEmitter();
   @Output() openPreview: EventEmitter<any> = new EventEmitter();
@@ -57,7 +58,8 @@ export class DataTableComponent implements OnInit, OnChanges {
   getData() {
     const contentType = this.contentType;
     const model = this.model;
-    const query = `_sort=${this.sortBy}:${this.sortDirection}&_start=${this.startPage}&_limit=${this.pageSize}`;
+    const filter = this.filter ? this.filter : '';
+    const query = `_sort=${this.sortBy}:${this.sortDirection}&_start=${this.startPage}&_limit=${this.pageSize}&${filter}`;
     // const columns = ['id', 'recordName'].concat(this.dataColumns);
     this.crud.getTableData(contentType, model, query).subscribe(res => {
       const dataColumns = res.dataColumns.filter(col => col !== 'id' && col !== 'recordName');

@@ -1,4 +1,4 @@
-import { ServicesTypeConfigComponent } from './../../_components/services-type-config/services-type-config.component';
+import { SettingsFieldsModalComponent } from './../../_components/settings-fields-modal/settings-fields-modal.component';
 import { MatSidenav } from '@angular/material/sidenav';
 import { map, shareReplay } from 'rxjs/operators';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
@@ -7,12 +7,14 @@ import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit, ViewChild } from '@angular/core';
 
 @Component({
-  selector: 'app-settings-services-templates',
-  templateUrl: './settings-services-templates.component.html',
-  styleUrls: ['./settings-services-templates.component.scss']
+  selector: 'app-settings-fields',
+  templateUrl: './settings-fields.component.html',
+  styleUrls: ['./settings-fields.component.scss']
 })
-export class SettingsServicesTemplatesComponent implements OnInit {
+export class SettingsFieldsComponent implements OnInit {
   @ViewChild('sidebar') rightSide: MatSidenav;
+  filter: string;
+  contentTypes: any[] = [{key: 'clients', label: 'Clients'}, {key: 'services', label: 'Service Info'}];
   columnsChanged: boolean;
   sideBarOpened: boolean;
   recordId: string;
@@ -29,6 +31,7 @@ export class SettingsServicesTemplatesComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
+    this.filter = 'contentType_in=clients&contentType_in=services';
     this.isHandset$.subscribe(res => {
       if (res) {
         this.sideBarOpened = false;
@@ -38,7 +41,7 @@ export class SettingsServicesTemplatesComponent implements OnInit {
     });
   }
 
-  changeColumns(e){
+  changeColumns(e) {
     this.columnsChanged = !this.columnsChanged;
   }
 
@@ -51,10 +54,14 @@ export class SettingsServicesTemplatesComponent implements OnInit {
     }
   }
 
+  switchContentType(item) {
+    this.filter = `contentType=${item.value}`;
+  }
+
   openStatusConfig(record) {
-    const dialogRef = this.dialog.open(ServicesTypeConfigComponent, {
+    const dialogRef = this.dialog.open(SettingsFieldsModalComponent, {
       width: '250px',
-      panelClass: 'filter-config',
+      panelClass: 'fields-config',
       data: record.id
     });
 
@@ -63,10 +70,4 @@ export class SettingsServicesTemplatesComponent implements OnInit {
     });
   }
 
-  openSidePreview(record) {
-    this.rightSide.open();
-    this.sideBarOpened = true;
-    this.recordId = record.id;
-    console.log(record);
-  }
 }

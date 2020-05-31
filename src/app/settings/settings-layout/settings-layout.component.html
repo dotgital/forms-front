@@ -17,8 +17,7 @@
           <mat-form-field appearance="outline" floatLabel="always" color="primary" style="margin-bottom: -1.5em;">
             <mat-label>Content Type</mat-label>
             <mat-select name="item" [(ngModel)]="contentType" (selectionChange)="switchContentType($event)">
-              <mat-option value="clients">Clients </mat-option>
-              <mat-option value="users">Users </mat-option>
+              <mat-option *ngFor="let item of contentTypes"  [value]="item.key">{{item.label}} </mat-option>
             </mat-select>
           </mat-form-field>
           <div fxFlex>

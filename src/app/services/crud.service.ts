@@ -1,3 +1,4 @@
+import { DeleteWarningComponent } from './../_components/delete-warning/delete-warning.component';
 import { AuthService } from './auth.service';
 import { map } from 'rxjs/operators';
 import { environment } from './../../environments/environment';
@@ -6,6 +7,7 @@ import { HttpClient, HttpHeaders, HttpEventType } from '@angular/common/http';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 import { getDiff, applyDiff, rdiffResult } from 'recursive-diff';
+import { MatDialog } from '@angular/material/dialog';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +19,7 @@ export class CrudService {
     private http: HttpClient,
     private apollo: Apollo,
     private authSetvice: AuthService,
+    public dialog: MatDialog
   ) {
     this.userId = this.authSetvice.currentUserValue.user.id;
   }
@@ -67,6 +70,13 @@ export class CrudService {
     return this.http.put<any>(`${environment.backendUrl}/${endpoint}/${id}`, data)
     .pipe(map(settings => {
       return settings;
+    }));
+  }
+
+  deleteRecord(endpoint: string, id: string) {
+    return this.http.delete(`${environment.backendUrl}/${endpoint}/${id}`)
+    .pipe(map(res => {
+      return res;
     }));
   }
 
