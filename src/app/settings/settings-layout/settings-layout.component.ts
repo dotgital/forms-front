@@ -81,6 +81,9 @@ export class SettingsLayoutComponent implements OnInit {
     this.crud.getRecordList('settings-fields', query).subscribe(res => {
       console.log(res);
       this.fieldsNew = res;
+      this.fieldsNew.sort((a, b) => {
+        return a.position - b.position;
+      });
       this.displayLayout();
     });
   }
