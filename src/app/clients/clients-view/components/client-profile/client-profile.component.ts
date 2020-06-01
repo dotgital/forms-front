@@ -82,6 +82,9 @@ export class ClientProfileComponent implements OnInit, OnChanges {
   buildEmptyForm() {
     const query = `contentType=clients`;
     this.emptyForm = this.crud.getRecordList('settings-fields', query).pipe(switchMap(async (res) => {
+      res.sort((a, b) => {
+        return a.position - b.position;
+      });
       for await (const control of res) {
         if (control.visible) {
           const formControl = control.required ? new FormControl(null, Validators.required) : new FormControl(null);

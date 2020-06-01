@@ -19,7 +19,7 @@ export class SettingsLayoutComponent implements OnInit {
   left = [];
   right = [];
   hidden = [];
-  sidebarOpened: boolean = true;
+  sidebarOpened = true;
   contentType: string;
   contentTypes: any[] = [{key: 'clients', label: 'Clients'}, {key: 'services', label: 'Service Info'}];
   // fields: FormItem[] = [];
@@ -107,7 +107,7 @@ export class SettingsLayoutComponent implements OnInit {
   //   });
   // }
 
-  sidebarToogle(op){
+  sidebarToogle(op) {
     this.rightSide.toggle();
     this.sidebarOpened = op === 'open' ? true : false;
   }

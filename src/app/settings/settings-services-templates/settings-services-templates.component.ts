@@ -53,7 +53,7 @@ export class SettingsServicesTemplatesComponent implements OnInit {
 
   openStatusConfig(record) {
     const dialogRef = this.dialog.open(ServicesTypeConfigComponent, {
-      width: '250px',
+      width: '500px',
       panelClass: 'filter-config',
       data: record.id
     });

@@ -29,7 +29,7 @@ export class DropdownOptionsComponent implements OnInit {
   @Input() data: string[];
   @Input() label: string;
   @Input() color: string;
-  @Output() optionChanged: EventEmitter<string[]> = new EventEmitter()
+  @Output() optionChanged: EventEmitter<string[]> = new EventEmitter();
 
   onChange = (_: string[]) => { };
   constructor() { }
